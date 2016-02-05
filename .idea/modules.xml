@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CashModule/CashModule.iml" filepath="$PROJECT_DIR$/CashModule/CashModule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CollectionModule/CollectionModule.iml" filepath="$PROJECT_DIR$/CollectionModule/CollectionModule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LogModule/LogModule.iml" filepath="$PROJECT_DIR$/LogModule/LogModule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ReportModule/ReportModule.iml" filepath="$PROJECT_DIR$/ReportModule/ReportModule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UserModule/UserModule.iml" filepath="$PROJECT_DIR$/UserModule/UserModule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/basicweb/basicweb.iml" filepath="$PROJECT_DIR$/basicweb/basicweb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dbcontroller/dbcontroller.iml" filepath="$PROJECT_DIR$/dbcontroller/dbcontroller.iml" />
+      <module fileurl="file://$PROJECT_DIR$/main/main.iml" filepath="$PROJECT_DIR$/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/server.iml" filepath="$PROJECT_DIR$/server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/web/web.iml" filepath="$PROJECT_DIR$/web/web.iml" />
+    </modules>
+  </component>
+</project>
+

@@ -1,0 +1,1072 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007f625f46e8e8, pid=8984, tid=140059882637056
+#
+# JRE version: Java(TM) SE Runtime Environment (8.0-b132) (build 1.8.0-b132)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.0-b70 mixed mode linux-amd64 compressed oops)
+# Problematic frame:
+# C  [libc.so.6+0x1508e8]  __nss_hosts_lookup+0x19668
+#
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007f620402e800):  JavaThread "Daemon" [_thread_in_native, id=9002, stack(0x00007f623b7d4000,0x00007f623b8d5000)]
+
+siginfo:si_signo=SIGSEGV: si_errno=0, si_code=2 (SEGV_ACCERR), si_addr=0x00007f623a158000
+
+Registers:
+RAX=0x00007f6208cb7460, RBX=0x0000000000005fb3, RCX=0x0000000000008000, RDX=0x0000000000003523
+RSP=0x00007f623b8ce8d8, RBP=0x00007f623b8ce930, RSI=0x00007f623a157f85, RDI=0x00007f6208cb9df0
+R8 =0x00007f6208cb7460, R9 =0x00007f625f46e8c0, R10=0x00007f6208000078, R11=0x00007f625f4a5eb0
+R12=0x00007f623a146608, R13=0x00007f6208c7f950, R14=0x0000000000002f62, R15=0x00007f620889f310
+RIP=0x00007f625f46e8e8, EFLAGS=0x0000000000010202, CSGSFS=0x0000000000000033, ERR=0x0000000000000004
+  TRAPNO=0x000000000000000e
+
+Top of Stack: (sp=0x00007f623b8ce8d8)
+0x00007f623b8ce8d8:   00007f625d06b91e 00007f623b8ce970
+0x00007f623b8ce8e8:   5fb3626200000000 000000000000c05d
+0x00007f623b8ce8f8:   000000002659dc9f 00007f6208c7f950
+0x00007f623b8ce908:   00007f620889f550 00007f620889f310
+0x00007f623b8ce918:   00007f620889f1c0 00000000d2eaa6d1
+0x00007f623b8ce928:   00007f623b8ce990 00007f623b8ce970
+0x00007f623b8ce938:   00007f625d06be00 0000003d3b8ce970
+0x00007f623b8ce948:   00007f623b8ce990 000000000000003d
+0x00007f623b8ce958:   00007f620402e9e0 00007f623b8ce990
+0x00007f623b8ce968:   00007f623b8cede8 00007f623b8cedd0
+0x00007f623b8ce978:   00007f625d05dc9d 01007f62088b4eb8
+0x00007f623b8ce988:   00007f620889f310 657267652f67726f
+0x00007f623b8ce998:   736e65706f2f6e65 65767265732f736d
+0x00007f623b8ce9a8:   6f72746e6f632f72 7375432f72656c6c
+0x00007f623b8ce9b8:   6e6f4372656d6f74 2e72656c6c6f7274
+0x00007f623b8ce9c8:   0000007373616c63 00000c0000000c00
+0x00007f623b8ce9d8:   00007f6208ca0470 00007f62088b5bf0
+0x00007f623b8ce9e8:   0000003f00000000 0000000000000000
+0x00007f623b8ce9f8:   00000000000001ff 0000031349046b20
+0x00007f623b8cea08:   00007f625d06570e 0000000000000001
+0x00007f623b8cea18:   00007f620889fe70 0000000000000000
+0x00007f623b8cea28:   00007f62088b4e30 00007f623b8ceb40
+0x00007f623b8cea38:   00007f625d065ae1 0000000000000000
+0x00007f623b8cea48:   000000013b8cebe0 00007f6200000488
+0x00007f623b8cea58:   00000000eced6ff1 00007f6204008ff0
+0x00007f623b8cea68:   00007f623b8ceb00 0000012dfffffffc
+0x00007f623b8cea78:   00007f620402e800 000000010402e800
+0x00007f623b8cea88:   00007f62088b5380 00007f62088b5140
+0x00007f623b8cea98:   00007f62088b4ea0 00007f62088b4eb8
+0x00007f623b8ceaa8:   00007f62088b4ec0 00007f62088b4ea4
+0x00007f623b8ceab8:   00007f620402e800 00000000eced9c13
+0x00007f623b8ceac8:   0000020300000000 00007f620402e800 
+
+Instructions: (pc=0x00007f625f46e8e8)
+0x00007f625f46e8c8:   28 4e fb 0f 28 56 0b 0f 28 5e 1b 0f 28 66 2b 0f
+0x00007f625f46e8d8:   28 6e 3b 0f 28 76 4b 0f 28 7e 5b 44 0f 28 46 6b
+0x00007f625f46e8e8:   44 0f 28 4e 7b 48 8d b6 80 00 00 00 66 45 0f 3a
+0x00007f625f46e8f8:   0f c8 05 44 0f 29 4f 70 66 44 0f 3a 0f c7 05 44 
+
+Register to memory mapping:
+
+RAX=0x00007f6208cb7460 is an unknown value
+RBX=0x0000000000005fb3 is an unknown value
+RCX=0x0000000000008000 is an unknown value
+RDX=0x0000000000003523 is an unknown value
+RSP=0x00007f623b8ce8d8 is pointing into the stack for thread: 0x00007f620402e800
+RBP=0x00007f623b8ce930 is pointing into the stack for thread: 0x00007f620402e800
+RSI=0x00007f623a157f85 is an unknown value
+RDI=0x00007f6208cb9df0 is an unknown value
+R8 =0x00007f6208cb7460 is an unknown value
+R9 =0x00007f625f46e8c0: <offset 0x1508c0> in /lib/x86_64-linux-gnu/libc.so.6 at 0x00007f625f31e000
+R10=0x00007f6208000078 is an unknown value
+R11=0x00007f625f4a5eb0: <offset 0x187eb0> in /lib/x86_64-linux-gnu/libc.so.6 at 0x00007f625f31e000
+R12=0x00007f623a146608 is an unknown value
+R13=0x00007f6208c7f950 is an unknown value
+R14=0x0000000000002f62 is an unknown value
+R15=0x00007f620889f310 is an unknown value
+
+
+Stack: [0x00007f623b7d4000,0x00007f623b8d5000],  sp=0x00007f623b8ce8d8,  free space=1002k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [libc.so.6+0x1508e8]  __nss_hosts_lookup+0x19668
+C  [libzip.so+0x11e00]  ZIP_GetEntry+0xd0
+C  [libzip.so+0x3c9d]  Java_java_util_zip_ZipFile_getEntry+0xad
+J 225  java.util.zip.ZipFile.getEntry(J[BZ)J (0 bytes) @ 0x00007f624917cc4e [0x00007f624917cb80+0xce]
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+J 225  java.util.zip.ZipFile.getEntry(J[BZ)J (0 bytes) @ 0x00007f624917cbd8 [0x00007f624917cb80+0x58]
+J 5159 C2 java.util.zip.ZipFile.getEntry(Ljava/lang/String;)Ljava/util/zip/ZipEntry; (86 bytes) @ 0x00007f624a0d3970 [0x00007f624a0d3620+0x350]
+J 1613 C2 sun.misc.URLClassPath.getResource(Ljava/lang/String;Z)Lsun/misc/Resource; (74 bytes) @ 0x00007f624957dc7c [0x00007f624957dac0+0x1bc]
+J 5663 C1 java.net.URLClassLoader$1.run()Ljava/lang/Class; (73 bytes) @ 0x00007f62495045dc [0x00007f62495043e0+0x1fc]
+J 5473 C1 java.net.URLClassLoader$1.run()Ljava/lang/Object; (5 bytes) @ 0x00007f62492125f4 [0x00007f6249212580+0x74]
+v  ~StubRoutines::call_stub
+J 325  java.security.AccessController.doPrivileged(Ljava/security/PrivilegedExceptionAction;Ljava/security/AccessControlContext;)Ljava/lang/Object; (0 bytes) @ 0x00007f62491b0823 [0x00007f62491b07c0+0x63]
+J 5461 C1 org.mortbay.jetty.webapp.WebAppClassLoader.loadClass(Ljava/lang/String;Z)Ljava/lang/Class; (200 bytes) @ 0x00007f6249124df4 [0x00007f6249123b00+0x12f4]
+J 5460 C1 org.mortbay.jetty.webapp.WebAppClassLoader.loadClass(Ljava/lang/String;)Ljava/lang/Class; (7 bytes) @ 0x00007f624913bacc [0x00007f624913ba40+0x8c]
+j  org.springframework.util.ClassUtils.forName(Ljava/lang/String;Ljava/lang/ClassLoader;)Ljava/lang/Class;+179
+j  org.springframework.beans.factory.support.AbstractBeanDefinition.resolveBeanClass(Ljava/lang/ClassLoader;)Ljava/lang/Class;+13
+j  org.springframework.beans.factory.support.AbstractBeanFactory.doResolveBeanClass(Lorg/springframework/beans/factory/support/RootBeanDefinition;[Ljava/lang/Class;)Ljava/lang/Class;+97
+j  org.springframework.beans.factory.support.AbstractBeanFactory.resolveBeanClass(Lorg/springframework/beans/factory/support/RootBeanDefinition;Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/Class;+42
+j  org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineTargetType(Ljava/lang/String;Lorg/springframework/beans/factory/support/RootBeanDefinition;[Ljava/lang/Class;)Ljava/lang/Class;+32
+j  org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.predictBeanType(Ljava/lang/String;Lorg/springframework/beans/factory/support/RootBeanDefinition;[Ljava/lang/Class;)Ljava/lang/Class;+4
+j  org.springframework.beans.factory.support.AbstractBeanFactory.isFactoryBean(Ljava/lang/String;Lorg/springframework/beans/factory/support/RootBeanDefinition;)Z+12
+j  org.springframework.beans.factory.support.DefaultListableBeanFactory.doGetBeanNamesForType(Ljava/lang/Class;ZZ)[Ljava/lang/String;+111
+j  org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanNamesForType(Ljava/lang/Class;ZZ)[Ljava/lang/String;+19
+j  org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(Lorg/springframework/beans/factory/config/ConfigurableListableBeanFactory;Ljava/util/List;)V+122
+j  org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(Lorg/springframework/beans/factory/config/ConfigurableListableBeanFactory;)V+5
+j  org.springframework.context.support.AbstractApplicationContext.refresh()V+28
+j  org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(Lorg/springframework/web/context/ConfigurableWebApplicationContext;Ljavax/servlet/ServletContext;)V+135
+j  org.springframework.web.context.ContextLoader.initWebApplicationContext(Ljavax/servlet/ServletContext;)Lorg/springframework/web/context/WebApplicationContext;+132
+j  org.springframework.web.context.ContextLoaderListener.contextInitialized(Ljavax/servlet/ServletContextEvent;)V+5
+j  org.mortbay.jetty.handler.ContextHandler.startContext()V+62
+j  org.mortbay.jetty.servlet.Context.startContext()V+1
+j  org.mortbay.jetty.webapp.WebAppContext.startContext()V+123
+j  org.mortbay.jetty.handler.ContextHandler.doStart()V+140
+j  org.mortbay.jetty.webapp.WebAppContext.doStart()V+217
+j  org.gradle.api.plugins.jetty.internal.JettyPluginWebAppContext.doStart()V+6
+j  org.mortbay.component.AbstractLifeCycle.start()V+31
+j  org.mortbay.jetty.handler.HandlerCollection.doStart()V+32
+j  org.mortbay.jetty.handler.ContextHandlerCollection.doStart()V+5
+j  org.mortbay.component.AbstractLifeCycle.start()V+31
+j  org.mortbay.jetty.handler.HandlerCollection.doStart()V+32
+j  org.mortbay.component.AbstractLifeCycle.start()V+31
+j  org.mortbay.jetty.handler.HandlerWrapper.doStart()V+11
+j  org.mortbay.jetty.Server.doStart()V+201
+j  org.mortbay.component.AbstractLifeCycle.start()V+31
+j  org.gradle.api.plugins.jetty.internal.Jetty6PluginServer.start()V+48
+j  org.gradle.api.plugins.jetty.AbstractJettyRunTask.startJettyInternal()V+253
+j  org.gradle.api.plugins.jetty.AbstractJettyRunTask.startJetty()V+35
+j  org.gradle.api.plugins.jetty.AbstractJettyRunTask.start()V+85
+v  ~StubRoutines::call_stub
+J 1338  sun.reflect.NativeMethodAccessorImpl.invoke0(Ljava/lang/reflect/Method;Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (0 bytes) @ 0x00007f6249449437 [0x00007f62494493c0+0x77]
+J 1337 C1 sun.reflect.NativeMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (104 bytes) @ 0x00007f62494584fc [0x00007f62494573c0+0x113c]
+J 791 C1 sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (10 bytes) @ 0x00007f62492e7dc4 [0x00007f62492e7cc0+0x104]
+J 790 C1 java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (62 bytes) @ 0x00007f62492e77ec [0x00007f62492e7480+0x36c]
+J 1889 C1 org.gradle.internal.reflect.JavaMethod.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (74 bytes) @ 0x00007f6249734574 [0x00007f6249734460+0x114]
+j  org.gradle.api.internal.project.taskfactory.AnnotationProcessingTaskFactory$StandardTaskAction.doExecute(Lorg/gradle/api/Task;Ljava/lang/String;)V+17
+j  org.gradle.api.internal.project.taskfactory.AnnotationProcessingTaskFactory$StandardTaskAction.execute(Lorg/gradle/api/Task;)V+32
+j  org.gradle.api.internal.project.taskfactory.AnnotationProcessingTaskFactory$StandardTaskAction.execute(Ljava/lang/Object;)V+5
+j  org.gradle.api.internal.AbstractTask$TaskActionWrapper.execute(Lorg/gradle/api/Task;)V+28
+j  org.gradle.api.internal.AbstractTask$TaskActionWrapper.execute(Ljava/lang/Object;)V+5
+j  org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeAction(Lorg/gradle/api/internal/TaskInternal;Lorg/gradle/api/internal/tasks/ContextAwareTaskAction;Lorg/gradle/api/internal/tasks/TaskExecutionContext;)V+9
+j  org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeActions(Lorg/gradle/api/internal/TaskInternal;Lorg/gradle/api/internal/tasks/TaskStateInternal;Lorg/gradle/api/internal/tasks/TaskExecutionContext;)Lorg/gradle/api/GradleException;+79
+j  org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(Lorg/gradle/api/internal/TaskInternal;Lorg/gradle/api/internal/tasks/TaskStateInternal;Lorg/gradle/api/internal/tasks/TaskExecutionContext;)V+19
+j  org.gradle.api.internal.tasks.execution.PostExecutionAnalysisTaskExecuter.execute(Lorg/gradle/api/internal/TaskInternal;Lorg/gradle/api/internal/tasks/TaskStateInternal;Lorg/gradle/api/internal/tasks/TaskExecutionContext;)V+7
+j  org.gradle.api.internal.tasks.execution.SkipUpToDateTaskExecuter.execute(Lorg/gradle/api/internal/TaskInternal;Lorg/gradle/api/internal/tasks/TaskStateInternal;Lorg/gradle/api/internal/tasks/TaskExecutionContext;)V+133
+j  org.gradle.api.internal.tasks.execution.ValidatingTaskExecuter.execute(Lorg/gradle/api/internal/TaskInternal;Lorg/gradle/api/internal/tasks/TaskStateInternal;Lorg/gradle/api/internal/tasks/TaskExecutionContext;)V+215
+j  org.gradle.api.internal.tasks.execution.SkipEmptySourceFilesTaskExecuter.execute(Lorg/gradle/api/internal/TaskInternal;Lorg/gradle/api/internal/tasks/TaskStateInternal;Lorg/gradle/api/internal/tasks/TaskExecutionContext;)V+56
+j  org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(Lorg/gradle/api/internal/TaskInternal;Lorg/gradle/api/internal/tasks/TaskStateInternal;Lorg/gradle/api/internal/tasks/TaskExecutionContext;)V+110
+j  org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(Lorg/gradle/api/internal/TaskInternal;Lorg/gradle/api/internal/tasks/TaskStateInternal;Lorg/gradle/api/internal/tasks/TaskExecutionContext;)V+84
+j  org.gradle.api.internal.tasks.execution.ExecuteAtMostOnceTaskExecuter.execute(Lorg/gradle/api/internal/TaskInternal;Lorg/gradle/api/internal/tasks/TaskStateInternal;Lorg/gradle/api/internal/tasks/TaskExecutionContext;)V+26
+j  org.gradle.api.internal.AbstractTask.executeWithoutThrowingTaskFailure()V+16
+j  org.gradle.execution.taskgraph.AbstractTaskPlanExecutor$TaskExecutorWorker.executeTask(Lorg/gradle/execution/taskgraph/TaskInfo;)V+38
+j  org.gradle.execution.taskgraph.AbstractTaskPlanExecutor$TaskExecutorWorker.processTask(Lorg/gradle/execution/taskgraph/TaskInfo;)V+2
+j  org.gradle.execution.taskgraph.AbstractTaskPlanExecutor$TaskExecutorWorker.run()V+56
+j  org.gradle.execution.taskgraph.DefaultTaskPlanExecutor.process(Lorg/gradle/execution/taskgraph/TaskExecutionPlan;Lorg/gradle/api/execution/TaskExecutionListener;)V+6
+j  org.gradle.execution.taskgraph.DefaultTaskGraphExecuter.execute()V+46
+j  org.gradle.execution.SelectedTaskExecutionAction.execute(Lorg/gradle/execution/BuildExecutionContext;)V+41
+j  org.gradle.execution.DefaultBuildExecuter.execute(I)V+36
+j  org.gradle.execution.DefaultBuildExecuter.access$200(Lorg/gradle/execution/DefaultBuildExecuter;I)V+2
+j  org.gradle.execution.DefaultBuildExecuter$2.proceed()V+10
+j  org.gradle.execution.DryRunBuildExecutionAction.execute(Lorg/gradle/execution/BuildExecutionContext;)V+68
+j  org.gradle.execution.DefaultBuildExecuter.execute(I)V+36
+j  org.gradle.execution.DefaultBuildExecuter.execute()V+2
+j  org.gradle.initialization.DefaultGradleLauncher.doBuildStages(Lorg/gradle/initialization/DefaultGradleLauncher$Stage;)V+191
+j  org.gradle.initialization.DefaultGradleLauncher.doBuild(Lorg/gradle/initialization/DefaultGradleLauncher$Stage;)Lorg/gradle/BuildResult;+27
+j  org.gradle.initialization.DefaultGradleLauncher.run()Lorg/gradle/BuildResult;+4
+j  org.gradle.launcher.exec.InProcessBuildActionExecuter$DefaultBuildController.run()V+5
+j  org.gradle.tooling.internal.provider.BuildModelAction.run(Lorg/gradle/initialization/BuildController;)Lorg/gradle/tooling/internal/provider/BuildActionResult;+85
+j  org.gradle.tooling.internal.provider.BuildModelAction.run(Lorg/gradle/initialization/BuildController;)Ljava/lang/Object;+2
+j  org.gradle.tooling.internal.provider.ConfiguringBuildAction.run(Lorg/gradle/initialization/BuildController;)Ljava/lang/Object;+15
+j  org.gradle.launcher.exec.InProcessBuildActionExecuter.execute(Lorg/gradle/initialization/BuildAction;Lorg/gradle/launcher/exec/BuildActionParameters;)Ljava/lang/Object;+16
+j  org.gradle.launcher.daemon.server.exec.ExecuteBuild.doBuild(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;Lorg/gradle/launcher/daemon/protocol/Build;)V+36
+j  org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;)V+49
+j  org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed()Z+28
+j  org.gradle.launcher.daemon.server.exec.WatchForDisconnection.execute(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;)V+19
+j  org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed()Z+28
+j  org.gradle.launcher.daemon.server.exec.ResetDeprecationLogger.execute(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;)V+4
+j  org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed()Z+28
+j  org.gradle.launcher.daemon.server.exec.StartStopIfBuildAndStop.execute(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;)V+34
+j  org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed()Z+28
+j  org.gradle.launcher.daemon.server.exec.ReturnResult.execute(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;)V+1
+j  org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed()Z+28
+j  org.gradle.launcher.daemon.server.exec.ForwardClientInput$2.call()Ljava/lang/Void;+4
+j  org.gradle.launcher.daemon.server.exec.ForwardClientInput$2.call()Ljava/lang/Object;+1
+j  org.gradle.util.Swapper.swap(Ljava/lang/Object;Ljava/util/concurrent/Callable;)Ljava/lang/Object;+21
+j  org.gradle.launcher.daemon.server.exec.ForwardClientInput.execute(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;)V+63
+j  org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed()Z+28
+j  org.gradle.launcher.daemon.server.exec.LogToClient.doBuild(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;Lorg/gradle/launcher/daemon/protocol/Build;)V+92
+j  org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;)V+49
+j  org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed()Z+28
+j  org.gradle.launcher.daemon.server.exec.EstablishBuildEnvironment.doBuild(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;Lorg/gradle/launcher/daemon/protocol/Build;)V+232
+j  org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;)V+49
+j  org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed()Z+28
+j  org.gradle.launcher.daemon.server.exec.StartBuildOrRespondWithBusy$1.run()V+65
+j  org.gradle.launcher.daemon.server.DaemonStateCoordinator.runCommand(Ljava/lang/Runnable;Ljava/lang/String;Ljava/lang/Runnable;)V+7
+j  org.gradle.launcher.daemon.server.exec.StartBuildOrRespondWithBusy.doBuild(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;Lorg/gradle/launcher/daemon/protocol/Build;)V+28
+j  org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;)V+49
+j  org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed()Z+28
+j  org.gradle.launcher.daemon.server.exec.HandleStop.execute(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;)V+40
+j  org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed()Z+28
+j  org.gradle.launcher.daemon.server.exec.DaemonHygieneAction.execute(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;)V+1
+j  org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed()Z+28
+j  org.gradle.launcher.daemon.server.exec.CatchAndForwardDaemonFailure.execute(Lorg/gradle/launcher/daemon/server/exec/DaemonCommandExecution;)V+1
+j  org.gradle.launcher.daemon.server.exec.DaemonCommandExecution.proceed()Z+28
+j  org.gradle.launcher.daemon.server.exec.DefaultDaemonCommandExecuter.executeCommand(Lorg/gradle/launcher/daemon/server/exec/DaemonConnection;Lorg/gradle/launcher/daemon/protocol/Command;Lorg/gradle/launcher/daemon/context/DaemonContext;Lorg/gradle/launcher/daemon/server/exec/DaemonStateControl;Ljava/lang/Runnable;)V+19
+j  org.gradle.launcher.daemon.server.DefaultIncomingConnectionHandler$ConnectionWorker.handleCommand(Lorg/gradle/launcher/daemon/protocol/Command;Lorg/gradle/launcher/daemon/server/exec/DaemonConnection;)V+75
+j  org.gradle.launcher.daemon.server.DefaultIncomingConnectionHandler$ConnectionWorker.receiveAndHandleCommand()V+32
+j  org.gradle.launcher.daemon.server.DefaultIncomingConnectionHandler$ConnectionWorker.run()V+1
+j  org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run()V+18
+j  java.util.concurrent.ThreadPoolExecutor.runWorker(Ljava/util/concurrent/ThreadPoolExecutor$Worker;)V+95
+j  java.util.concurrent.ThreadPoolExecutor$Worker.run()V+5
+j  java.lang.Thread.run()V+11
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x00007f6208c62800 JavaThread "Timer-0" daemon [_thread_blocked, id=9055, stack(0x00007f6239783000,0x00007f6239884000)]
+  0x00007f6208442800 JavaThread "796094214@qtp-295107185-1" [_thread_blocked, id=9052, stack(0x00007f6239b9e000,0x00007f6239c9f000)]
+  0x00007f62088a2800 JavaThread "160450871@qtp-295107185-0" [_thread_blocked, id=9051, stack(0x00007f623a158000,0x00007f623a259000)]
+  0x00007f62086d5000 JavaThread "File lock request listener" [_thread_in_native, id=9016, stack(0x00007f623a859000,0x00007f623a95a000)]
+  0x00007f620825c800 JavaThread "process reaper" daemon [_thread_blocked, id=9014, stack(0x00007f6240028000,0x00007f6240061000)]
+  0x00007f620800a000 JavaThread "Stdin handler" [_thread_blocked, id=9006, stack(0x00007f623b3d2000,0x00007f623b4d3000)]
+  0x00007f6208003000 JavaThread "Handler for socket connection at /127.0.0.1:50263 with /127.0.0.1:46284" [_thread_in_native, id=9003, stack(0x00007f623b6d3000,0x00007f623b7d4000)]
+=>0x00007f620402e800 JavaThread "Daemon" [_thread_in_native, id=9002, stack(0x00007f623b7d4000,0x00007f623b8d5000)]
+  0x00007f625860a000 JavaThread "Incoming local TCP Connector on port 50263" [_thread_in_native, id=9001, stack(0x00007f6240069000,0x00007f624016a000)]
+  0x00007f62580d0800 JavaThread "Service Thread" daemon [_thread_blocked, id=8999, stack(0x00007f624090d000,0x00007f6240a0e000)]
+  0x00007f62580b3000 JavaThread "C1 CompilerThread2" daemon [_thread_blocked, id=8998, stack(0x00007f6240a0e000,0x00007f6240b0f000)]
+  0x00007f62580b1800 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=8997, stack(0x00007f6240b0f000,0x00007f6240c10000)]
+  0x00007f62580ae800 JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=8996, stack(0x00007f6240c10000,0x00007f6240d11000)]
+  0x00007f62580ac800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=8995, stack(0x00007f6240d11000,0x00007f6240e12000)]
+  0x00007f625807c800 JavaThread "Finalizer" daemon [_thread_blocked, id=8994, stack(0x00007f62414f5000,0x00007f62415f6000)]
+  0x00007f6258078800 JavaThread "Reference Handler" daemon [_thread_blocked, id=8993, stack(0x00007f62415f6000,0x00007f62416f7000)]
+  0x00007f625800a000 JavaThread "main" [_thread_blocked, id=8987, stack(0x00007f625fe1c000,0x00007f625ff1d000)]
+
+Other Threads:
+  0x00007f6258073800 VMThread [stack: 0x00007f62416f7000,0x00007f62417f8000] [id=8992]
+  0x00007f62580d3000 WatcherThread [stack: 0x00007f624080c000,0x00007f624090d000] [id=9000]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap:
+ PSYoungGen      total 49152K, used 41233K [0x00000000eab00000, 0x00000000ee380000, 0x0000000100000000)
+  eden space 40960K, 90% used [0x00000000eab00000,0x00000000ecf25b80,0x00000000ed300000)
+  from space 8192K, 51% used [0x00000000ed300000,0x00000000ed71e9e0,0x00000000edb00000)
+  to   space 7680K, 0% used [0x00000000edc00000,0x00000000edc00000,0x00000000ee380000)
+ ParOldGen       total 44544K, used 33874K [0x00000000c0000000, 0x00000000c2b80000, 0x00000000eab00000)
+  object space 44544K, 76% used [0x00000000c0000000,0x00000000c2114b20,0x00000000c2b80000)
+ Metaspace       used 39299K, capacity 40568K, committed 40960K, reserved 1085440K
+  class space    used 5402K, capacity 5786K, committed 5888K, reserved 1048576K
+
+Card table byte_map: [0x00007f625ca99000,0x00007f625cc9a000] byte_map_base: 0x00007f625c499000
+
+Marking Bits: (ParMarkBitMap*) 0x00007f625f2f3c20
+ Begin Bits: [0x00007f6242000000, 0x00007f6243000000)
+ End Bits:   [0x00007f6243000000, 0x00007f6244000000)
+
+Polling page: 0x00007f625ff3b000
+
+CodeCache: size=245760Kb used=16245Kb max_used=18226Kb free=229514Kb
+ bounds [0x00007f6249000000, 0x00007f624a200000, 0x00007f6258000000]
+ total_blobs=5549 nmethods=4877 adapters=585
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 47.834 Thread 0x00007f62580b3000 nmethod 5710 0x00007f62493c4310 code [0x00007f62493c4460, 0x00007f62493c4570]
+Event: 47.846 Thread 0x00007f62580b3000 5711       3       java.util.concurrent.ConcurrentHashMap::containsKey (14 bytes)
+Event: 47.847 Thread 0x00007f62580b3000 nmethod 5711 0x00007f6249560950 code [0x00007f6249560ac0, 0x00007f6249560ca8]
+Event: 47.847 Thread 0x00007f62580b3000 5712       3       org.springframework.util.ObjectUtils::isEmpty (15 bytes)
+Event: 47.847 Thread 0x00007f62580b3000 nmethod 5712 0x00007f6249730a90 code [0x00007f6249730be0, 0x00007f6249730db0]
+Event: 47.851 Thread 0x00007f62580b3000 5713       3       java.util.Collections$SetFromMap::contains (11 bytes)
+Event: 47.851 Thread 0x00007f62580b3000 nmethod 5713 0x00007f62498b2390 code [0x00007f62498b2500, 0x00007f62498b2728]
+Event: 47.854 Thread 0x00007f62580b3000 5714       1       org.springframework.beans.BeanMetadataAttributeAccessor::getSource (5 bytes)
+Event: 47.854 Thread 0x00007f62580b3000 nmethod 5714 0x00007f6249907650 code [0x00007f62499077a0, 0x00007f62499078b0]
+Event: 47.854 Thread 0x00007f62580b3000 5715       1       org.springframework.beans.factory.support.AbstractBeanDefinition::getScope (5 bytes)
+
+GC Heap History (10 events):
+Event: 39.996 GC heap before
+{Heap before GC invocations=35 (full 3):
+ PSYoungGen      total 47104K, used 41529K [0x00000000eab00000, 0x00000000ee000000, 0x0000000100000000)
+  eden space 40448K, 100% used [0x00000000eab00000,0x00000000ed280000,0x00000000ed280000)
+  from space 6656K, 16% used [0x00000000ed280000,0x00000000ed38e568,0x00000000ed900000)
+  to   space 6144K, 0% used [0x00000000eda00000,0x00000000eda00000,0x00000000ee000000)
+ ParOldGen       total 33792K, used 25743K [0x00000000c0000000, 0x00000000c2100000, 0x00000000eab00000)
+  object space 33792K, 76% used [0x00000000c0000000,0x00000000c1923cd0,0x00000000c2100000)
+ Metaspace       used 31663K, capacity 32912K, committed 33024K, reserved 1077248K
+  class space    used 4393K, capacity 4776K, committed 4864K, reserved 1048576K
+Event: 40.018 GC heap after
+Heap after GC invocations=35 (full 3):
+ PSYoungGen      total 45568K, used 6112K [0x00000000eab00000, 0x00000000ee500000, 0x0000000100000000)
+  eden space 39424K, 0% used [0x00000000eab00000,0x00000000eab00000,0x00000000ed180000)
+  from space 6144K, 99% used [0x00000000eda00000,0x00000000edff8058,0x00000000ee000000)
+  to   space 8704K, 0% used [0x00000000ed180000,0x00000000ed180000,0x00000000eda00000)
+ ParOldGen       total 33792K, used 29725K [0x00000000c0000000, 0x00000000c2100000, 0x00000000eab00000)
+  object space 33792K, 87% used [0x00000000c0000000,0x00000000c1d07598,0x00000000c2100000)
+ Metaspace       used 31663K, capacity 32912K, committed 33024K, reserved 1077248K
+  class space    used 4393K, capacity 4776K, committed 4864K, reserved 1048576K
+}
+Event: 40.018 GC heap before
+{Heap before GC invocations=36 (full 4):
+ PSYoungGen      total 45568K, used 6112K [0x00000000eab00000, 0x00000000ee500000, 0x0000000100000000)
+  eden space 39424K, 0% used [0x00000000eab00000,0x00000000eab00000,0x00000000ed180000)
+  from space 6144K, 99% used [0x00000000eda00000,0x00000000edff8058,0x00000000ee000000)
+  to   space 8704K, 0% used [0x00000000ed180000,0x00000000ed180000,0x00000000eda00000)
+ ParOldGen       total 33792K, used 29725K [0x00000000c0000000, 0x00000000c2100000, 0x00000000eab00000)
+  object space 33792K, 87% used [0x00000000c0000000,0x00000000c1d07598,0x00000000c2100000)
+ Metaspace       used 31663K, capacity 32912K, committed 33024K, reserved 1077248K
+  class space    used 4393K, capacity 4776K, committed 4864K, reserved 1048576K
+Event: 40.263 GC heap after
+Heap after GC invocations=36 (full 4):
+ PSYoungGen      total 45568K, used 473K [0x00000000eab00000, 0x00000000ee500000, 0x0000000100000000)
+  eden space 39424K, 0% used [0x00000000eab00000,0x00000000eab00000,0x00000000ed180000)
+  from space 6144K, 7% used [0x00000000eda00000,0x00000000eda76560,0x00000000ee000000)
+  to   space 8704K, 0% used [0x00000000ed180000,0x00000000ed180000,0x00000000eda00000)
+ ParOldGen       total 44544K, used 33366K [0x00000000c0000000, 0x00000000c2b80000, 0x00000000eab00000)
+  object space 44544K, 74% used [0x00000000c0000000,0x00000000c2095ae8,0x00000000c2b80000)
+ Metaspace       used 31663K, capacity 32912K, committed 33024K, reserved 1077248K
+  class space    used 4393K, capacity 4776K, committed 4864K, reserved 1048576K
+}
+Event: 42.205 GC heap before
+{Heap before GC invocations=37 (full 4):
+ PSYoungGen      total 45568K, used 39897K [0x00000000eab00000, 0x00000000ee500000, 0x0000000100000000)
+  eden space 39424K, 100% used [0x00000000eab00000,0x00000000ed180000,0x00000000ed180000)
+  from space 6144K, 7% used [0x00000000eda00000,0x00000000eda76560,0x00000000ee000000)
+  to   space 8704K, 0% used [0x00000000ed180000,0x00000000ed180000,0x00000000eda00000)
+ ParOldGen       total 44544K, used 33366K [0x00000000c0000000, 0x00000000c2b80000, 0x00000000eab00000)
+  object space 44544K, 74% used [0x00000000c0000000,0x00000000c2095ae8,0x00000000c2b80000)
+ Metaspace       used 32263K, capacity 33620K, committed 33792K, reserved 1079296K
+  class space    used 4439K, capacity 4814K, committed 4864K, reserved 1048576K
+Event: 42.228 GC heap after
+Heap after GC invocations=37 (full 4):
+ PSYoungGen      total 48128K, used 2226K [0x00000000eab00000, 0x00000000ee300000, 0x0000000100000000)
+  eden space 39424K, 0% used [0x00000000eab00000,0x00000000eab00000,0x00000000ed180000)
+  from space 8704K, 25% used [0x00000000ed180000,0x00000000ed3acab0,0x00000000eda00000)
+  to   space 8192K, 0% used [0x00000000edb00000,0x00000000edb00000,0x00000000ee300000)
+ ParOldGen       total 44544K, used 33858K [0x00000000c0000000, 0x00000000c2b80000, 0x00000000eab00000)
+  object space 44544K, 76% used [0x00000000c0000000,0x00000000c2110b20,0x00000000c2b80000)
+ Metaspace       used 32263K, capacity 33620K, committed 33792K, reserved 1079296K
+  class space    used 4439K, capacity 4814K, committed 4864K, reserved 1048576K
+}
+Event: 44.586 GC heap before
+{Heap before GC invocations=38 (full 4):
+ PSYoungGen      total 48128K, used 41650K [0x00000000eab00000, 0x00000000ee300000, 0x0000000100000000)
+  eden space 39424K, 100% used [0x00000000eab00000,0x00000000ed180000,0x00000000ed180000)
+  from space 8704K, 25% used [0x00000000ed180000,0x00000000ed3acab0,0x00000000eda00000)
+  to   space 8192K, 0% used [0x00000000edb00000,0x00000000edb00000,0x00000000ee300000)
+ ParOldGen       total 44544K, used 33858K [0x00000000c0000000, 0x00000000c2b80000, 0x00000000eab00000)
+  object space 44544K, 76% used [0x00000000c0000000,0x00000000c2110b20,0x00000000c2b80000)
+ Metaspace       used 34462K, capacity 35840K, committed 36096K, reserved 1081344K
+  class space    used 4712K, capacity 5110K, committed 5120K, reserved 1048576K
+Event: 44.593 GC heap after
+Heap after GC invocations=38 (full 4):
+ PSYoungGen      total 49152K, used 3736K [0x00000000eab00000, 0x00000000ee300000, 0x0000000100000000)
+  eden space 40960K, 0% used [0x00000000eab00000,0x00000000eab00000,0x00000000ed300000)
+  from space 8192K, 45% used [0x00000000edb00000,0x00000000edea6060,0x00000000ee300000)
+  to   space 8192K, 0% used [0x00000000ed300000,0x00000000ed300000,0x00000000edb00000)
+ ParOldGen       total 44544K, used 33866K [0x00000000c0000000, 0x00000000c2b80000, 0x00000000eab00000)
+  object space 44544K, 76% used [0x00000000c0000000,0x00000000c2112b20,0x00000000c2b80000)
+ Metaspace       used 34462K, capacity 35840K, committed 36096K, reserved 1081344K
+  class space    used 4712K, capacity 5110K, committed 5120K, reserved 1048576K
+}
+Event: 46.693 GC heap before
+{Heap before GC invocations=39 (full 4):
+ PSYoungGen      total 49152K, used 44696K [0x00000000eab00000, 0x00000000ee300000, 0x0000000100000000)
+  eden space 40960K, 100% used [0x00000000eab00000,0x00000000ed300000,0x00000000ed300000)
+  from space 8192K, 45% used [0x00000000edb00000,0x00000000edea6060,0x00000000ee300000)
+  to   space 8192K, 0% used [0x00000000ed300000,0x00000000ed300000,0x00000000edb00000)
+ ParOldGen       total 44544K, used 33866K [0x00000000c0000000, 0x00000000c2b80000, 0x00000000eab00000)
+  object space 44544K, 76% used [0x00000000c0000000,0x00000000c2112b20,0x00000000c2b80000)
+ Metaspace       used 36380K, capacity 37708K, committed 37888K, reserved 1081344K
+  class space    used 4981K, capacity 5368K, committed 5376K, reserved 1048576K
+Event: 46.703 GC heap after
+Heap after GC invocations=39 (full 4):
+ PSYoungGen      total 49152K, used 4218K [0x00000000eab00000, 0x00000000ee380000, 0x0000000100000000)
+  eden space 40960K, 0% used [0x00000000eab00000,0x00000000eab00000,0x00000000ed300000)
+  from space 8192K, 51% used [0x00000000ed300000,0x00000000ed71e9e0,0x00000000edb00000)
+  to   space 7680K, 0% used [0x00000000edc00000,0x00000000edc00000,0x00000000ee380000)
+ ParOldGen       total 44544K, used 33874K [0x00000000c0000000, 0x00000000c2b80000, 0x00000000eab00000)
+  object space 44544K, 76% used [0x00000000c0000000,0x00000000c2114b20,0x00000000c2b80000)
+ Metaspace       used 36380K, capacity 37708K, committed 37888K, reserved 1081344K
+  class space    used 4981K, capacity 5368K, committed 5376K, reserved 1048576K
+}
+
+Deoptimization events (10 events):
+Event: 46.981 Thread 0x00007f620402e800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007f624a1d8cf0 method=org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanContent()I @ 82
+Event: 47.303 Thread 0x00007f620402e800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f6249494158 method=org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanStartElement()Z @ 811
+Event: 47.304 Thread 0x00007f620402e800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f6249494158 method=org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanStartElement()Z @ 811
+Event: 47.304 Thread 0x00007f620402e800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f6249494158 method=org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanStartElement()Z @ 811
+Event: 47.304 Thread 0x00007f620402e800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f6249494158 method=org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanStartElement()Z @ 811
+Event: 47.528 Thread 0x00007f620402e800 Uncommon trap: reason=unreached action=reinterpret pc=0x00007f624a03d2b8 method=java.net.URLClassLoader.getAndVerifyPackage(Ljava/lang/String;Ljava/util/jar/Manifest;Ljava/net/URL;)Ljava/lang/Package; @ 62
+Event: 47.617 Thread 0x00007f620402e800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007f6249c1ade0 method=java.util.LinkedHashMap.afterNodeInsertion(Z)V @ 15
+Event: 47.622 Thread 0x00007f620402e800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007f6249c1ade0 method=java.util.LinkedHashMap.afterNodeInsertion(Z)V @ 15
+Event: 47.628 Thread 0x00007f620402e800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007f6249c1ade0 method=java.util.LinkedHashMap.afterNodeInsertion(Z)V @ 15
+Event: 47.629 Thread 0x00007f620402e800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007f6249c1ade0 method=java.util.LinkedHashMap.afterNodeInsertion(Z)V @ 15
+
+Internal exceptions (10 events):
+Event: 47.735 Thread 0x00007f620402e800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000ecb6aeb0) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8/2238/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 47.831 Thread 0x00007f620402e800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000ece15ee8) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8/2238/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 47.831 Thread 0x00007f620402e800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000ece17218) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8/2238/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 47.831 Thread 0x00007f620402e800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000ece1cc18) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8/2238/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 47.831 Thread 0x00007f620402e800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000ece1e008) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8/2238/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 47.831 Thread 0x00007f620402e800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000ece1f338) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8/2238/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 47.832 Thread 0x00007f620402e800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000ece24d38) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8/2238/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 47.832 Thread 0x00007f620402e800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000ece28c48) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8/2238/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 47.832 Thread 0x00007f620402e800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000ece2fab8) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8/2238/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 47.832 Thread 0x00007f620402e800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000ece30ba8) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8/2238/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+
+Events (10 events):
+Event: 47.734 loading class javax/persistence/EntityManagerFactory
+Event: 47.734 loading class javax/persistence/EntityManagerFactory done
+Event: 47.807 loading class javax/sql/DataSource
+Event: 47.816 loading class javax/sql/CommonDataSource
+Event: 47.816 loading class javax/sql/CommonDataSource done
+Event: 47.816 loading class javax/sql/DataSource done
+Event: 47.831 loading class javax/validation/ValidatorFactory
+Event: 47.831 loading class javax/validation/ValidatorFactory done
+Event: 47.831 loading class javax/validation/ValidatorFactory
+Event: 47.831 loading class javax/validation/ValidatorFactory done
+
+
+Dynamic libraries:
+00400000-00401000 r-xp 00000000 08:05 1183408                            /home/pramoda-nf/software/jdk1.8.0/bin/java
+00600000-00601000 rw-p 00000000 08:05 1183408                            /home/pramoda-nf/software/jdk1.8.0/bin/java
+00d4f000-00d70000 rw-p 00000000 00:00 0                                  [heap]
+c0000000-c2b80000 rw-p 00000000 00:00 0 
+c2b80000-eab00000 ---p 00000000 00:00 0 
+eab00000-ee380000 rw-p 00000000 00:00 0 
+ee380000-100000000 ---p 00000000 00:00 0 
+100000000-1005c0000 rw-p 00000000 00:00 0 
+1005c0000-140000000 ---p 00000000 00:00 0 
+7f61e4000000-7f61e4021000 rw-p 00000000 00:00 0 
+7f61e4021000-7f61e8000000 ---p 00000000 00:00 0 
+7f61ec000000-7f61ec021000 rw-p 00000000 00:00 0 
+7f61ec021000-7f61f0000000 ---p 00000000 00:00 0 
+7f61f0000000-7f61f0021000 rw-p 00000000 00:00 0 
+7f61f0021000-7f61f4000000 ---p 00000000 00:00 0 
+7f61f4000000-7f61f4021000 rw-p 00000000 00:00 0 
+7f61f4021000-7f61f8000000 ---p 00000000 00:00 0 
+7f61f8000000-7f61f8021000 rw-p 00000000 00:00 0 
+7f61f8021000-7f61fc000000 ---p 00000000 00:00 0 
+7f61fc000000-7f61fc021000 rw-p 00000000 00:00 0 
+7f61fc021000-7f6200000000 ---p 00000000 00:00 0 
+7f6200000000-7f6200021000 rw-p 00000000 00:00 0 
+7f6200021000-7f6204000000 ---p 00000000 00:00 0 
+7f6204000000-7f6204031000 rw-p 00000000 00:00 0 
+7f6204031000-7f6208000000 ---p 00000000 00:00 0 
+7f6208000000-7f6208fce000 rw-p 00000000 00:00 0 
+7f6208fce000-7f620c000000 ---p 00000000 00:00 0 
+7f620c000000-7f620c021000 rw-p 00000000 00:00 0 
+7f620c021000-7f6210000000 ---p 00000000 00:00 0 
+7f6210000000-7f6210021000 rw-p 00000000 00:00 0 
+7f6210021000-7f6214000000 ---p 00000000 00:00 0 
+7f6214000000-7f6215967000 rw-p 00000000 00:00 0 
+7f6215967000-7f6218000000 ---p 00000000 00:00 0 
+7f6218000000-7f621881e000 rw-p 00000000 00:00 0 
+7f621881e000-7f621c000000 ---p 00000000 00:00 0 
+7f621c000000-7f621c021000 rw-p 00000000 00:00 0 
+7f621c021000-7f6220000000 ---p 00000000 00:00 0 
+7f6220000000-7f6221840000 rw-p 00000000 00:00 0 
+7f6221840000-7f6224000000 ---p 00000000 00:00 0 
+7f6224000000-7f6224021000 rw-p 00000000 00:00 0 
+7f6224021000-7f6228000000 ---p 00000000 00:00 0 
+7f6228000000-7f6228021000 rw-p 00000000 00:00 0 
+7f6228021000-7f622c000000 ---p 00000000 00:00 0 
+7f622c000000-7f622c021000 rw-p 00000000 00:00 0 
+7f622c021000-7f6230000000 ---p 00000000 00:00 0 
+7f6230000000-7f62301f4000 rw-p 00000000 00:00 0 
+7f62301f4000-7f6234000000 ---p 00000000 00:00 0 
+7f6234000000-7f6234024000 rw-p 00000000 00:00 0 
+7f6234024000-7f6238000000 ---p 00000000 00:00 0 
+7f6239382000-7f62393c3000 rw-p 00000000 00:00 0 
+7f62393c3000-7f6239583000 ---p 00000000 00:00 0 
+7f6239583000-7f6239783000 rw-p 00000000 00:00 0 
+7f6239783000-7f6239786000 ---p 00000000 00:00 0 
+7f6239786000-7f6239a84000 rw-p 00000000 00:00 0                          [stack:9055]
+7f6239a84000-7f6239a88000 r--s 00034000 08:05 2238552                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.4.2/ceb72830d95c512b4b300a38f29febc85bdf6e4b/jackson-core-2.4.2.jar
+7f6239a88000-7f6239a8a000 r--s 00000000 08:05 2228372                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/235ba8b489512805ac13a8f9ea77a1ca5ebe3e8/aopalliance-1.0.jar
+7f6239a8a000-7f6239a93000 r--s 0004f000 08:05 2238551                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.1.4.RELEASE/c5f571fde64271ac0791d538ee158cb473b1b80a/spring-aop-4.1.4.RELEASE.jar
+7f6239a93000-7f6239aa1000 r--s 00090000 08:05 2235763                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-entitymanager/4.3.5.Final/d5e18e531ffa6fde84b998d2fbf796663a8b112d/hibernate-entitymanager-4.3.5.Final.jar
+7f6239aa1000-7f6239aa6000 r--s 00016000 08:05 2235762                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/xml-apis/xml-apis/1.0.b2/3136ca936f64c9d68529f048c2618bd356bf85c9/xml-apis-1.0.b2.jar
+7f6239aa6000-7f6239abc000 r--s 00178000 08:05 2235761                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.6.8/d3fdabe0a1f7f395d64bf9d0c1a3e0f1b98430df/aspectjweaver-1.6.8.jar
+7f6239abc000-7f6239ac1000 r--s 00018000 08:05 2235760                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjrt/1.6.8/8c234df6a43dd5ba355803122e33caa7ccd11011/aspectjrt-1.6.8.jar
+7f6239ac1000-7f6239ac3000 r--s 00011000 08:05 2235759                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.jboss/jandex/1.1.0.Final/e84a2122e76f0b6503be78094ddf2108057ac15f/jandex-1.1.0.Final.jar
+7f6239ac3000-7f6239ac8000 r--s 00068000 08:05 2235758                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217ade95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar
+7f6239ac8000-7f6239ad2000 r--s 000a5000 08:05 2235757                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.18.1-GA/d9a09f7732226af26bf99f19e2cffe0ae219db5b/javassist-3.18.1-GA.jar
+7f6239ad2000-7f6239ad7000 r--s 00017000 08:05 2235756                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.0.Final/5e731d961297e5a07290bfaf3db1fbc8bbbf405a/hibernate-jpa-2.1-api-1.0.0.Final.jar
+7f6239ad7000-7f6239ada000 r--s 00010000 08:05 2235755                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.hibernate.common/hibernate-commons-annotations/4.0.4.Final/f1af75eca4e13ac0578750a497159695feceebfc/hibernate-commons-annotations-4.0.4.Final.jar
+7f6239ada000-7f6239adf000 r--s 00048000 08:05 2235754                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/dom4j/dom4j/1.6.1/5d3ccc056b6f056dbf0dddfdf43894b9065a8f94/dom4j-1.6.1.jar
+7f6239adf000-7f6239ae0000 r--s 00006000 08:05 2235753                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.transaction/jboss-transaction-api_1.2_spec/1.0.0.Final/1f9fef7a9fcbb41cc390fc370a291cf30729e094/jboss-transaction-api_1.2_spec-1.0.0.Final.jar
+7f6239ae0000-7f6239ae1000 r--s 00002000 08:05 2235752                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging-annotations/1.2.0.Beta1/2f437f37bb265d9f8f1392823dbca12d2bec06d6/jboss-logging-annotations-1.2.0.Beta1.jar
+7f6239ae1000-7f6239ae3000 r--s 0000c000 08:05 2235751                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.1.3.GA/64499e907f19e5e1b3fdc02f81440c1832fe3545/jboss-logging-3.1.3.GA.jar
+7f6239ae3000-7f6239aed000 r--s 00042000 08:05 2235750                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-core/3.0.3.RELEASE/8d3912179a65e27aa8873c2e349673fbb72d48d9/spring-security-core-3.0.3.RELEASE.jar
+7f6239aed000-7f6239afc000 r--s 00096000 08:05 2235749                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.0.5.RELEASE/1819f6d4ab65fb33e19c492d5c5aa21396e42b3f/spring-web-4.0.5.RELEASE.jar
+7f6239afc000-7f6239afe000 r--s 00005000 08:05 2235744                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/xpp3/xpp3_min/1.1.4c/19d4e90b43059058f6e056f794f0ea4030d60b86/xpp3_min-1.1.4c.jar
+7f6239afe000-7f6239aff000 r--s 00001000 08:05 2235743                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/net.sf.jsr107cache/jsr107cache/1.1/193a0dca92c221ebf45c7181f00e5db967721c08/jsr107cache-1.1.jar
+7f6239aff000-7f6239b02000 r--s 00018000 08:05 2235742                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/1.4/a8762d07e76cfde2395257a5da47ba7c1dbd3dce/commons-io-1.4.jar
+7f6239b02000-7f6239b11000 r--s 00074000 08:05 2235741                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/1.6/5a18504e34c5cbe9259d6fd0123ccf6f16115a41/joda-time-1.6.jar
+7f6239b11000-7f6239b17000 r--s 00049000 08:05 2235740                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/cglib/cglib-nodep/2.2/59afed7ab65e7ec6585d5bc60556c3cbd203532b/cglib-nodep-2.2.jar
+7f6239b17000-7f6239b1c000 r--s 0003b000 08:05 2238550                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.1.4.RELEASE/89109bc913900ceff3107ad66edb60d1acb3aed2/spring-expression-4.1.4.RELEASE.jar
+7f6239b1c000-7f6239b1e000 r--s 00002000 08:05 2235739                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-hibernate4/2.2.0/3c6b419d51f75bdc08057c3129a855717234685e/jackson-datatype-hibernate4-2.2.0.jar
+7f6239b1e000-7f6239b25000 r--s 00040000 08:05 2235738                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-validator/4.1.0.Final/785cceeb0b0dbd03367f45cd60eb26cd48167640/hibernate-validator-4.1.0.Final.jar
+7f6239b25000-7f6239b82000 r--s 004a0000 08:05 2235737                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/4.3.5.Final/8ba469a4749447a8e9a04f229c8017f60f9a04c9/hibernate-core-4.3.5.Final.jar
+7f6239b82000-7f6239b85000 r--s 00009000 08:05 2235736                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.0.0.GA/b6bd7f9d78f6fdaa3c37dae18a4bd298915f328e/validation-api-1.0.0.GA.jar
+7f6239b85000-7f6239b8f000 r--s 0005e000 08:05 2235735                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/4.0.5.RELEASE/464e18d797ef5f2f19e6b8c151ca0b196c806ad3/spring-jdbc-4.0.5.RELEASE.jar
+7f6239b8f000-7f6239b97000 r--s 00052000 08:05 2235734                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/4.0.5.RELEASE/8e2a686e8fb135fafbfb6eb97d55f0948c5b0467/spring-orm-4.0.5.RELEASE.jar
+7f6239b97000-7f6239b9e000 r--s 00036000 08:05 2235733                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.0.5.RELEASE/bc94807ffcf9a6934428eb7ecdf9c37c41dd95a1/spring-tx-4.0.5.RELEASE.jar
+7f6239b9e000-7f6239ba1000 ---p 00000000 00:00 0 
+7f6239ba1000-7f6239e9f000 rw-p 00000000 00:00 0                          [stack:9052]
+7f6239e9f000-7f623a09f000 rw-p 00000000 00:00 0 
+7f623a09f000-7f623a0a5000 r--s 000ab000 08:05 2235731                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.9/53d70523c4dedc30ca93ad8c75b4b74f31bc67a9/mysql-connector-java-5.1.9.jar
+7f623a0a5000-7f623a0ab000 r--s 00027000 08:05 2235730                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/opensymphony/sitemesh/2.4.2/4cb3b08c96553b0f4595a80917838ca302f67f3f/sitemesh-2.4.2.jar
+7f623a0ab000-7f623a0b4000 r--s 00058000 08:05 2235729                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/taglibs/standard/1.1.2/a17e8a4d9a1f7fcc5eed606721c9ed6b7f18acf7/standard-1.1.2.jar
+7f623a0b4000-7f623a0b6000 r--s 00004000 08:05 2235728                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/javax.servlet/jstl/1.1.2/3375e43c620df4f1114959400ff9bb90d12a2feb/jstl-1.1.2.jar
+7f623a0b6000-7f623a0b9000 r--s 00028000 08:05 2238549                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/javax.servlet/servlet-api/3.0-alpha-1/7b491267924e8c81f4f9378caba0ee03423948ca/servlet-api-3.0-alpha-1.jar
+7f623a0b9000-7f623a0bc000 r--s 00007000 08:05 2238548                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.4.2/6bb52af09372d5064206d47d7887d41671f00f7d/jackson-annotations-2.4.2.jar
+7f623a0bc000-7f623a0cd000 r--s 000f6000 08:05 2238547                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.4.2/8e31266a272ad25ac4c089734d93e8d811652c1f/jackson-databind-2.4.2.jar
+7f623a0cd000-7f623a0cf000 r--s 00028000 08:05 2235719                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/3.0.3.RELEASE/58a72a700f85a621845d93958c5f496dcb6d0dcb/spring-security-config-3.0.3.RELEASE.jar
+7f623a0cf000-7f623a0d6000 r--s 00033000 08:05 2235718                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/3.0.3.RELEASE/3338fdd8a88a900ab3329dce89a6d7c74b12f214/spring-security-web-3.0.3.RELEASE.jar
+7f623a0d6000-7f623a0e2000 r--s 00096000 08:05 2235717                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.0.5.RELEASE/2459455b0f2e19e7a51fc7bff4de341947d9bc57/spring-webmvc-4.0.5.RELEASE.jar
+7f623a0e2000-7f623a0ed000 r--s 0005f000 08:05 2235716                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/com.thoughtworks.xstream/xstream/1.3.1/c23741bfc42efa760c6acdb90a131814c70aeb8d/xstream-1.3.1.jar
+7f623a0ed000-7f623a0f6000 r--s 000a4000 08:05 2235715                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.hsqldb/hsqldb/1.8.0.10/7e9978fdb754bce5fcd5161133e7734ecb683036/hsqldb-1.8.0.10.jar
+7f623a0f6000-7f623a101000 r--s 0008a000 08:05 2235714                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/c3p0/c3p0/0.9.1/759f6c11f515ee799814c43e4a50281220014ca/c3p0-0.9.1.jar
+7f623a101000-7f623a107000 r--s 00027000 08:05 2235713                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.axonframework/axon-core/0.6/7fffae75d9f2f7ac3df6c860939bc9a49cc1eb90/axon-core-0.6.jar
+7f623a107000-7f623a118000 r--s 000ae000 08:05 2235712                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.0/7621fe28ce0122d96006bdb56c8e2cfb2a3afb92/log4j-core-2.0.jar
+7f623a118000-7f623a11b000 r--s 0001a000 08:05 2235711                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.0/a9fac4d09bed0a48ab344ae8cf3d0a9c0621a168/log4j-api-2.0.jar
+7f623a11b000-7f623a133000 r--s 000e3000 08:05 2238542                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.1.4.RELEASE/5c66d0962e89ee577627a526b6b299a5337072be/spring-context-4.1.4.RELEASE.jar
+7f623a133000-7f623a140000 r--s 000a0000 08:05 2238528                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.1.4.RELEASE/b4f08e061c28636c0d434a74554c958457602b3/spring-beans-4.1.4.RELEASE.jar
+7f623a140000-7f623a142000 r--s 0000e000 08:05 2238527                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/javax.activation/activation/1.1/e6cb541461c2834bdea3eb920f1884d1eb508b50/activation-1.1.jar
+7f623a142000-7f623a143000 r--s 00005000 08:05 2235709                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.5.8/2aaf496dfd551adb9b079f58a7e2d55eb383fc82/slf4j-api-1.5.8.jar
+7f623a143000-7f623a144000 r--s 00002000 08:05 2235707                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-log4j12/1.5.8/da00a151c4db31b5be23e5f2b9f528735fddc384/slf4j-log4j12-1.5.8.jar
+7f623a144000-7f623a146000 r--s 00007000 08:05 15291                      /home/pramoda-nf/EgreenProject/gitlab/OpenMicro/CustomerModule/build/libs/CustomerModule-1.0-SNAPSHOT.jar
+7f623a146000-7f623a147000 r--s 00004000 08:05 15551                      /home/pramoda-nf/EgreenProject/gitlab/OpenMicro/DistributionModule/build/libs/DistributionModule-1.0-SNAPSHOT.jar
+7f623a147000-7f623a148000 r--s 00001000 08:05 13656                      /home/pramoda-nf/EgreenProject/gitlab/OpenMicro/dbcontroller/build/libs/dbcontroller-1.0.jar
+7f623a148000-7f623a14a000 r--s 00003000 08:05 12189                      /home/pramoda-nf/EgreenProject/gitlab/OpenMicro/basicweb/build/libs/basicweb-1.0.jar
+7f623a14a000-7f623a14c000 r--s 00008000 08:05 2235706                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-1.2-api/2.0/3c5898447a3bff0d4d360a597cdac0dce0f9e90d/log4j-1.2-api-2.0.jar
+7f623a14c000-7f623a153000 r--s 00053000 08:05 2235705                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.14/3b254c872b95141751f414e353a25c2ac261b51/log4j-1.2.14.jar
+7f623a153000-7f623a158000 r--s 00027000 08:05 2238526                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.1.4.RELEASE/4ec9b2b9957273d84ac5fdaad29e4eb9716db71e/spring-context-support-4.1.4.RELEASE.jar
+7f623a158000-7f623a15b000 ---p 00000000 00:00 0 
+7f623a15b000-7f623a459000 rw-p 00000000 00:00 0                          [stack:9051]
+7f623a459000-7f623a659000 rw-p 00000000 00:00 0 
+7f623a659000-7f623a859000 rw-p 00000000 00:00 0 
+7f623a859000-7f623a85c000 ---p 00000000 00:00 0 
+7f623a85c000-7f623ab5a000 rw-p 00000000 00:00 0                          [stack:9016]
+7f623ab5a000-7f623ad5a000 rw-p 00000000 00:00 0 
+7f623ad5a000-7f623af5a000 rw-p 00000000 00:00 0 
+7f623af5a000-7f623b15a000 rw-p 00000000 00:00 0 
+7f623b15a000-7f623b35a000 rw-p 00000000 00:00 0 
+7f623b35a000-7f623b3d2000 r--s 010c1000 08:05 1444711                    /home/pramoda-nf/software/jdk1.8.0/lib/tools.jar
+7f623b3d2000-7f623b3d5000 ---p 00000000 00:00 0 
+7f623b3d5000-7f623b6d3000 rw-p 00000000 00:00 0                          [stack:9006]
+7f623b6d3000-7f623b6d6000 ---p 00000000 00:00 0 
+7f623b6d6000-7f623b7d4000 rw-p 00000000 00:00 0                          [stack:9003]
+7f623b7d4000-7f623b7d7000 ---p 00000000 00:00 0 
+7f623b7d7000-7f623b8d5000 rw-p 00000000 00:00 0                          [stack:9002]
+7f623b8d5000-7f623b8e5000 r-xp 00000000 08:05 1445292                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libnio.so
+7f623b8e5000-7f623bae5000 ---p 00010000 08:05 1445292                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libnio.so
+7f623bae5000-7f623bae6000 rw-p 00010000 08:05 1445292                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libnio.so
+7f623bae6000-7f623bafc000 r-xp 00000000 08:05 2633196                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f623bafc000-7f623bcfb000 ---p 00016000 08:05 2633196                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f623bcfb000-7f623bcfc000 rw-p 00015000 08:05 2633196                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f623bcfc000-7f623bde2000 r-xp 00000000 08:05 2891236                    /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.19
+7f623bde2000-7f623bfe1000 ---p 000e6000 08:05 2891236                    /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.19
+7f623bfe1000-7f623bfe9000 r--p 000e5000 08:05 2891236                    /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.19
+7f623bfe9000-7f623bfeb000 rw-p 000ed000 08:05 2891236                    /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.19
+7f623bfeb000-7f623c000000 rw-p 00000000 00:00 0 
+7f623c000000-7f623c02e000 rw-p 00000000 00:00 0 
+7f623c02e000-7f6240000000 ---p 00000000 00:00 0 
+7f6240000000-7f6240001000 r--s 00000000 08:05 13773                      /home/pramoda-nf/EgreenProject/gitlab/OpenMicro/main/build/libs/main-1.0-SNAPSHOT.jar
+7f6240001000-7f6240008000 r--s 0006a000 08:05 2238523                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/javax.mail/mail/1.4.3/8154bf8d666e6db154c548dc31a8d512c273f5ee/mail-1.4.3.jar
+7f6240008000-7f624000a000 r--s 00000000 08:05 2235704                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.slf4j/jul-to-slf4j/1.5.8/f852f8a1a93e4965f0cc873e75546146d0ca62fd/jul-to-slf4j-1.5.8.jar
+7f624000a000-7f624000c000 r--s 00003000 08:05 2235703                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.5.8/ab78d75b7ae41770779502cc81ee4bf9c8fac6aa/jcl-over-slf4j-1.5.8.jar
+7f624000c000-7f624000e000 r--s 0000e000 08:05 2239577                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar
+7f624000e000-7f6240022000 r--s 000e2000 08:05 2238546                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.1.4.RELEASE/8df582421867cf7298658e00cd2e9e460b697b05/spring-core-4.1.4.RELEASE.jar
+7f6240022000-7f6240023000 r--s 00005000 08:05 2239576                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-dependency-tools/1.2.1.RELEASE/a47f3c1b187b44666783f9d0e7e702ed53e000b2/spring-boot-dependency-tools-1.2.1.RELEASE.jar
+7f6240023000-7f6240026000 r--s 0001d000 08:05 2239575                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-loader-tools/1.2.1.RELEASE/631dcd18548f79f011c0867199791085e2676dee/spring-boot-loader-tools-1.2.1.RELEASE.jar
+7f6240026000-7f6240028000 r--s 0000c000 08:05 2239574                    /home/pramoda-nf/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-gradle-plugin/1.2.1.RELEASE/43edaf0a5350bf49e9463235bac6cc6967e91fa2/spring-boot-gradle-plugin-1.2.1.RELEASE.jar
+7f6240028000-7f624002b000 ---p 00000000 00:00 0 
+7f624002b000-7f6240061000 rw-p 00000000 00:00 0                          [stack:9014]
+7f6240061000-7f6240062000 r--p 00000000 00:00 0 
+7f6240062000-7f6240069000 r--s 00000000 08:05 142497                     /usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache
+7f6240069000-7f624006c000 ---p 00000000 00:00 0 
+7f624006c000-7f624016a000 rw-p 00000000 00:00 0                          [stack:9001]
+7f624016a000-7f624016e000 r-xp 00000000 08:05 2640371                    /tmp/native-platform8108314917544736026dir/libnative-platform.so
+7f624016e000-7f624036d000 ---p 00004000 08:05 2640371                    /tmp/native-platform8108314917544736026dir/libnative-platform.so
+7f624036d000-7f624036e000 rw-p 00003000 08:05 2640371                    /tmp/native-platform8108314917544736026dir/libnative-platform.so
+7f624036e000-7f6240373000 r--s 00092000 08:05 1445243                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/jsse.jar
+7f6240373000-7f6240375000 r--s 00003000 08:05 1575517                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-language-base-1.12.jar
+7f6240375000-7f6240376000 r--s 00004000 08:05 1575516                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-language-jvm-1.12.jar
+7f6240376000-7f624037b000 r--s 00029000 08:05 1575515                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-build-init-1.12.jar
+7f624037b000-7f624037e000 r--s 0001f000 08:05 1575514                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-jacoco-1.12.jar
+7f624037e000-7f6240381000 r--s 0000c000 08:05 1575513                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-ivy-1.12.jar
+7f6240381000-7f6240383000 r--s 00002000 08:05 1575512                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-publish-1.12.jar
+7f6240383000-7f6240385000 r--s 00005000 08:05 1575542                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jatl-0.2.2.jar
+7f6240385000-7f6240387000 r--s 00007000 08:05 1575511                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-reporting-1.12.jar
+7f6240387000-7f624038c000 r--s 0003c000 08:05 1575510                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-diagnostics-1.12.jar
+7f624038c000-7f6240393000 r--s 00094000 08:05 1575509                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-build-comparison-1.12.jar
+7f6240393000-7f624039a000 r--s 00035000 08:05 1575541                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/simple-4.1.21.jar
+7f624039a000-7f624039f000 r--s 0002a000 08:05 1575540                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gson-2.2.4.jar
+7f624039f000-7f62403ab000 r--s 00100000 08:05 1575539                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/rhino-1.7R3.jar
+7f62403ab000-7f62403b0000 r--s 00021000 08:05 1575508                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-javascript-1.12.jar
+7f62403b0000-7f62403b2000 r--s 0000f000 08:05 1575507                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-ear-1.12.jar
+7f62403b2000-7f62403c8000 r--s 000de000 08:05 1575506                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-cpp-1.12.jar
+7f62403c8000-7f62403f0000 r--s 00194000 08:05 1575551                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/bcprov-jdk15-1.46.jar
+7f62403f0000-7f62403f4000 r--s 00025000 08:05 1575538                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/bcpg-jdk15-1.46.jar
+7f62403f4000-7f62403f7000 r--s 00021000 08:05 1575505                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-signing-1.12.jar
+7f62403f7000-7f62403f8000 r--s 00002000 08:05 1575537                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/sonar-batch-bootstrapper-2.9.jar
+7f62403f8000-7f62403f9000 r--s 00007000 08:05 1575536                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/sonar-runner-2.0.jar
+7f62403f9000-7f62403fc000 r--s 00022000 08:05 1575504                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-sonar-1.12.jar
+7f62403fc000-7f62403ff000 r--s 0001c000 08:05 1575503                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-scala-1.12.jar
+7f62403ff000-7f6240401000 r--s 0000f000 08:05 1575502                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-announce-1.12.jar
+7f6240401000-7f624040e000 r--s 000cf000 08:05 1575501                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-ide-1.12.jar
+7f624040e000-7f6240410000 r--s 00000000 08:05 1575535                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/plexus-component-annotations-1.5.2.jar
+7f6240410000-7f6240413000 r--s 0000c000 08:05 1575534                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/pmaven-groovy-0.8-20100325.jar
+7f6240413000-7f6240414000 r--s 00004000 08:05 1575533                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/pmaven-common-0.8-20100325.jar
+7f6240414000-7f6240419000 r--s 0001d000 08:05 1575500                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-maven-1.12.jar
+7f6240419000-7f6240431000 r--s 0013b000 08:05 1575531                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/bndlib-2.1.0.jar
+7f6240431000-7f6240432000 r--s 00005000 08:05 1575499                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-osgi-1.12.jar
+7f6240432000-7f6240437000 r--s 00068000 08:05 1575530                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/antlr-2.7.7.jar
+7f6240437000-7f6240438000 r--s 00002000 08:05 1575529                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/ant-antlr-1.9.3.jar
+7f6240438000-7f624043a000 r--s 00004000 08:05 1575498                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-antlr-1.12.jar
+7f624043a000-7f624043d000 r--s 0001e000 08:05 1575550                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jsp-api-2.1-6.1.14.jar
+7f624043d000-7f6240460000 r--s 00344000 08:05 1575549                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/core-3.1.1.jar
+7f6240460000-7f6240461000 r--s 00006000 08:05 1575548                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jetty-naming-6.1.25.jar
+7f6240461000-7f6240462000 r--s 00002000 08:05 1575528                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/geronimo-annotation_1.0_spec-1.0.jar
+7f6240462000-7f6240464000 r--s 00002000 08:05 1575527                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jetty-annotations-6.1.25.jar
+7f6240464000-7f6240475000 r--s 000ea000 08:05 1575526                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jsp-2.1-6.1.14.jar
+7f6240475000-7f6240477000 r--s 0000d000 08:05 1575525                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jetty-plus-6.1.25.jar
+7f6240477000-7f6240479000 r--s 0001f000 08:05 1575524                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/servlet-api-2.5-20081211.jar
+7f6240479000-7f624047d000 r--s 00028000 08:05 1575523                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jetty-util-6.1.25.jar
+7f624047d000-7f6240484000 r--s 0007d000 08:05 1575522                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jetty-6.1.25.jar
+7f6240484000-7f6240486000 r--s 00009000 08:05 1575497                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-jetty-1.12.jar
+7f6240486000-7f624048c000 r--s 0004c000 08:05 1575496                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-code-quality-1.12.jar
+7f624048c000-7f624048e000 r--s 00009000 08:05 1575554                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/hamcrest-core-1.3.jar
+7f624048e000-7f6240494000 r--s 00033000 08:05 1575547                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/snakeyaml-1.6.jar
+7f6240494000-7f6240496000 r--s 00006000 08:05 1575546                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jcommander-1.12.jar
+7f6240496000-7f624049b000 r--s 00040000 08:05 1575545                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/bsh-2.0b4.jar
+7f624049b000-7f624049d000 r--s 00009000 08:05 1575521                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/commons-cli-1.2.jar
+7f624049d000-7f62404a6000 r--s 00089000 08:05 1575520                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/testng-6.3.1.jar
+7f62404a6000-7f62404ac000 r--s 00036000 08:05 1575519                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/junit-4.11.jar
+7f62404ac000-7f62404be000 r--s 000b4000 08:05 1575495                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-plugins-1.12.jar
+7f62404be000-7f62404d6000 r--s 00115000 08:05 1575552                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/xercesImpl-2.9.1.jar
+7f62404d6000-7f62404de000 r--s 00028000 08:05 1575553                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/xml-apis-1.3.04.jar
+7f62404de000-7f62404e2000 r--s 0001d000 08:05 1575544                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/xbean-reflect-3.4.jar
+7f62404e2000-7f62404e5000 r--s 0001c000 08:05 1575543                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/nekohtml-1.9.14.jar
+7f62404e5000-7f62404fe000 r--s 00129000 08:05 1575532                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/maven-ant-tasks-2.1.3.jar
+7f62404fe000-7f6240502000 r--s 0001e000 08:05 1575494                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-aether-impl-1.13.1.jar
+7f6240502000-7f6240505000 r--s 00027000 08:05 1575493                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-maven-model-3.0.4.jar
+7f6240505000-7f6240508000 r--s 0000b000 08:05 1575492                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-maven-artifact-3.0.4.jar
+7f6240508000-7f624050c000 r--s 0001e000 08:05 1575491                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-aether-util-1.13.1.jar
+7f624050c000-7f624050e000 r--s 00007000 08:05 1575490                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-wagon-http-shared4-2.4.jar
+7f624050e000-7f624051b000 r--s 00083000 08:05 1575489                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-maven-core-3.0.4.jar
+7f624051b000-7f624051d000 r--s 00003000 08:05 1575488                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-aether-spi-1.13.1.jar
+7f624051d000-7f624051f000 r--s 00009000 08:05 1575487                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-maven-settings-builder-3.0.4.jar
+7f624051f000-7f6240523000 r--s 00014000 08:05 1575486                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-aether-api-1.13.1.jar
+7f6240523000-7f6240524000 r--s 00002000 08:05 1575485                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-wagon-http-2.4.jar
+7f6240524000-7f624052b000 r--s 00042000 08:05 1575484                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-maven-compat-3.0.4.jar
+7f624052b000-7f624052d000 r--s 00006000 08:05 1575483                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-aether-connector-wagon-1.13.1.jar
+7f624052d000-7f624052f000 r--s 00000000 08:05 1575482                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-plexus-component-annotations-1.5.5.jar
+7f624052f000-7f6240531000 r--s 00006000 08:05 1575481                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-plexus-sec-dispatcher-1.3.jar
+7f6240531000-7f6240536000 r--s 00022000 08:05 1575480                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-maven-model-builder-3.0.4.jar
+7f6240536000-7f6240538000 r--s 0000b000 08:05 1575479                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-maven-plugin-api-3.0.4.jar
+7f6240538000-7f624053b000 r--s 0000a000 08:05 1575478                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-plexus-classworlds-2.4.jar
+7f624053b000-7f624053f000 r--s 00035000 08:05 1575477                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-plexus-utils-2.0.6.jar
+7f624053f000-7f6240541000 r--s 0000e000 08:05 1575476                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-plexus-interpolation-1.14.jar
+7f6240541000-7f6240543000 r--s 00002000 08:05 1575475                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-plexus-cipher-1.7.jar
+7f6240543000-7f6240545000 r--s 0000c000 08:05 1575474                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-wagon-provider-api-2.4.jar
+7f6240545000-7f6240547000 r--s 0000d000 08:05 1575473                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-maven-aether-provider-3.0.4.jar
+7f6240547000-7f624054f000 r--s 00031000 08:05 1575472                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-plexus-container-default-1.5.5.jar
+7f624054f000-7f6240550000 r--s 00007000 08:05 1575471                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-maven-repository-metadata-3.0.4.jar
+7f6240550000-7f6240551000 r--s 0000b000 08:05 1575470                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/jarjar-maven-settings-3.0.4.jar
+7f6240551000-7f6240569000 r--s 000b2000 08:05 1575518                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/plugins/gradle-core-impl-1.12.jar
+7f6240569000-7f6240585000 r--s 00393000 08:05 1573608                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/ext/cldrdata.jar
+7f6240585000-7f6240590000 r--s 0021a000 08:05 1573614                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/ext/localedata.jar
+7f6240590000-7f62405a6000 r-xp 00000000 08:05 1445289                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libnet.so
+7f62405a6000-7f62407a5000 ---p 00016000 08:05 1445289                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libnet.so
+7f62407a5000-7f62407a6000 rw-p 00015000 08:05 1445289                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libnet.so
+7f62407a6000-7f62407a7000 r--s 00005000 08:05 1575405                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-wrapper-1.12.jar
+7f62407a7000-7f62407af000 r--s 0002a000 08:05 1575410                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-tooling-api-1.12.jar
+7f62407af000-7f62407b1000 r--s 00005000 08:05 1575435                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-open-api-1.12.jar
+7f62407b1000-7f62407b7000 r--s 00032000 08:05 1575437                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/jaxen-1.1.jar
+7f62407b7000-7f62407bc000 r--s 00048000 08:05 1575436                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/dom4j-1.6.1.jar
+7f62407bc000-7f62407c7000 r--s 0005b000 08:05 1575409                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-ui-1.12.jar
+7f62407c7000-7f62407c9000 r--s 00007000 08:05 1575464                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/objenesis-1.2.jar
+7f62407c9000-7f62407cb000 r--s 00000000 08:05 1575463                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/minlog-1.2.jar
+7f62407cb000-7f62407cd000 r--s 0000f000 08:05 1575462                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/reflectasm-1.07-shaded.jar
+7f62407cd000-7f62407cf000 r--s 0000a000 08:05 1575468                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/asm-4.0.jar
+7f62407cf000-7f62407d3000 r--s 00026000 08:05 1575451                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/kryo-2.20.jar
+7f62407d3000-7f62407db000 r--s 00037000 08:05 1575431                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-messaging-1.12.jar
+7f62407db000-7f62407dc000 r--s 00003000 08:05 1575459                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/native-platform-freebsd-amd64-0.10.jar
+7f62407dc000-7f62407dd000 r--s 00003000 08:05 1575458                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/native-platform-freebsd-i386-0.10.jar
+7f62407dd000-7f62407de000 r--s 00005000 08:05 1575457                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/native-platform-windows-i386-0.10.jar
+7f62407de000-7f62407df000 r--s 00005000 08:05 1575456                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/native-platform-windows-amd64-0.10.jar
+7f62407df000-7f62407e0000 r--s 00003000 08:05 1575455                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/native-platform-linux-i386-0.10.jar
+7f62407e0000-7f62407e1000 r--s 00003000 08:05 1575454                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/native-platform-linux-amd64-0.10.jar
+7f62407e1000-7f62407e2000 r--s 00002000 08:05 1575453                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/native-platform-osx-amd64-0.10.jar
+7f62407e2000-7f62407e3000 r--s 00002000 08:05 1575452                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/native-platform-osx-i386-0.10.jar
+7f62407e3000-7f62407e5000 r--s 00008000 08:05 1575441                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/jansi-1.2.1.jar
+7f62407e5000-7f62407e8000 r--s 00013000 08:05 1575440                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/jna-posix-1.0.3.jar
+7f62407e8000-7f62407eb000 r--s 0000d000 08:05 1575439                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/native-platform-0.10.jar
+7f62407eb000-7f62407ef000 r--s 000e4000 08:05 1575438                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/jna-3.2.7.jar
+7f62407ef000-7f62407f1000 r--s 00009000 08:05 1575411                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-native-1.12.jar
+7f62407f1000-7f62407f2000 r--s 00006000 08:05 1575408                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-cli-1.12.jar
+7f62407f2000-7f62407f3000 r--s 00000000 08:05 1575416                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-resources-1.12.jar
+7f62407f3000-7f62407f5000 r--s 00000000 08:05 1575415                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-base-services-groovy-1.12.jar
+7f62407f5000-7f62407f6000 r--s 00000000 08:05 1575432                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-docs-1.12.jar
+7f62407f6000-7f62407fc000 r--s 0005b000 08:05 1575450                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/jcifs-1.3.17.jar
+7f62407fc000-7f6240802000 r--s 00031000 08:05 1575448                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/httpcore-4.2.2.jar
+7f6240802000-7f6240808000 r--s 00033000 08:05 1575447                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/commons-codec-1.6.jar
+7f6240808000-7f624080a000 r--s 00026000 08:05 1575446                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/http-builder-0.6.jar
+7f624080a000-7f624080c000 r--s 00013000 08:05 1575461                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/xml-resolver-1.2.jar
+7f624080c000-7f624080d000 ---p 00000000 00:00 0 
+7f624080d000-7f624090d000 rw-p 00000000 00:00 0                          [stack:9000]
+7f624090d000-7f6240910000 ---p 00000000 00:00 0 
+7f6240910000-7f6240a0e000 rw-p 00000000 00:00 0                          [stack:8999]
+7f6240a0e000-7f6240a11000 ---p 00000000 00:00 0 
+7f6240a11000-7f6240b0f000 rw-p 00000000 00:00 0                          [stack:8998]
+7f6240b0f000-7f6240b12000 ---p 00000000 00:00 0 
+7f6240b12000-7f6240c10000 rw-p 00000000 00:00 0                          [stack:8997]
+7f6240c10000-7f6240c13000 ---p 00000000 00:00 0 
+7f6240c13000-7f6240d11000 rw-p 00000000 00:00 0                          [stack:8996]
+7f6240d11000-7f6240d14000 ---p 00000000 00:00 0 
+7f6240d14000-7f6240e12000 rw-p 00000000 00:00 0                          [stack:8995]
+7f6240e12000-7f62414f5000 r--p 00000000 08:05 2888578                    /usr/lib/locale/locale-archive
+7f62414f5000-7f62414f8000 ---p 00000000 00:00 0 
+7f62414f8000-7f62415f6000 rw-p 00000000 00:00 0                          [stack:8994]
+7f62415f6000-7f62415f9000 ---p 00000000 00:00 0 
+7f62415f9000-7f62416f7000 rw-p 00000000 00:00 0                          [stack:8993]
+7f62416f7000-7f62416f8000 ---p 00000000 00:00 0 
+7f62416f8000-7f6244000000 rw-p 00000000 00:00 0                          [stack:8992]
+7f6244000000-7f6244021000 rw-p 00000000 00:00 0 
+7f6244021000-7f6248000000 ---p 00000000 00:00 0 
+7f6248000000-7f6248004000 r--s 00022000 08:05 1575460                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/json-lib-2.3-jdk15.jar
+7f6248004000-7f6248007000 r--s 00013000 08:05 1575467                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/ezmorph-1.0.6.jar
+7f6248007000-7f624800c000 r--s 00034000 08:05 1575465                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/commons-beanutils-1.8.0.jar
+7f624800c000-7f624800e000 r--s 0000d000 08:05 1575466                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/commons-logging-1.1.1.jar
+7f624800e000-7f624800f000 r--s 00001000 08:05 1575445                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/bintray-client-java-api-0.1.0.jar
+7f624800f000-7f624801e000 r--s 0007f000 08:05 1575444                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/joda-time-2.3.jar
+7f624801e000-7f6248022000 r--s 0003d000 08:05 1575443                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/jsch-0.1.51.jar
+7f6248022000-7f6248024000 r--s 00003000 08:05 1575434                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/jcl-over-slf4j-1.7.5.jar
+7f6248024000-7f6248026000 r--s 00004000 08:05 1575433                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/log4j-over-slf4j-1.7.5.jar
+7f6248026000-7f624802f000 r--s 00060000 08:05 1575430                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/httpclient-4.2.2.jar
+7f624802f000-7f6248030000 r--s 00009000 08:05 1575429                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/bintray-client-java-impl-0.1.0.jar
+7f6248030000-7f6248033000 r--s 0001b000 08:05 1575427                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/jarjar-1.3.jar
+7f6248033000-7f6248039000 r--s 0003b000 08:05 1575424                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/logback-classic-1.0.13.jar
+7f6248039000-7f6248043000 r--s 0005d000 08:05 1575423                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/logback-core-1.0.13.jar
+7f6248043000-7f6248052000 r--s 000d9000 08:05 1575422                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/ivy-2.2.0.jar
+7f6248052000-7f6248057000 r--s 00041000 08:05 1575421                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/commons-lang-2.6.jar
+7f6248057000-7f62480b3000 r--s 00586000 08:05 1575414                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/groovy-all-1.8.6.jar
+7f62480b3000-7f62480da000 r--s 001c3000 08:05 1575413                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/guava-jdk5-14.0.1.jar
+7f62480da000-7f62480f9000 r--s 001cc000 08:05 1575418                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/ant-1.9.3.jar
+7f62480f9000-7f6249000000 rw-p 00000000 00:00 0 
+7f6249000000-7f624a200000 rwxp 00000000 00:00 0 
+7f624a200000-7f6258000000 ---p 00000000 00:00 0 
+7f6258000000-7f6258630000 rw-p 00000000 00:00 0 
+7f6258630000-7f625c000000 ---p 00000000 00:00 0 
+7f625c000000-7f625c00e000 r--s 0007f000 08:05 1575419                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/commons-collections-3.2.1.jar
+7f625c00e000-7f625c013000 r--s 00035000 08:05 1575417                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/asm-all-5.0_BETA.jar
+7f625c013000-7f625c043000 r--s 00191000 08:05 1575407                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-core-1.12.jar
+7f625c043000-7f625c0f5000 rw-p 00000000 00:00 0 
+7f625c0f5000-7f625c2c9000 r--s 03c3f000 08:05 1445233                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/rt.jar
+7f625c2c9000-7f625c53f000 rw-p 00000000 00:00 0 
+7f625c53f000-7f625c540000 ---p 00000000 00:00 0 
+7f625c540000-7f625c640000 rw-p 00000000 00:00 0                          [stack:8991]
+7f625c640000-7f625c641000 ---p 00000000 00:00 0 
+7f625c641000-7f625c741000 rw-p 00000000 00:00 0                          [stack:8990]
+7f625c741000-7f625c742000 ---p 00000000 00:00 0 
+7f625c742000-7f625c842000 rw-p 00000000 00:00 0                          [stack:8989]
+7f625c842000-7f625c843000 ---p 00000000 00:00 0 
+7f625c843000-7f625c959000 rw-p 00000000 00:00 0                          [stack:8988]
+7f625c959000-7f625ca99000 ---p 00000000 00:00 0 
+7f625ca99000-7f625caaf000 rw-p 00000000 00:00 0 
+7f625caaf000-7f625cbee000 ---p 00000000 00:00 0 
+7f625cbee000-7f625cc0b000 rw-p 00000000 00:00 0 
+7f625cc0b000-7f625cc99000 ---p 00000000 00:00 0 
+7f625cc99000-7f625cce2000 rw-p 00000000 00:00 0 
+7f625cce2000-7f625d05a000 ---p 00000000 00:00 0 
+7f625d05a000-7f625d076000 r-xp 00000000 08:05 1445285                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libzip.so
+7f625d076000-7f625d275000 ---p 0001c000 08:05 1445285                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libzip.so
+7f625d275000-7f625d276000 rw-p 0001b000 08:05 1445285                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libzip.so
+7f625d276000-7f625d281000 r-xp 00000000 08:05 2633199                    /lib/x86_64-linux-gnu/libnss_files-2.19.so
+7f625d281000-7f625d480000 ---p 0000b000 08:05 2633199                    /lib/x86_64-linux-gnu/libnss_files-2.19.so
+7f625d480000-7f625d481000 r--p 0000a000 08:05 2633199                    /lib/x86_64-linux-gnu/libnss_files-2.19.so
+7f625d481000-7f625d482000 rw-p 0000b000 08:05 2633199                    /lib/x86_64-linux-gnu/libnss_files-2.19.so
+7f625d482000-7f625d48d000 r-xp 00000000 08:05 2633219                    /lib/x86_64-linux-gnu/libnss_nis-2.19.so
+7f625d48d000-7f625d68c000 ---p 0000b000 08:05 2633219                    /lib/x86_64-linux-gnu/libnss_nis-2.19.so
+7f625d68c000-7f625d68d000 r--p 0000a000 08:05 2633219                    /lib/x86_64-linux-gnu/libnss_nis-2.19.so
+7f625d68d000-7f625d68e000 rw-p 0000b000 08:05 2633219                    /lib/x86_64-linux-gnu/libnss_nis-2.19.so
+7f625d68e000-7f625d6a5000 r-xp 00000000 08:05 2633208                    /lib/x86_64-linux-gnu/libnsl-2.19.so
+7f625d6a5000-7f625d8a4000 ---p 00017000 08:05 2633208                    /lib/x86_64-linux-gnu/libnsl-2.19.so
+7f625d8a4000-7f625d8a5000 r--p 00016000 08:05 2633208                    /lib/x86_64-linux-gnu/libnsl-2.19.so
+7f625d8a5000-7f625d8a6000 rw-p 00017000 08:05 2633208                    /lib/x86_64-linux-gnu/libnsl-2.19.so
+7f625d8a6000-7f625d8a8000 rw-p 00000000 00:00 0 
+7f625d8a8000-7f625d8b1000 r-xp 00000000 08:05 2633207                    /lib/x86_64-linux-gnu/libnss_compat-2.19.so
+7f625d8b1000-7f625dab0000 ---p 00009000 08:05 2633207                    /lib/x86_64-linux-gnu/libnss_compat-2.19.so
+7f625dab0000-7f625dab1000 r--p 00008000 08:05 2633207                    /lib/x86_64-linux-gnu/libnss_compat-2.19.so
+7f625dab1000-7f625dab2000 rw-p 00009000 08:05 2633207                    /lib/x86_64-linux-gnu/libnss_compat-2.19.so
+7f625dab2000-7f625dadc000 r-xp 00000000 08:05 1445280                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libjava.so
+7f625dadc000-7f625dcdc000 ---p 0002a000 08:05 1445280                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libjava.so
+7f625dcdc000-7f625dcde000 rw-p 0002a000 08:05 1445280                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libjava.so
+7f625dcde000-7f625dceb000 r-xp 00000000 08:05 1445284                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libverify.so
+7f625dceb000-7f625deeb000 ---p 0000d000 08:05 1445284                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libverify.so
+7f625deeb000-7f625deed000 rw-p 0000d000 08:05 1445284                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/libverify.so
+7f625deed000-7f625def4000 r-xp 00000000 08:05 2633216                    /lib/x86_64-linux-gnu/librt-2.19.so
+7f625def4000-7f625e0f3000 ---p 00007000 08:05 2633216                    /lib/x86_64-linux-gnu/librt-2.19.so
+7f625e0f3000-7f625e0f4000 r--p 00006000 08:05 2633216                    /lib/x86_64-linux-gnu/librt-2.19.so
+7f625e0f4000-7f625e0f5000 rw-p 00007000 08:05 2633216                    /lib/x86_64-linux-gnu/librt-2.19.so
+7f625e0f5000-7f625e1fa000 r-xp 00000000 08:05 2633198                    /lib/x86_64-linux-gnu/libm-2.19.so
+7f625e1fa000-7f625e3f9000 ---p 00105000 08:05 2633198                    /lib/x86_64-linux-gnu/libm-2.19.so
+7f625e3f9000-7f625e3fa000 r--p 00104000 08:05 2633198                    /lib/x86_64-linux-gnu/libm-2.19.so
+7f625e3fa000-7f625e3fb000 rw-p 00105000 08:05 2633198                    /lib/x86_64-linux-gnu/libm-2.19.so
+7f625e3fb000-7f625f014000 r-xp 00000000 08:05 1573707                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/server/libjvm.so
+7f625f014000-7f625f214000 ---p 00c19000 08:05 1573707                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/server/libjvm.so
+7f625f214000-7f625f2dd000 rw-p 00c19000 08:05 1573707                    /home/pramoda-nf/software/jdk1.8.0/jre/lib/amd64/server/libjvm.so
+7f625f2dd000-7f625f31e000 rw-p 00000000 00:00 0 
+7f625f31e000-7f625f4d9000 r-xp 00000000 08:05 2633213                    /lib/x86_64-linux-gnu/libc-2.19.so
+7f625f4d9000-7f625f6d8000 ---p 001bb000 08:05 2633213                    /lib/x86_64-linux-gnu/libc-2.19.so
+7f625f6d8000-7f625f6dc000 r--p 001ba000 08:05 2633213                    /lib/x86_64-linux-gnu/libc-2.19.so
+7f625f6dc000-7f625f6de000 rw-p 001be000 08:05 2633213                    /lib/x86_64-linux-gnu/libc-2.19.so
+7f625f6de000-7f625f6e3000 rw-p 00000000 00:00 0 
+7f625f6e3000-7f625f6e6000 r-xp 00000000 08:05 2633202                    /lib/x86_64-linux-gnu/libdl-2.19.so
+7f625f6e6000-7f625f8e5000 ---p 00003000 08:05 2633202                    /lib/x86_64-linux-gnu/libdl-2.19.so
+7f625f8e5000-7f625f8e6000 r--p 00002000 08:05 2633202                    /lib/x86_64-linux-gnu/libdl-2.19.so
+7f625f8e6000-7f625f8e7000 rw-p 00003000 08:05 2633202                    /lib/x86_64-linux-gnu/libdl-2.19.so
+7f625f8e7000-7f625f8fe000 r-xp 00000000 08:05 1573495                    /home/pramoda-nf/software/jdk1.8.0/lib/amd64/jli/libjli.so
+7f625f8fe000-7f625fafd000 ---p 00017000 08:05 1573495                    /home/pramoda-nf/software/jdk1.8.0/lib/amd64/jli/libjli.so
+7f625fafd000-7f625fafe000 rw-p 00016000 08:05 1573495                    /home/pramoda-nf/software/jdk1.8.0/lib/amd64/jli/libjli.so
+7f625fafe000-7f625fb17000 r-xp 00000000 08:05 2633214                    /lib/x86_64-linux-gnu/libpthread-2.19.so
+7f625fb17000-7f625fd16000 ---p 00019000 08:05 2633214                    /lib/x86_64-linux-gnu/libpthread-2.19.so
+7f625fd16000-7f625fd17000 r--p 00018000 08:05 2633214                    /lib/x86_64-linux-gnu/libpthread-2.19.so
+7f625fd17000-7f625fd18000 rw-p 00019000 08:05 2633214                    /lib/x86_64-linux-gnu/libpthread-2.19.so
+7f625fd18000-7f625fd1c000 rw-p 00000000 00:00 0 
+7f625fd1c000-7f625fd3f000 r-xp 00000000 08:05 2633210                    /lib/x86_64-linux-gnu/ld-2.19.so
+7f625fd3f000-7f625fd40000 r--s 00000000 08:05 1575428                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/javax.inject-1.jar
+7f625fd40000-7f625fd43000 r--s 00018000 08:05 1575420                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/commons-io-1.4.jar
+7f625fd43000-7f625fe1c000 rw-p 00000000 00:00 0 
+7f625fe1c000-7f625fe1f000 ---p 00000000 00:00 0 
+7f625fe1f000-7f625ff21000 rw-p 00000000 00:00 0                          [stack:8987]
+7f625ff21000-7f625ff22000 r--s 00001000 08:05 1575426                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/jul-to-slf4j-1.7.5.jar
+7f625ff22000-7f625ff23000 r--s 00000000 08:05 1575425                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/jcip-annotations-1.0.jar
+7f625ff23000-7f625ff25000 r--s 00005000 08:05 1575412                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/slf4j-api-1.7.5.jar
+7f625ff25000-7f625ff26000 r--s 00004000 08:05 1575442                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/ant-launcher-1.9.3.jar
+7f625ff26000-7f625ff2b000 r--s 00024000 08:05 1575406                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-base-services-1.12.jar
+7f625ff2b000-7f625ff32000 r--s 00037000 08:05 1575404                    /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-launcher-1.12.jar
+7f625ff32000-7f625ff3a000 rw-s 00000000 08:05 2246533                    /tmp/hsperfdata_pramoda-nf/8984
+7f625ff3a000-7f625ff3b000 rw-p 00000000 00:00 0 
+7f625ff3b000-7f625ff3c000 r--p 00000000 00:00 0 
+7f625ff3c000-7f625ff3e000 rw-p 00000000 00:00 0 
+7f625ff3e000-7f625ff3f000 r--p 00022000 08:05 2633210                    /lib/x86_64-linux-gnu/ld-2.19.so
+7f625ff3f000-7f625ff40000 rw-p 00023000 08:05 2633210                    /lib/x86_64-linux-gnu/ld-2.19.so
+7f625ff40000-7f625ff41000 rw-p 00000000 00:00 0 
+7fff0df49000-7fff0df6a000 rw-p 00000000 00:00 0                          [stack]
+7fff0dffe000-7fff0e000000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+
+VM Arguments:
+jvm_args: -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -Dfile.encoding=UTF-8 
+java_command: org.gradle.launcher.daemon.bootstrap.GradleDaemon 1.12 /home/pramoda-nf/.gradle/daemon 60000 e14361ad-d589-4833-b5bf-20525879c8cc -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError -Xmx1024m -Dfile.encoding=UTF-8
+java_class_path (initial): /home/pramoda-nf/.gradle/wrapper/dists/gradle-1.12-all/2650hq37qpph364ivk299q86gl/gradle-1.12/lib/gradle-launcher-1.12.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=/home/pramoda-nf/software/jdk1.8.0
+CLASSPATH=/home/pramoda-nf/software/idea-IU-135.909/bin/../lib/bootstrap.jar:/home/pramoda-nf/software/idea-IU-135.909/bin/../lib/extensions.jar:/home/pramoda-nf/software/idea-IU-135.909/bin/../lib/util.jar:/home/pramoda-nf/software/idea-IU-135.909/bin/../lib/jdom.jar:/home/pramoda-nf/software/idea-IU-135.909/bin/../lib/log4j.jar:/home/pramoda-nf/software/idea-IU-135.909/bin/../lib/trove4j.jar:/home/pramoda-nf/software/idea-IU-135.909/bin/../lib/jna.jar:/home/pramoda-nf/software/jdk1.8.0/lib/tools.jar
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/pramoda-nf/bin:/home/pramoda-nf/software/jdk1.8.0/bin
+LD_LIBRARY_PATH=/home/pramoda-nf/software/idea-IU-135.909/bin:
+SHELL=/bin/bash
+DISPLAY=:0
+
+Signal Handlers:
+SIGSEGV: [libjvm.so+0xa2fc40], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGBUS: [libjvm.so+0xa2fc40], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGFPE: [libjvm.so+0x89b440], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGPIPE: [libjvm.so+0x89b440], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGXFSZ: [libjvm.so+0x89b440], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGILL: [libjvm.so+0x89b440], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGUSR1: SIG_DFL, sa_mask[0]=0x00000000, sa_flags=0x00000000
+SIGUSR2: [libjvm.so+0x89cbe0], sa_mask[0]=0x00000004, sa_flags=0x10000004
+SIGHUP: [libjvm.so+0x89de90], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGINT: [libjvm.so+0x89de90], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGTERM: [libjvm.so+0x89de90], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGQUIT: [libjvm.so+0x89de90], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+
+
+---------------  S Y S T E M  ---------------
+
+OS:DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=14.04
+DISTRIB_CODENAME=trusty
+DISTRIB_DESCRIPTION="Ubuntu 14.04 LTS"
+
+uname:Linux 3.13.0-24-generic #46-Ubuntu SMP Thu Apr 10 19:11:08 UTC 2014 x86_64
+libc:glibc 2.19 NPTL 2.19 
+rlimit: STACK 8192k, CORE 0k, NPROC 30261, NOFILE 4096, AS infinity
+load average:3.70 1.92 1.53
+
+/proc/meminfo:
+MemTotal:        3895040 kB
+MemFree:          115084 kB
+Buffers:            2032 kB
+Cached:           380384 kB
+SwapCached:        39984 kB
+Active:          2520380 kB
+Inactive:         943276 kB
+Active(anon):    2476832 kB
+Inactive(anon):   905244 kB
+Active(file):      43548 kB
+Inactive(file):    38032 kB
+Unevictable:          68 kB
+Mlocked:              68 kB
+SwapTotal:       2534396 kB
+SwapFree:        1108372 kB
+Dirty:              1232 kB
+Writeback:             0 kB
+AnonPages:       3068632 kB
+Mapped:            88668 kB
+Shmem:            300808 kB
+Slab:             166248 kB
+SReclaimable:     123144 kB
+SUnreclaim:        43104 kB
+KernelStack:        6504 kB
+PageTables:        61000 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     4481916 kB
+Committed_AS:    9049908 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:      559952 kB
+VmallocChunk:   34359149532 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:    741376 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:       80848 kB
+DirectMap2M:     3958784 kB
+
+
+CPU:total 4 (2 cores per cpu, 2 threads per core) family 6 model 58 stepping 9, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, aes, clmul, erms, ht, tsc, tscinvbit
+
+/proc/cpuinfo:
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 58
+model name	: Intel(R) Core(TM) i5-3230M CPU @ 2.60GHz
+stepping	: 9
+microcode	: 0x16
+cpu MHz		: 2601.000
+cache size	: 3072 KB
+physical id	: 0
+siblings	: 4
+core id		: 0
+cpu cores	: 2
+apicid		: 0
+initial apicid	: 0
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid fsgsbase smep erms
+bogomips	: 5187.95
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 36 bits physical, 48 bits virtual
+power management:
+
+processor	: 1
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 58
+model name	: Intel(R) Core(TM) i5-3230M CPU @ 2.60GHz
+stepping	: 9
+microcode	: 0x16
+cpu MHz		: 2601.000
+cache size	: 3072 KB
+physical id	: 0
+siblings	: 4
+core id		: 0
+cpu cores	: 2
+apicid		: 1
+initial apicid	: 1
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid fsgsbase smep erms
+bogomips	: 5187.95
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 36 bits physical, 48 bits virtual
+power management:
+
+processor	: 2
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 58
+model name	: Intel(R) Core(TM) i5-3230M CPU @ 2.60GHz
+stepping	: 9
+microcode	: 0x16
+cpu MHz		: 2601.000
+cache size	: 3072 KB
+physical id	: 0
+siblings	: 4
+core id		: 1
+cpu cores	: 2
+apicid		: 2
+initial apicid	: 2
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid fsgsbase smep erms
+bogomips	: 5187.95
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 36 bits physical, 48 bits virtual
+power management:
+
+processor	: 3
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 58
+model name	: Intel(R) Core(TM) i5-3230M CPU @ 2.60GHz
+stepping	: 9
+microcode	: 0x16
+cpu MHz		: 2601.000
+cache size	: 3072 KB
+physical id	: 0
+siblings	: 4
+core id		: 1
+cpu cores	: 2
+apicid		: 3
+initial apicid	: 3
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid fsgsbase smep erms
+bogomips	: 5187.95
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 36 bits physical, 48 bits virtual
+power management:
+
+
+
+Memory: 4k page, physical 3895040k(115084k free), swap 2534396k(1108372k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (25.0-b70) for linux-amd64 JRE (1.8.0-b132), built on Mar  4 2014 03:07:25 by "java_re" with gcc 4.3.0 20080428 (Red Hat 4.3.0-8)
+
+time: Thu Sep  3 11:57:49 2015
+elapsed time: 48 seconds
+
