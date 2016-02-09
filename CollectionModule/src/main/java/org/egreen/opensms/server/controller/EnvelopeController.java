@@ -99,7 +99,6 @@ public class EnvelopeController {
         ReturnIdModel returnIdModel = new ReturnIdModel();
         returnIdModel.setId(nameNew);
         return returnIdModel;
-
     }
 
     /**
@@ -220,7 +219,23 @@ public class EnvelopeController {
         return name;
     }
 
+    /**
+     * getEnvelope By individual id ,date and centerId
+     *
+     * @param individualId
+     * @param date
+     * @param centerId
+     * @return
+     */
+    @RequestMapping(value = "getEnvelopesByIndividualIdByDateNCenterId", method = RequestMethod.POST, headers = "Accept=application/json")
+    @ResponseBody
+    public Envelope getEnvelopesByIndividualIdByDateNCenterId(@RequestParam("individualId") String individualId,@RequestParam("datetime") Long date,@RequestParam("centerId") String centerId) {
+        Timestamp timestamp = new Timestamp(date);
+        Date date1 =  new Date(timestamp.getTime());
 
+        return envelopeDAOService.etEnvelopesByIndividualIdByDateNCenterId(individualId,date1,centerId);
+
+    }
 
 
 

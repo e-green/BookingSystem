@@ -122,5 +122,7 @@ public class EnvelopeDAOService {
         return envelopeDAOController.getEnvelopesByIndividualIdByDate(individualId,limit,offset,date);
     }
 
-
+    public Envelope etEnvelopesByIndividualIdByDateNCenterId(String individualId, Date date1, String centerId) {
+        return envelopeDAOController.etEnvelopesByIndividualIdByDateNCenterId(individualId,date1,centerId);
+    }
 }
