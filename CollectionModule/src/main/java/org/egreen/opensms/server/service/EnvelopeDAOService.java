@@ -122,7 +122,11 @@ public class EnvelopeDAOService {
         return envelopeDAOController.getEnvelopesByIndividualIdByDate(individualId,limit,offset,date);
     }
 
-    public Envelope etEnvelopesByIndividualIdByDateNCenterId(String individualId, Date date1, String centerId) {
-        return envelopeDAOController.etEnvelopesByIndividualIdByDateNCenterId(individualId,date1,centerId);
+    public Envelope getEnvelopesByIndividualIdByDateNCenterId(String individualId, String formatedDate, String centerId) {
+        return envelopeDAOController.getEnvelopesByIndividualIdByDateNCenterId(individualId,formatedDate,centerId);
+    }
+
+    public List<Envelope> getEnvelopeByCenterIdDate(String center, Integer limit, Integer offset, String formatedDate) {
+        return envelopeDAOController.getEnvelopeByCenterIdDate(center,limit,offset,formatedDate);
     }
 }

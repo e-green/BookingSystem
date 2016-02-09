@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -91,21 +92,34 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
     }
 
     @Override
-    public Envelope etEnvelopesByIndividualIdByDateNCenterId(String individualId, Date date, String centerId) {
-        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND DATE(e.date) = :date AND e.center = :centerId");
-        query.setDate("date", date);
+    public Envelope getEnvelopesByIndividualIdByDateNCenterId(String individualId, String date, String centerId) {
+        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND DATE(e.date) = DATE( :date) AND e.center = :centerId");
+        query.setString("date", date);
         query.setString("individualId", individualId);
         query.setString("centerId", centerId);
 
-        List list = query.list();
+        List<Envelope> list = query.list();
         Envelope envelope=new Envelope();
-        if (list.size()!=0){
-            for (Object o:list) {
-                envelope=(Envelope) o;
-                return envelope;
+        if (list.size()>0){
+            for (Envelope en:list) {
+                envelope=en;
             }
         }
         return envelope;
+    }
+
+    @Override
+    public List<Envelope> getEnvelopeByCenterIdDate(String center, Integer limit, Integer offset, String formatedDate) {
+        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND DATE(e.date) = DATE( :formatedDate)");
+        query.setString("formatedDate", formatedDate);
+        query.setString("center", center);
+
+        if (limit!=null&&offset!=null) {
+            query.setMaxResults(limit);
+            query.setFirstResult(offset);
+        }
+
+        return query.list();
     }
 
 

@@ -1,6 +1,7 @@
 package org.egreen.opensms.server.controller;
 
 import org.egreen.opensms.server.entity.Envelope;
+import org.egreen.opensms.server.models.EnvelopeModel;
 import org.egreen.opensms.server.models.ReturnIdModel;
 import org.egreen.opensms.server.service.EnvelopeDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Date;
 
@@ -122,6 +125,21 @@ public class EnvelopeController {
 
     }
 
+    /**
+     * Get Envelope list by centerId and date
+     *
+     * @param envelope
+     * @return
+     */
+    @RequestMapping(value = "getEnvelopeByCenterIdDate",method = RequestMethod.POST)
+    @ResponseBody
+    public List<Envelope> getEnvelopesByCenterId(@RequestBody EnvelopeModel envelope){
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM--dd");
+        String formatedDate = simpleDateFormat.format(envelope.getDate());
+        return envelopeDAOService.getEnvelopeByCenterIdDate(envelope.getCenter(),envelope.getLimit(),envelope.getOffset(),formatedDate);
+
+    }
+
     @RequestMapping(value = "getEnvelopesByIndividualIdByDate", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public List<Envelope> getEnvelopesByIndividualIdByDate(@RequestParam("individualId") String individualId,
@@ -201,6 +219,16 @@ public class EnvelopeController {
         return new Envelope();
     }
 
+    /**
+     * ob
+     * @return
+     */
+    @RequestMapping(value = "getEnvelopeByCenterIdDateOB", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public EnvelopeModel getEnvelopeModelob() {
+        return new EnvelopeModel();
+    }
+
 
     /**
      *
@@ -222,18 +250,17 @@ public class EnvelopeController {
     /**
      * getEnvelope By individual id ,date and centerId
      *
-     * @param individualId
-     * @param date
-     * @param centerId
+     * @param envelope
      * @return
      */
     @RequestMapping(value = "getEnvelopesByIndividualIdByDateNCenterId", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
-    public Envelope getEnvelopesByIndividualIdByDateNCenterId(@RequestParam("individualId") String individualId,@RequestParam("datetime") Long date,@RequestParam("centerId") String centerId) {
-        Timestamp timestamp = new Timestamp(date);
-        Date date1 =  new Date(timestamp.getTime());
+    public Envelope getEnvelopesByIndividualIdByDateNCenterId(@RequestBody Envelope envelope) {
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM--dd");
 
-        return envelopeDAOService.etEnvelopesByIndividualIdByDateNCenterId(individualId,date1,centerId);
+        String formatedDate = simpleDateFormat.format(envelope.getDate());
+
+        return envelopeDAOService.getEnvelopesByIndividualIdByDateNCenterId(envelope.getIndividualId(),formatedDate,envelope.getCenter());
 
     }
 

@@ -88,7 +88,7 @@ public class ChitDAOService {
         return newid;
     }
 
-    public Chit getBranchById(String chitid) {
+    public Chit getChitById(String chitid) {
 
         return chitDAOController.read(chitid);
     }

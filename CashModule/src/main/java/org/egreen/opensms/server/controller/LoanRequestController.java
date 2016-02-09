@@ -1,12 +1,15 @@
 package org.egreen.opensms.server.controller;
 
+import org.egreen.opensms.server.entity.ApprovedLoan;
 import org.egreen.opensms.server.entity.LoanRequest;
 import org.egreen.opensms.server.models.ReturnIdModel;
+import org.egreen.opensms.server.service.ApprovedLoanDAOService;
 import org.egreen.opensms.server.service.LoanRequestDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -22,6 +25,9 @@ public class LoanRequestController {
  
     @Autowired
     private LoanRequestDAOService loanRequestDAOService;
+
+    @Autowired
+    private ApprovedLoanDAOService approvedLoanDAOService;
 
     /**
      * save LoanRequest
