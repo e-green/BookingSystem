@@ -167,4 +167,16 @@ public class ChitController {
         return name;
     }
 
+    /**
+     * Get Chit by chitId
+     *
+     * @param chitId
+     * @return
+     */
+    @RequestMapping(value = "getChitById", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public Chit getChitById(@RequestParam("chitId") String chitId) {
+        return chitDAOService.getChitById(chitId);
+    }
+
 }
