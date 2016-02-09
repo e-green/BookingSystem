@@ -17,6 +17,7 @@ public class Center implements EntityInterface <String> {
     private String location;
     private String description;
     private Integer orderBy;
+    private Boolean hasCommision;
 
 
 
@@ -63,6 +64,14 @@ public class Center implements EntityInterface <String> {
         this.orderBy = orderBy;
     }
 
+    public Boolean getHasCommision() {
+        return hasCommision;
+    }
+
+    public void setHasCommision(Boolean hasCommision) {
+        this.hasCommision = hasCommision;
+    }
+
     @Override
     @Transient
     public String getId() {
@@ -78,6 +87,7 @@ public class Center implements EntityInterface <String> {
                 ", location='" + location + '\'' +
                 ", description='" + description + '\'' +
                 ", orderBy=" + orderBy +
+                ", hasCommision=" + hasCommision +
                 '}';
     }
 }

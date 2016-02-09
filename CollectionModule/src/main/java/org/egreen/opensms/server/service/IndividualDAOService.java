@@ -114,4 +114,8 @@ public class IndividualDAOService {
 
         return individualDAOController.getAllByPropertyByStringValue(centerId,"center");
     }
+
+    public Individual getIndividualsByCenterIdAndIndividualId(String centerId, String individualId) {
+        return individualDAOController.getIndividualsByCenterIdAndIndividualId(centerId,individualId);
+    }
 }

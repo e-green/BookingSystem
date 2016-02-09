@@ -53,4 +53,16 @@ public class IndividualDAOControllerImpl extends AbstractDAOController<Individua
             return false;
         }
     }
+
+    @Override
+    public Individual getIndividualsByCenterIdAndIndividualId(String centerId, String individualId) {
+        Criteria criteria = getSession().createCriteria(entityType);
+        criteria.add(Restrictions.eq("center", centerId));
+        criteria.add(Restrictions.eq("individualId", individualId));
+      if (criteria.list()!=null && criteria.list().size()>0){
+            return (Individual)criteria.list().get(0);
+
+        }
+        return null;
+    }
 }

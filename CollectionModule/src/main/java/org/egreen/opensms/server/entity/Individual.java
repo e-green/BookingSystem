@@ -2,6 +2,7 @@ package org.egreen.opensms.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 /**
  * Created by Pramoda Fernando on 3/18/2015.
@@ -17,6 +18,9 @@ public class Individual implements EntityInterface <String> {
     private String location;
     private String nic;
     private String center;
+    private BigDecimal commision;
+    private BigDecimal pcChargers;
+
 
 
 
@@ -70,6 +74,24 @@ public class Individual implements EntityInterface <String> {
         this.center = center;
     }
 
+    private BigDecimal notCommision;
+    public BigDecimal getCommision() {
+        return commision;
+    }
+
+    public void setCommision(BigDecimal commision) {
+        this.commision = commision;
+    }
+
+    public BigDecimal getPcChargers() {
+        return pcChargers;
+    }
+
+    public void setPcChargers(BigDecimal pcChargers) {
+        this.pcChargers = pcChargers;
+    }
+
+
 
 
     @Override
@@ -87,6 +109,9 @@ public class Individual implements EntityInterface <String> {
                 ", location='" + location + '\'' +
                 ", nic='" + nic + '\'' +
                 ", center='" + center + '\'' +
+                ", commision=" + commision +
+                ", pcChargers=" + pcChargers +
+                ", notCommision=" + notCommision +
                 '}';
     }
 }

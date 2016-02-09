@@ -16,4 +16,6 @@ public interface IndividualDAOController extends DAOController<Individual,String
     String getNextId();
 
     boolean checkIfExist(String centerName);
+
+    Individual getIndividualsByCenterIdAndIndividualId(String centerId, String individualId);
 }

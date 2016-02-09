@@ -12,18 +12,18 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "envelop")
 @JsonIgnoreProperties
-public class Envelope implements EntityInterface <String> {
+public class Envelope implements EntityInterface<String> {
 
-    private String     envelopId;
-    private String     name;
-    private Timestamp  date;
-    private String     chitNumbers;
+    private String envelopId;
+    private String name;
+    private Timestamp date;
+    private String chitNumbers;
     private BigDecimal invesment;
     private BigDecimal cash;
     private BigDecimal notCommision;
-    private BigDecimal pcChargers;
-    private String     center;
-    private String     individualId;
+    private BigDecimal expences;
+    private String center;
+    private String individualId;
 
 
     @Id
@@ -84,6 +84,14 @@ public class Envelope implements EntityInterface <String> {
         this.notCommision = notCommision;
     }
 
+    public BigDecimal getExpences() {
+        return expences;
+    }
+
+    public void setExpences(BigDecimal expences) {
+        this.expences = expences;
+    }
+
     public String getCenter() {
         return center;
     }
@@ -100,13 +108,6 @@ public class Envelope implements EntityInterface <String> {
         this.individualId = individualId;
     }
 
-    public BigDecimal getPcChargers() {
-        return pcChargers;
-    }
-
-    public void setPcChargers(BigDecimal pcChargers) {
-        this.pcChargers = pcChargers;
-    }
 
     @Override
     @Transient
@@ -124,7 +125,7 @@ public class Envelope implements EntityInterface <String> {
                 ", invesment=" + invesment +
                 ", cash=" + cash +
                 ", notCommision=" + notCommision +
-                ", pcChargers=" + pcChargers +
+                ", expences=" + expences +
                 ", center='" + center + '\'' +
                 ", individualId='" + individualId + '\'' +
                 '}';

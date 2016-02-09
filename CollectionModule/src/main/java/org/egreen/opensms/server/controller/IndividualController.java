@@ -100,6 +100,22 @@ public class IndividualController {
     }
 
     /**
+     * getIndividualsByCenterIdAndIndividualId
+     *
+     * @param centerId
+     * @param individualId
+     * @return
+     */
+    @RequestMapping(value = "getIndividualsByCenterIdAndIndividualId", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public Individual getIndividualsByCenterIdAndIndividualId(@RequestParam("centerId") String centerId,
+                                                     @RequestParam("individualId") String individualId) {
+      Individual individualList =  individualDAOService.getIndividualsByCenterIdAndIndividualId(centerId,individualId);
+        return individualList;
+
+    }
+
+    /**
      *
      * getIndividualsByCenterId
      *
