@@ -65,4 +65,18 @@ public class IndividualDAOControllerImpl extends AbstractDAOController<Individua
         }
         return null;
     }
+
+    @Override
+    public Individual getIndividualByName(String memberName) {
+        Individual fIndividual=new Individual();
+        Criteria criteria = getSession().createCriteria(entityType);
+        criteria.add(Restrictions.eq("name", memberName));
+        List<Individual>  individualList= criteria.list();
+        if(individualList.size()>0){
+            for (Individual individual:individualList) {
+                fIndividual=individual;
+            }
+        }
+        return fIndividual;
+    }
 }

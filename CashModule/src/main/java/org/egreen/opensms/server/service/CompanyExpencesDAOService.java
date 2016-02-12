@@ -40,7 +40,6 @@ public class CompanyExpencesDAOService {
         String newid = hexaid + "" + randomString(10);
         companyExpences.setCompanyexpencesId(newid);
 
-
         String s = companyExpencesDAOController.create(companyExpences);
         return s;
     }

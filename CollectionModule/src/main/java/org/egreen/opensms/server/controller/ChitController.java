@@ -1,11 +1,14 @@
 package org.egreen.opensms.server.controller;
 
 import org.egreen.opensms.server.entity.Chit;
-import org.egreen.opensms.server.models.ReturnIdModel;
+
+import org.egreen.opensms.server.models.ReturnIdModel1;
 import org.egreen.opensms.server.service.ChitDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -30,15 +33,15 @@ public class ChitController {
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnIdModel save(@RequestBody Chit chit) {
+    public ReturnIdModel1 save(@RequestBody Chit chit) {
         String res = chitDAOService.save(chit);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
 
     }
-
-
+//
+//
     /**
      * Update Branch
      *
@@ -47,14 +50,14 @@ public class ChitController {
      */
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnIdModel update(@RequestBody Chit chit) {
+    public ReturnIdModel1 update(@RequestBody Chit chit) {
         String res = chitDAOService.update(chit);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
 
     }
-
+//
     /**
      * Get package Id
      *
@@ -62,12 +65,12 @@ public class ChitController {
      */
     @RequestMapping(value = "getId", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public ReturnIdModel getId(@RequestParam("twnName") String townName) {
+    public ReturnIdModel1 getId(@RequestParam("twnName") String townName) {
         String res = chitDAOService.getNextID();
         String name=townName.substring(0, 3);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(name);
-        return returnIdModel;
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(name);
+        return returnIdModel1;
 
     }
 

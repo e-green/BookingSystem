@@ -1,7 +1,11 @@
 package org.egreen.opensms.server.service;
 
+import org.egreen.opensms.server.dao.CenterDAOController;
 import org.egreen.opensms.server.dao.EnvelopeDAOController;
+import org.egreen.opensms.server.dao.IndividualDAOController;
+import org.egreen.opensms.server.entity.Center;
 import org.egreen.opensms.server.entity.Envelope;
+import org.egreen.opensms.server.entity.Individual;
 import org.egreen.opensms.server.utils.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,12 @@ public class EnvelopeDAOService {
 
     @Autowired
     private EnvelopeDAOController envelopeDAOController;
+
+    @Autowired
+    private CenterDAOController centerDAOController;
+
+    @Autowired
+    private IndividualDAOController individualDAOController;
     
     private List<Envelope> all;
     private String id;
@@ -26,23 +36,37 @@ public class EnvelopeDAOService {
 
     /**
      *
-     * individual SignUp
+     * envelope save
      *
-     * @param individual
+     * @param envelope
      * @return
      */
-    public String save(Envelope individual) {
+    public String save(Envelope envelope) {
         String id = new Date().getTime()+"";
         Hashids hashids = new Hashids(id);
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
         String newid = hexaid + "" + randomString(10);
-//        if (individual.getName()!=null) {
-//            individual.setBranchid(individual.getName());
-//        }
+        envelope.setEnvelopId(newid);
 
-        individual.setEnvelopId(newid);
-
-        String s = envelopeDAOController.create(individual);
+        String s = envelopeDAOController.create(envelope);
+        if(s!=null){
+//            Logger logger=new Logger();
+//            logger.setAmount(envelope.getInvesment());
+//            String centerId = envelope.getCenter();
+//            String individualId = envelope.getIndividualId();
+//            Center center;
+//            Individual individual;
+//            if(null!= centerId){
+//                center = centerDAOController.read(centerId);
+//                logger.setCenterAccountNo(center.getAccountNo());
+//            }
+//            if(null != individualId){
+//                individual = individualDAOController.read(individualId);
+//                logger.setIndividualAccountNo(individual.getAccountNo());
+//            }
+//            ///////////////////////////////////////////
+//            loggerDAOController.create(logger);
+        }
         return s;
     }
 

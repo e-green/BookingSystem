@@ -21,9 +21,6 @@ public class Individual implements EntityInterface <String> {
     private BigDecimal commision;
     private BigDecimal pcChargers;
 
-
-
-
     @Id
     @Column(name = "individualId")
     public String getIndividualId() {
@@ -92,8 +89,6 @@ public class Individual implements EntityInterface <String> {
     }
 
 
-
-
     @Override
     @Transient
     public String getId() {
@@ -114,4 +109,5 @@ public class Individual implements EntityInterface <String> {
                 ", notCommision=" + notCommision +
                 '}';
     }
+
 }

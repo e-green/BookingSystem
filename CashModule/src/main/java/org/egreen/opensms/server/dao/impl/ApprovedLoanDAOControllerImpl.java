@@ -3,6 +3,7 @@ package org.egreen.opensms.server.dao.impl;
 import org.egreen.opensms.server.dao.ApprovedLoanDAOController;
 import org.egreen.opensms.server.entity.ApprovedLoan;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
@@ -56,5 +57,27 @@ public class ApprovedLoanDAOControllerImpl extends AbstractDAOController<Approve
 
         }
         return null;
+    }
+
+    /**
+     *
+     * Check is there already have unfinished Approved loan with specific Center, specific individual
+     * @param centerid
+     * @param individualId
+     * @return
+     */
+    @Override
+    public boolean checkApprovedLoanDueAmountsZero(String centerid, String individualId) {
+        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.center = :centerid AND a.individualId = :individualId AND a.dueamount > 1.0");
+        query.setString("centerid", centerid);
+        query.setString("individualId", individualId);
+        List<ApprovedLoan> approvedLoanList = query.list();
+        boolean isOk=false;
+        if(approvedLoanList.size() > 0){
+            isOk=false;
+        }else{
+            isOk=true;
+        }
+        return isOk;
     }
 }

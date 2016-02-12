@@ -1,7 +1,11 @@
 package org.egreen.opensms.server.service;
 
+
+import org.egreen.opensms.server.dao.AccountDAOController;
 import org.egreen.opensms.server.dao.CenterDAOController;
 import org.egreen.opensms.server.dao.IndividualDAOController;
+
+import org.egreen.opensms.server.entity.Account;
 import org.egreen.opensms.server.entity.Center;
 import org.egreen.opensms.server.entity.Individual;
 import org.egreen.opensms.server.utils.Hashids;
@@ -25,6 +29,9 @@ public class CenterDAOService {
     @Autowired
     private IndividualDAOController individualDAOController;
 
+    @Autowired
+    private AccountDAOController accountDAOController;
+
     private List<Center> all;
     private String id;
 
@@ -36,15 +43,7 @@ public class CenterDAOService {
      * @return
      */
     public String save(Center center) {
-        String id = new Date().getTime() + "";
-        Hashids hashids = new Hashids(id);
-        String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
-        String newid = hexaid + "" + randomString(10);
-       // center.setCenterid(newid);
-
-
-        String s = centerDAOController.create(center);
-        return s;
+       return centerDAOController.create(center);
     }
 
 
@@ -120,5 +119,11 @@ public class CenterDAOService {
 
     public boolean checkIfExist(String centerName) {
         return centerDAOController.checkIfExist(centerName);
+    }
+
+    public String getCenterOIndividualAccountNoByCenterNameOIndividualName(String memberName) {
+        Center center=centerDAOController.getCenterByName(memberName);
+        Account account=accountDAOController.getAccountByCenterOIndividualId(center.getCenterid());
+        return account.getAccountNo();
     }
 }

@@ -93,7 +93,7 @@
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="mailMail" class="org.egreen.opensms.server.models.MailMail">
+    <beans:bean id="mailMail" class="org.egreen.opensms.server.models.MailMaill">
         <beans:property name="mailSender" ref="mailSender" />
     </beans:bean>
 

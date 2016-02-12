@@ -100,10 +100,6 @@
             <element id="module-output" name="UserModule" />
             <element id="dir-copy" path="$PROJECT_DIR$/UserModule/build/resources/main" />
           </element>
-          <element id="archive" name="org.egreen.opensmspro-CollectionModule-1.0-SNAPSHOT.jar">
-            <element id="module-output" name="CollectionModule" />
-            <element id="dir-copy" path="$PROJECT_DIR$/CollectionModule/build/resources/main" />
-          </element>
           <element id="archive" name="org.egreen.opensmspro-CashModule-1.0-SNAPSHOT.jar">
             <element id="module-output" name="CashModule" />
             <element id="dir-copy" path="$PROJECT_DIR$/CashModule/build/resources/main" />
@@ -111,6 +107,10 @@
           <element id="archive" name="org.egreen.opensmspro-ReportModule-1.0-SNAPSHOT.jar">
             <element id="module-output" name="ReportModule" />
             <element id="dir-copy" path="$PROJECT_DIR$/ReportModule/build/resources/main" />
+          </element>
+          <element id="archive" name="org.egreen.opensmspro-CollectionModule-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="CollectionModule" />
+            <element id="dir-copy" path="$PROJECT_DIR$/CollectionModule/build/resources/main" />
           </element>
           <element id="archive" name="org.egreen.opensmspro-LogModule-1.0-SNAPSHOT.jar">
             <element id="module-output" name="LogModule" />

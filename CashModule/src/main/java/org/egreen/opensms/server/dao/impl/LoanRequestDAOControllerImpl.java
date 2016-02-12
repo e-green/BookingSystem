@@ -1,8 +1,11 @@
 package org.egreen.opensms.server.dao.impl;
 
 import org.egreen.opensms.server.dao.LoanRequestDAOController;
+import org.egreen.opensms.server.entity.ApprovedLoan;
 import org.egreen.opensms.server.entity.LoanRequest;
+import org.egreen.opensms.server.models.LoanRequestModel;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
@@ -84,5 +87,36 @@ public class LoanRequestDAOControllerImpl extends AbstractDAOController<LoanRequ
         }
         return criteria.list();
 
+    }
+
+    /**
+     * Check is there already have not Approved loan with specific Center, specific individual
+     *
+     * @param centerid
+     * @param individualId
+     * @return
+     * @author ruwan
+     */
+    @Override
+    public boolean checkIsThereAlreadyRequestedLoanHaveSpecifiedCenterIndividual(String centerid, String individualId) {
+        Query query = getSession().createQuery("SELECT lr FROM LoanRequest lr WHERE lr.centerid = :centerid AND lr.individualId = :individualId AND lr.status = false");
+        query.setString("centerid", centerid);
+        query.setString("individualId", individualId);
+        List<LoanRequest> loanRequestList = query.list();
+        boolean isOk=false;
+        if(loanRequestList.size() > 0){
+            isOk=false;
+        }else{
+            isOk=true;
+        }
+        return isOk;
+    }
+
+    @Override
+    public List<ApprovedLoan> getAllPaidLoansNDueLoansByCenterIdNIndividualId(String centerId, String individualId, Integer limit, Integer offset) {
+        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.center = :centerid AND a.individualId = :individualId");
+        query.setString("centerid", centerId);
+        query.setString("individualId", individualId);
+        return query.list();
     }
 }

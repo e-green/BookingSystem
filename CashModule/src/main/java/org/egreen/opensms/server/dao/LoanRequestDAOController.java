@@ -1,6 +1,8 @@
 package org.egreen.opensms.server.dao;
 
+import org.egreen.opensms.server.entity.ApprovedLoan;
 import org.egreen.opensms.server.entity.LoanRequest;
+import org.egreen.opensms.server.models.LoanRequestModel;
 
 import java.util.List;
 
@@ -20,4 +22,8 @@ public interface LoanRequestDAOController extends DAOController<LoanRequest,Stri
     List<LoanRequest> getAllLoanRequestsByUserId(String userId, Integer limit, Integer offset);
 
     List<LoanRequest> getAllLoanRequestByPagination(Integer type, Integer limit, Integer offset);
+
+    boolean checkIsThereAlreadyRequestedLoanHaveSpecifiedCenterIndividual(String centerid, String individualId);
+
+    List<ApprovedLoan> getAllPaidLoansNDueLoansByCenterIdNIndividualId(String centerId, String individualId, Integer limit, Integer offset);
 }

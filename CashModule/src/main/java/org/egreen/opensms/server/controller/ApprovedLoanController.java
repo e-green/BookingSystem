@@ -1,7 +1,7 @@
 package org.egreen.opensms.server.controller;
 
 import org.egreen.opensms.server.entity.ApprovedLoan;
-import org.egreen.opensms.server.models.ReturnIdModel;
+import org.egreen.opensms.server.models.ReturnIdModel1;
 import org.egreen.opensms.server.service.ApprovedLoanDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,11 +30,11 @@ public class ApprovedLoanController {
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnIdModel save(@RequestBody ApprovedLoan approvedLoan) {
+    public ReturnIdModel1 save(@RequestBody ApprovedLoan approvedLoan) {
         String res = approvedLoanDAOService.save(approvedLoan);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
 
     }
 
@@ -47,11 +47,11 @@ public class ApprovedLoanController {
      */
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnIdModel update(@RequestBody ApprovedLoan approvedLoan) {
+    public ReturnIdModel1 update(@RequestBody ApprovedLoan approvedLoan) {
         String res = approvedLoanDAOService.update(approvedLoan);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
 
     }
 

@@ -69,4 +69,18 @@ public class CenterDAOControllerImpl extends AbstractDAOController<Center, Strin
             return false;
         }
     }
+
+    @Override
+    public Center getCenterByName(String memberName) {
+        Center fCenter=new Center();
+        Criteria criteria = getSession().createCriteria(entityType);
+        criteria.add(Restrictions.eq("name", memberName));
+        List<Center>  centerList= criteria.list();
+        if(centerList.size()>0){
+            for (Center center:centerList) {
+                fCenter=center;
+            }
+        }
+        return fCenter;
+    }
 }

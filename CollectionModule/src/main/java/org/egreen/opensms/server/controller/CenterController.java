@@ -1,17 +1,16 @@
 package org.egreen.opensms.server.controller;
-
+import org.egreen.opensms.server.entity.Account;
 import org.egreen.opensms.server.entity.Center;
-import org.egreen.opensms.server.models.CenterModel;
-import org.egreen.opensms.server.models.ReturnIdModel;
+
+import org.egreen.opensms.server.models.ReturnIdModel1;
+import org.egreen.opensms.server.service.AccountDAOService;
 import org.egreen.opensms.server.service.CenterDAOService;
+import org.egreen.opensms.server.service.IndividualDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -24,6 +23,12 @@ public class CenterController {
     @Autowired
     private CenterDAOService centerDAOService;
 
+    @Autowired
+    private AccountDAOService accountDAOService;
+
+    @Autowired
+    private IndividualDAOService individualDAOService;
+
     /**
      * save Center
      *
@@ -32,15 +37,21 @@ public class CenterController {
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnIdModel save(@RequestBody Center center) {
-        String res = centerDAOService.save(center);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
+    public ReturnIdModel1 save(@RequestBody Center center) {
+        String centerId = centerDAOService.save(center);
+        String res=null;
+        if(null!= centerId){
+            Account account=new Account();
+            account.setMemberId(centerId);
+            res = accountDAOService.save(account);
+        }
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
 
     }
-
-
+//
+//
     /**
      * Update Center
      *
@@ -49,14 +60,14 @@ public class CenterController {
      */
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnIdModel update(@RequestBody Center center) {
+    public ReturnIdModel1 update(@RequestBody Center center) {
         String res = centerDAOService.update(center);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
 
     }
-
+//
     /**
      * Get package Id
      *
@@ -64,11 +75,11 @@ public class CenterController {
      */
     @RequestMapping(value = "getId", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public ReturnIdModel getId(@RequestParam("branchCode") String branchID) {
+    public ReturnIdModel1 getId(@RequestParam("branchCode") String branchID) {
         String res = centerDAOService.getNextId(branchID);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
 
     }
 
@@ -159,20 +170,19 @@ public class CenterController {
 
     }
 
-    /**
-     *
-     * getCenterCode
-     *
-     * @param centerName
-     * @return
-     */
-    @RequestMapping(value = "getCenterCode", method = RequestMethod.GET, headers = "Accept=application/json")
+
+    @RequestMapping(value = "getCenterOIndividualAccountNoByCenterNameOIndividualName", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public ReturnIdModel getCenterCode(@RequestParam("centerName") String centerName) {
-        String name=centerName.substring(0, 3);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(name);
-        return returnIdModel;
+    public ReturnIdModel1 getCenterCode(@RequestParam("name") String memberName,@RequestParam("centerOIndividual") int centerOIndividual) {
+        String name=null;
+        if(0== centerOIndividual){
+            name=centerDAOService.getCenterOIndividualAccountNoByCenterNameOIndividualName(memberName);
+        }else if(1 == centerOIndividual){
+            name=individualDAOService.getCenterOIndividualAccountNoByCenterNameOIndividualName(memberName);
+        }
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(name);
+        return returnIdModel1;
 
     }
 

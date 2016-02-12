@@ -1,7 +1,10 @@
 package org.egreen.opensms.server.service;
 
+import org.egreen.opensms.server.dao.ApprovedLoanDAOController;
 import org.egreen.opensms.server.dao.LoanRequestDAOController;
+import org.egreen.opensms.server.entity.ApprovedLoan;
 import org.egreen.opensms.server.entity.LoanRequest;
+import org.egreen.opensms.server.models.LoanRequestModel;
 import org.egreen.opensms.server.utils.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,8 @@ public class LoanRequestDAOService {
     @Autowired
     private LoanRequestDAOController loanRequestDAOController;
 
+    @Autowired
+    private ApprovedLoanDAOController approvedLoanDAOController;
 
     private List<LoanRequest> all;
     private String id;
@@ -33,16 +38,27 @@ public class LoanRequestDAOService {
      * @return
      */
     public String save(LoanRequest loanRequest) {
-        String id = new Date().getTime() + "";
-        Hashids hashids = new Hashids(id);
-        String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
-        String newid = hexaid + "" + randomString(10);
-        loanRequest.setLoanRequestId(newid);
-        loanRequest.setRequestDate(new Timestamp(new Date().getTime()));
+        boolean canRequest=loanRequestDAOController.checkIsThereAlreadyRequestedLoanHaveSpecifiedCenterIndividual(loanRequest.getCenterid(),loanRequest.getIndividualId());
+        String res=null;
+        if(canRequest == true){
+            boolean isOk=approvedLoanDAOController.checkApprovedLoanDueAmountsZero(loanRequest.getCenterid(),loanRequest.getIndividualId());
+            if(isOk == true){
+                String id = new Date().getTime() + "";
+                Hashids hashids = new Hashids(id);
+                String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
+                String newid = hexaid + "" + randomString(10);
+                loanRequest.setLoanRequestId(newid);
+                loanRequest.setRequestDate(new Timestamp(new Date().getTime()));
+                loanRequestDAOController.create(loanRequest);
+                res="3";
+            }else{
+                res="2";
+            }
+        }else{
+            res="1";
+        }
 
-
-        String s = loanRequestDAOController.create(loanRequest);
-        return s;
+        return res;
     }
 
 
@@ -116,6 +132,10 @@ public class LoanRequestDAOService {
     }
 
     public List<LoanRequest> getAllLoanRequestByPagination(Integer type, Integer limit, Integer offset) {
-        return loanRequestDAOController.getAllLoanRequestByPagination(type,limit,offset);
+        return loanRequestDAOController.getAllLoanRequestByPagination(type, limit, offset);
+    }
+
+    public List<ApprovedLoan> getAllPaidLoansNDueLoansByCenterIdNIndividualId(String centerId, String individualId, Integer limit, Integer offset) {
+        return loanRequestDAOController.getAllPaidLoansNDueLoansByCenterIdNIndividualId(centerId,individualId,limit,offset);
     }
 }

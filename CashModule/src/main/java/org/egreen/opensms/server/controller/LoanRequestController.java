@@ -1,17 +1,17 @@
 package org.egreen.opensms.server.controller;
 
 import org.egreen.opensms.server.entity.ApprovedLoan;
+
 import org.egreen.opensms.server.entity.LoanRequest;
-import org.egreen.opensms.server.models.ReturnIdModel;
-import org.egreen.opensms.server.service.ApprovedLoanDAOService;
+import org.egreen.opensms.server.models.LoanRequestModel;
+import org.egreen.opensms.server.models.ReturnIdModel1;
+
 import org.egreen.opensms.server.service.LoanRequestDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,8 +26,8 @@ public class LoanRequestController {
     @Autowired
     private LoanRequestDAOService loanRequestDAOService;
 
-    @Autowired
-    private ApprovedLoanDAOService approvedLoanDAOService;
+//    @Autowired
+//    private IndividualDAOService individualDAOService;
 
     /**
      * save LoanRequest
@@ -37,12 +37,11 @@ public class LoanRequestController {
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnIdModel save(@RequestBody LoanRequest loanRequest) {
+    public ReturnIdModel1 save(@RequestBody LoanRequest loanRequest) {
         String res = loanRequestDAOService.save(loanRequest);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
-
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
     }
 
 
@@ -54,11 +53,11 @@ public class LoanRequestController {
      */
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnIdModel update(@RequestBody LoanRequest loanRequest) {
+    public ReturnIdModel1 update(@RequestBody LoanRequest loanRequest) {
         String res = loanRequestDAOService.update(loanRequest);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
 
     }
 
@@ -104,10 +103,27 @@ public class LoanRequestController {
      */
     @RequestMapping(value = "getAllLoanRequestersByPagination", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public List<LoanRequest> getAllLoanRequestByPagination(@RequestParam("type") Integer type,
-                                                           @RequestParam("limit") Integer limit,
-                                                           @RequestParam("offset") Integer offset) {
-        return loanRequestDAOService.getAllLoanRequestByPagination(type, limit, offset);
+    public List<LoanRequestModel> getAllLoanRequestByPagination(@RequestParam("type") Integer type,
+                                                                @RequestParam("limit") Integer limit,
+                                                                @RequestParam("offset") Integer offset) {
+        List<LoanRequest> loanRequestList = loanRequestDAOService.getAllLoanRequestByPagination(type, limit, offset);
+        List<LoanRequestModel> requestModelList=new ArrayList<LoanRequestModel>();
+        for (LoanRequest loanRequest:loanRequestList) {
+            String individualId = loanRequest.getIndividualId();
+         //   Individual individual=individualDAOService.getBranchById(individualId);
+            LoanRequestModel loanRequestModel=new LoanRequestModel();
+            loanRequestModel.setLoanRequestId(loanRequest.getLoanRequestId());
+            loanRequestModel.setCenterid(loanRequest.getCenterid());
+            loanRequestModel.setIndividualId(loanRequest.getIndividualId());
+          //  loanRequestModel.setIndividualName(individual.getName());
+            loanRequestModel.setAmount(loanRequest.getAmount());
+            loanRequestModel.setUser(loanRequest.getUser());
+            loanRequestModel.setRequestDate(loanRequest.getRequestDate());
+            loanRequestModel.setStatus(loanRequest.getStatus());
+            requestModelList.add(loanRequestModel);
+
+        }
+        return requestModelList;
     }
 
     /**
@@ -125,6 +141,26 @@ public class LoanRequestController {
                                                         @RequestParam("offset") Integer offset) {
         return loanRequestDAOService.getAllLoanRequestsByUserId(userId,limit,offset);
     }
+
+    /**
+     * Get All paid Loans and unpaid Loas by individualId and centerId
+     *
+     * @param centerId
+     * @param individualId
+     * @param limit
+     * @param offset
+     * @return
+     */
+    @RequestMapping(value = "getAllPaidLoansNDueLoansByCenterIdNIndividualId", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public List<ApprovedLoan> getAllPaidLoansNDueLoansByCenterIdNIndividualId(@RequestParam("centerId") String centerId ,
+                                                                                                  @RequestParam("individualId") String individualId,
+                                                                                                  @RequestParam("limit") Integer limit,
+                                                                                                  @RequestParam("offset") Integer offset) {
+        return loanRequestDAOService.getAllPaidLoansNDueLoansByCenterIdNIndividualId(centerId,individualId,limit,offset);
+    }
+
+
 
     /**
      * removeLoanRequestById

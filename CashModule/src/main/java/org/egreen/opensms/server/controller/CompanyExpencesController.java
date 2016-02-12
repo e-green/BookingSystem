@@ -1,7 +1,7 @@
 package org.egreen.opensms.server.controller;
 
 import org.egreen.opensms.server.entity.CompanyExpences;
-import org.egreen.opensms.server.models.ReturnIdModel;
+import org.egreen.opensms.server.models.ReturnIdModel1;
 import org.egreen.opensms.server.service.CompanyExpencesDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,11 +32,11 @@ public class CompanyExpencesController {
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnIdModel save(@RequestBody CompanyExpences companyExpences) {
+    public ReturnIdModel1 save(@RequestBody CompanyExpences companyExpences) {
         String res = companyExpencesDAOService.save(companyExpences);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
 
     }
 
@@ -49,11 +49,11 @@ public class CompanyExpencesController {
      */
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnIdModel update(@RequestBody CompanyExpences companyExpences) {
+    public ReturnIdModel1 update(@RequestBody CompanyExpences companyExpences) {
         String res = companyExpencesDAOService.update(companyExpences);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
 
     }
 

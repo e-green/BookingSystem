@@ -1,8 +1,10 @@
 package org.egreen.opensms.server.service;
 
+import org.egreen.opensms.server.dao.AccountDAOController;
 import org.egreen.opensms.server.dao.IndividualDAOController;
 
 
+import org.egreen.opensms.server.entity.Account;
 import org.egreen.opensms.server.entity.Individual;
 import org.egreen.opensms.server.utils.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class IndividualDAOService {
 
     @Autowired
     private IndividualDAOController individualDAOController;
+
+    @Autowired
+    private AccountDAOController accountDAOController;
     
     private List<Individual> all;
     private String id;
@@ -34,16 +39,11 @@ public class IndividualDAOService {
      * @return
      */
     public String save(Individual individual) {
-//        String id = new Date().getTime()+"";
-//        Hashids hashids = new Hashids(id);
-//        String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
-//        String newid = hexaid + "" + randomString(10);
-//        if (individual.getName()!=null) {
-//            individual.setBranchid(individual.getName());
-//        }
-
-     //  individual.setIndividualId(newid);
-
+        String id = new Date().getTime()+"";
+        Hashids hashids = new Hashids(id);
+        String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
+        String newid = hexaid + "" + randomString(10);
+        individual.setIndividualId(newid);
         String s = individualDAOController.create(individual);
         return s;
     }
@@ -117,5 +117,11 @@ public class IndividualDAOService {
 
     public Individual getIndividualsByCenterIdAndIndividualId(String centerId, String individualId) {
         return individualDAOController.getIndividualsByCenterIdAndIndividualId(centerId,individualId);
+    }
+
+    public String getCenterOIndividualAccountNoByCenterNameOIndividualName(String memberName) {
+        Individual individual=individualDAOController.getIndividualByName(memberName);
+        Account account=accountDAOController.getAccountByCenterOIndividualId(individual.getIndividualId());
+        return account.getAccountNo();
     }
 }

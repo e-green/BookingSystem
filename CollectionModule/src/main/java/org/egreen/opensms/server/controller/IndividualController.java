@@ -1,8 +1,10 @@
 package org.egreen.opensms.server.controller;
 
-import org.egreen.opensms.server.entity.Center;
+import org.egreen.opensms.server.entity.Account;
 import org.egreen.opensms.server.entity.Individual;
-import org.egreen.opensms.server.models.ReturnIdModel;
+
+import org.egreen.opensms.server.models.ReturnIdModel1;
+import org.egreen.opensms.server.service.AccountDAOService;
 import org.egreen.opensms.server.service.IndividualDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,9 @@ public class IndividualController {
     @Autowired
     private IndividualDAOService individualDAOService;
 
+    @Autowired
+    private AccountDAOService accountDAOService;
+//
     /**
      * save Branch
      *
@@ -29,15 +34,21 @@ public class IndividualController {
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnIdModel save(@RequestBody Individual individual) {
-        String res = individualDAOService.save(individual);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
+    public ReturnIdModel1 save(@RequestBody Individual individual) {
+        String individualId = individualDAOService.save(individual);
+        String res=null;
+        if(null!= individualId){
+            Account account=new Account();
+            account.setMemberId(individualId);
+            res = accountDAOService.save(account);
+        }
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
 
     }
-
-
+//
+//
     /**
      * Update Branch
      *
@@ -46,11 +57,11 @@ public class IndividualController {
      */
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnIdModel update(@RequestBody Individual individual) {
+    public ReturnIdModel1 update(@RequestBody Individual individual) {
         String res = individualDAOService.update(individual);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(res);
-        return returnIdModel;
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
 
     }
 
@@ -83,21 +94,21 @@ public class IndividualController {
         boolean all = individualDAOService.checkIfExist(individualName);
         return all;
     }
-
-    /**
-     * Get package Id
-     *
-     * @return
-     */
-    @RequestMapping(value = "getId", method = RequestMethod.GET, headers = "Accept=application/json")
-    @ResponseBody
-    public ReturnIdModel getId(@RequestParam("name") String name) {
-        String nameNew=name.substring(0, 3);
-        ReturnIdModel returnIdModel = new ReturnIdModel();
-        returnIdModel.setId(nameNew);
-        return returnIdModel;
-
-    }
+//
+//    /**
+//     * Get package Id
+//     *
+//     * @return
+//     */
+//    @RequestMapping(value = "getId", method = RequestMethod.GET, headers = "Accept=application/json")
+//    @ResponseBody
+//    public ReturnIdModel1 getId(@RequestParam("name") String name) {
+//        String nameNew=name.substring(0, 3);
+//        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+//        returnIdModel1.setId(nameNew);
+//        return returnIdModel1;
+//
+//    }
 
     /**
      * getIndividualsByCenterIdAndIndividualId

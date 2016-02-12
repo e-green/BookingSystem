@@ -20,7 +20,6 @@ public class Center implements EntityInterface <String> {
     private Boolean hasCommision;
 
 
-
     @Id
     @Column(name = "centerid")
     public String getCenterid() {
@@ -90,4 +89,6 @@ public class Center implements EntityInterface <String> {
                 ", hasCommision=" + hasCommision +
                 '}';
     }
+
+
 }

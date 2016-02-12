@@ -18,4 +18,6 @@ public interface CenterDAOController extends DAOController<Center,String> {
     long getCenterCountByBranch(String branchID);
 
     boolean checkIfExist(String centerName);
+
+    Center getCenterByName(String memberName);
 }

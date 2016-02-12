@@ -34,7 +34,6 @@
     <orderEntry type="module" module-name="basicweb" exported="" />
     <orderEntry type="module" module-name="dbcontroller" exported="" />
     <orderEntry type="module" module-name="UserModule" exported="" />
-    <orderEntry type="module" module-name="CollectionModule" exported="" />
     <orderEntry type="module" module-name="CashModule" exported="" />
     <orderEntry type="module" module-name="ReportModule" exported="" />
     <orderEntry type="module" module-name="LogModule" exported="" />
@@ -57,5 +56,6 @@
     <orderEntry type="library" exported="" name="Gradle: org.apache.logging.log4j:log4j-core:2.0" level="project" />
     <orderEntry type="library" exported="" scope="RUNTIME" name="Gradle: org.slf4j:slf4j-log4j12:1.5.8" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.7" level="project" />
+    <orderEntry type="module" module-name="CollectionModule" exported="" />
   </component>
 </module>

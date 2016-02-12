@@ -74,9 +74,8 @@ public class LoanRequest implements EntityInterface <String> {
     public void setRequestDate(Timestamp requestDate) {
         this.requestDate = requestDate;
     }
-
-
-    public boolean isStatus() {
+    
+    public boolean getStatus() {
         return status;
     }
 

@@ -2,8 +2,7 @@ dependencies {
     compile project(':main')
     compile project(':basicweb')
     compile project(':dbcontroller')
-  
     compile project(':CashModule')
-    compile project(':CollectionModule')
+
     compile project(':UserModule')
 }

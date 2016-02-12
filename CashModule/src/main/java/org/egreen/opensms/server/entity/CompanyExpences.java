@@ -17,7 +17,7 @@ public class CompanyExpences implements EntityInterface<String> {
 
     private String companyexpencesId;
     private Timestamp date;
-    private String center;
+    private String accountNo;
     private String reason;
     private BigDecimal amount;
 
@@ -40,13 +40,12 @@ public class CompanyExpences implements EntityInterface<String> {
         this.date = date;
     }
 
-
-    public String getCenter() {
-        return center;
+    public String getAccountNo() {
+        return accountNo;
     }
 
-    public void setCenter(String center) {
-        this.center = center;
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
     }
 
     public String getReason() {
@@ -77,9 +76,11 @@ public class CompanyExpences implements EntityInterface<String> {
         return "CompanyExpences{" +
                 "companyexpencesId='" + companyexpencesId + '\'' +
                 ", date=" + date +
-                ", center='" + center + '\'' +
+                ", accountNo='" + accountNo + '\'' +
                 ", reason='" + reason + '\'' +
                 ", amount=" + amount +
                 '}';
     }
+
+
 }
