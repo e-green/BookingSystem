@@ -170,10 +170,16 @@ public class CenterController {
 
     }
 
-
+    /**
+     * Get center or individual account no by center or individual name
+     *
+     * @param memberName
+     * @param centerOIndividual
+     * @return
+     */
     @RequestMapping(value = "getCenterOIndividualAccountNoByCenterNameOIndividualName", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public ReturnIdModel1 getCenterCode(@RequestParam("name") String memberName,@RequestParam("centerOIndividual") int centerOIndividual) {
+    public ReturnIdModel1 getCenterOIndividualAccountNoByCenterNameOIndividualName(@RequestParam("name") String memberName,@RequestParam("centerOIndividual") int centerOIndividual) {
         String name=null;
         if(0== centerOIndividual){
             name=centerDAOService.getCenterOIndividualAccountNoByCenterNameOIndividualName(memberName);
@@ -183,7 +189,27 @@ public class CenterController {
         ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
         returnIdModel1.setId(name);
         return returnIdModel1;
+    }
 
+    /**
+     * Get center or individual account no by center or individual Id
+     *
+     * @param memberId
+     * @param centerOIndividual
+     * @return
+     */
+    @RequestMapping(value = "getCenterOIndividualAccountNoByCenterIdOIndividualId", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public ReturnIdModel1 getCenterOIndividualAccountNoByCenterIdOIndividualId(@RequestParam("memberId") String memberId,@RequestParam("centerOIndividual") int centerOIndividual) {
+        String name=null;
+        if(0== centerOIndividual){
+            name=centerDAOService.getCenterOIndividualAccountNoByCenterId(memberId);
+        }else if(1 == centerOIndividual){
+            name=individualDAOService.getCenterOIndividualAccountNoByIndividualId(memberId);
+        }
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(name);
+        return returnIdModel1;
     }
 
     @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")

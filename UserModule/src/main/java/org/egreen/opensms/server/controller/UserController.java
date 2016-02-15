@@ -2,6 +2,7 @@ package org.egreen.opensms.server.controller;
 
 import org.apache.commons.io.IOUtils;
 import org.egreen.opensms.server.entity.User;
+import org.egreen.opensms.server.models.AllDetailModel;
 import org.egreen.opensms.server.models.UserModel;
 import org.egreen.opensms.server.service.UserDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,4 +207,5 @@ public class UserController {
         }
 
     }
+
 }

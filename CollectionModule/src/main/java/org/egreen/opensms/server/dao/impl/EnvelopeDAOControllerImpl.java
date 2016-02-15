@@ -122,5 +122,25 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         return query.list();
     }
 
+    @Override
+    public boolean getEnvelopeByCenterIdNIndividualIdDate(String center, String individualId, String formatedDate) {
+        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.individualId = :individualId AND DATE(e.date) = DATE( :formatedDate)");
+        query.setString("formatedDate", formatedDate);
+        query.setString("center", center);
+        query.setString("individualId", individualId);
+        boolean b=false;
+        List<Envelope> envelopeList= query.list();
+        for (Envelope envelope:envelopeList) {
+            if (null!= envelope){
+                if(!envelope.getCenter().equals(null)){
+                    b=true;
+                }
+                else {
+                    b=false;
+                }
+            }
+        }
+        return b;
+    }
 
 }

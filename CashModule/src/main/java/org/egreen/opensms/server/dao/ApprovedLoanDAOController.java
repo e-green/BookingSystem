@@ -18,4 +18,7 @@ public interface ApprovedLoanDAOController extends DAOController<ApprovedLoan,St
     ApprovedLoan getOpenLoanDetailByIndividualId(String individualId);
 
     boolean checkApprovedLoanDueAmountsZero(String centerid, String individualId);
+
+
+    List<ApprovedLoan> getAllUnpaidLoans();
 }

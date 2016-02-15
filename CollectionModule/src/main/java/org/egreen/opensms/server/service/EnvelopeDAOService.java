@@ -153,4 +153,8 @@ public class EnvelopeDAOService {
     public List<Envelope> getEnvelopeByCenterIdDate(String center, Integer limit, Integer offset, String formatedDate) {
         return envelopeDAOController.getEnvelopeByCenterIdDate(center,limit,offset,formatedDate);
     }
+
+    public boolean getEnvelopeByCenterIdNIndividualIdDate(String center, String individualId, String formatedDate) {
+        return envelopeDAOController.getEnvelopeByCenterIdNIndividualIdDate(center,individualId,formatedDate);
+    }
 }

@@ -2,9 +2,12 @@ package org.egreen.opensms.server.dao.impl;
 
 import org.egreen.opensms.server.dao.UserDAOController;
 import org.egreen.opensms.server.entity.User;
+import org.egreen.opensms.server.models.AllDetailModel;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Created by Pramoda Fernando on 1/14/2015.
@@ -58,5 +61,10 @@ public class UserDAOControllerImpl extends AbstractDAOController<User,String> im
             return null;
         }
 
+    }
+
+    @Override
+    public List<AllDetailModel> getAllDetails() {
+        return null;
     }
 }

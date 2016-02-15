@@ -7,6 +7,7 @@ import java.sql.Timestamp;
  */
 public class EnvelopeModel {
     private String center;
+    private String individualId;
     private Timestamp date;
     private Integer limit;
     private Integer offset;
@@ -52,5 +53,13 @@ public class EnvelopeModel {
                 ", limit='" + limit + '\'' +
                 ", offset='" + offset + '\'' +
                 '}';
+    }
+
+    public String getIndividualId() {
+        return individualId;
+    }
+
+    public void setIndividualId(String individualId) {
+        this.individualId = individualId;
     }
 }

@@ -126,4 +126,10 @@ public class CenterDAOService {
         Account account=accountDAOController.getAccountByCenterOIndividualId(center.getCenterid());
         return account.getAccountNo();
     }
+
+    public String getCenterOIndividualAccountNoByCenterId(String memberId) {
+        Center center=centerDAOController.read(memberId);
+        Account account=accountDAOController.getAccountByCenterOIndividualId(center.getCenterid());
+        return account.getAccountNo();
+    }
 }

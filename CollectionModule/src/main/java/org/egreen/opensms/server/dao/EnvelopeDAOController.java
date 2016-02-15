@@ -25,4 +25,6 @@ public interface EnvelopeDAOController extends DAOController<Envelope,String> {
     Envelope getEnvelopesByIndividualIdByDateNCenterId(String individualId, String formatedDate, String centerId);
 
     List<Envelope> getEnvelopeByCenterIdDate(String center, Integer limit, Integer offset, String formatedDate);
+
+    boolean getEnvelopeByCenterIdNIndividualIdDate(String center, String individualId, String formatedDate);
 }

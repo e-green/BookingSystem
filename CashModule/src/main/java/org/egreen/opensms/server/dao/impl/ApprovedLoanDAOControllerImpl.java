@@ -80,4 +80,11 @@ public class ApprovedLoanDAOControllerImpl extends AbstractDAOController<Approve
         }
         return isOk;
     }
+
+    @Override
+    public List<ApprovedLoan> getAllUnpaidLoans() {
+        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.dueamount > 1.0");
+        List<ApprovedLoan> unpaidLoanList = query.list();
+        return unpaidLoanList;
+    }
 }

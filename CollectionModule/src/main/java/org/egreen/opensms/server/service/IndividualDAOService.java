@@ -119,8 +119,26 @@ public class IndividualDAOService {
         return individualDAOController.getIndividualsByCenterIdAndIndividualId(centerId,individualId);
     }
 
+    /**
+     * Get Individual account no by individual name
+     *
+     * @param memberName
+     * @return
+     */
     public String getCenterOIndividualAccountNoByCenterNameOIndividualName(String memberName) {
         Individual individual=individualDAOController.getIndividualByName(memberName);
+        Account account=accountDAOController.getAccountByCenterOIndividualId(individual.getIndividualId());
+        return account.getAccountNo();
+    }
+
+    /**
+     * Get Individual account no by individual Id
+     *
+     * @param memberId
+     * @return
+     */
+    public String getCenterOIndividualAccountNoByIndividualId(String memberId) {
+        Individual individual=individualDAOController.read(memberId);
         Account account=accountDAOController.getAccountByCenterOIndividualId(individual.getIndividualId());
         return account.getAccountNo();
     }

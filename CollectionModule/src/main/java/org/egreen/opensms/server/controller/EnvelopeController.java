@@ -139,6 +139,15 @@ public class EnvelopeController {
 
     }
 
+    @RequestMapping(value = "getEnvelopeByCenterIdNIndividualIdDate",method = RequestMethod.POST)
+    @ResponseBody
+    public boolean getEnvelopeByCenterIdNIndividualIdDate(@RequestBody EnvelopeModel envelope){
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM--dd");
+        String formatedDate = simpleDateFormat.format(envelope.getDate());
+        return envelopeDAOService.getEnvelopeByCenterIdNIndividualIdDate(envelope.getCenter(),envelope.getIndividualId(),formatedDate);
+
+    }
+
     @RequestMapping(value = "getEnvelopesByIndividualIdByDate", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public List<Envelope> getEnvelopesByIndividualIdByDate(@RequestParam("individualId") String individualId,

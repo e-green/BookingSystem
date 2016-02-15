@@ -38,9 +38,6 @@ public class ApprovedLoanDAOService {
         Hashids hashids = new Hashids(id);
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
         String newid = hexaid + "" + randomString(10);
-//        if (approvedLoan.getName()!=null) {
-//            approvedLoan.setBranchid(approvedLoan.getName());
-//        }
         approvedLoan.setApprovedloanId(newid);
 
         String s = approvedLoanDAOController.create(approvedLoan);
@@ -102,5 +99,14 @@ public class ApprovedLoanDAOService {
 
     public ApprovedLoan getOpenLoanDetailByIndividualId(String individualId) {
         return approvedLoanDAOController.getOpenLoanDetailByIndividualId(individualId);
+    }
+
+    /**
+     * get all unpaid loan list
+     *
+     * @return
+     */
+    public List<ApprovedLoan> getUnpaidLoans() {
+        return approvedLoanDAOController.getAllUnpaidLoans();
     }
 }

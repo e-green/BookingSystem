@@ -26,9 +26,6 @@ public class LoanRequestController {
     @Autowired
     private LoanRequestDAOService loanRequestDAOService;
 
-//    @Autowired
-//    private IndividualDAOService individualDAOService;
-
     /**
      * save LoanRequest
      *
@@ -94,37 +91,7 @@ public class LoanRequestController {
 //        return centerModelList;
 //    }
 
-    /**
-     * Get All LoanRequesters By Pagination
-     *
-     * @param limit
-     * @param offset
-     * @return
-     */
-    @RequestMapping(value = "getAllLoanRequestersByPagination", method = RequestMethod.GET, headers = "Accept=application/json")
-    @ResponseBody
-    public List<LoanRequestModel> getAllLoanRequestByPagination(@RequestParam("type") Integer type,
-                                                                @RequestParam("limit") Integer limit,
-                                                                @RequestParam("offset") Integer offset) {
-        List<LoanRequest> loanRequestList = loanRequestDAOService.getAllLoanRequestByPagination(type, limit, offset);
-        List<LoanRequestModel> requestModelList=new ArrayList<LoanRequestModel>();
-        for (LoanRequest loanRequest:loanRequestList) {
-            String individualId = loanRequest.getIndividualId();
-         //   Individual individual=individualDAOService.getBranchById(individualId);
-            LoanRequestModel loanRequestModel=new LoanRequestModel();
-            loanRequestModel.setLoanRequestId(loanRequest.getLoanRequestId());
-            loanRequestModel.setCenterid(loanRequest.getCenterid());
-            loanRequestModel.setIndividualId(loanRequest.getIndividualId());
-          //  loanRequestModel.setIndividualName(individual.getName());
-            loanRequestModel.setAmount(loanRequest.getAmount());
-            loanRequestModel.setUser(loanRequest.getUser());
-            loanRequestModel.setRequestDate(loanRequest.getRequestDate());
-            loanRequestModel.setStatus(loanRequest.getStatus());
-            requestModelList.add(loanRequestModel);
 
-        }
-        return requestModelList;
-    }
 
     /**
      *

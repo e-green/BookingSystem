@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -149,5 +150,15 @@ public class ApprovedLoanController {
         return new ApprovedLoan();
     }
 
-
+    /**
+     * get all unpaid loans
+     *
+     * @return
+     */
+    @RequestMapping(value = "getAllUnpaidLoans", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public List<ApprovedLoan> getAll() {
+        List<ApprovedLoan> unpaidLoans = approvedLoanDAOService.getUnpaidLoans();
+        return unpaidLoans;
+    }
 }
