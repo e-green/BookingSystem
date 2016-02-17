@@ -45,4 +45,8 @@ public class TransactionDAOService {
     public List<Transaction> getAll() {
         return transactionDAOController.getAll();
     }
+
+    public List<Transaction> getTodayTransactionDetailByDateNAccountNo(String date, String accountNo) {
+        return transactionDAOController.getTodayTransactionDetailByDateNAccountNo(date,accountNo);
+    }
 }

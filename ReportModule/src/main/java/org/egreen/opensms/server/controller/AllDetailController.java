@@ -67,7 +67,9 @@ public class AllDetailController {
             LoanRequestModel loanRequestModel=new LoanRequestModel();
             loanRequestModel.setLoanRequestId(loanRequest.getLoanRequestId());
             loanRequestModel.setCenterid(loanRequest.getCenterid());
-            loanRequestModel.setIndividualId(loanRequest.getIndividualId());
+            if(individual != null){
+                loanRequestModel.setIndividualId(loanRequest.getIndividualId());
+            }
             loanRequestModel.setIndividualName(individual.getName());
             loanRequestModel.setAmount(loanRequest.getAmount());
             loanRequestModel.setUser(loanRequest.getUser());

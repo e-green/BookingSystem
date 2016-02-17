@@ -1,18 +1,32 @@
 package org.egreen.opensms.server.controller;
 
-import org.egreen.opensms.server.entity.Envelope;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import org.apache.commons.io.IOUtils;
+import org.egreen.opensms.server.entity.*;
 import org.egreen.opensms.server.models.EnvelopeModel;
 
+import org.egreen.opensms.server.models.GenralSummeryReportModel;
 import org.egreen.opensms.server.models.ReturnIdModel1;
 import org.egreen.opensms.server.service.EnvelopeDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Date;
+import java.util.Map;
 
 
 /**
@@ -25,7 +39,7 @@ public class EnvelopeController {
 
     @Autowired
     private EnvelopeDAOService envelopeDAOService;
-//
+
     /**
      * save Branch
      *
@@ -60,23 +74,22 @@ public class EnvelopeController {
     }
 
     /**
-     *
      * getAll
+     *
      * @param limit
      * @param offset
      * @return
      */
     @RequestMapping(value = "getAll", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public List<Envelope> getAll( @RequestParam("limit") Integer limit,
-                                @RequestParam("offset") Integer offset) {
-        List<Envelope> all = envelopeDAOService.getAllByPagination(limit,offset);
+    public List<Envelope> getAll(@RequestParam("limit") Integer limit,
+                                 @RequestParam("offset") Integer offset) {
+        List<Envelope> all = envelopeDAOService.getAllByPagination(limit, offset);
         return all;
     }
 
 
     /**
-     *
      * checkIfExist
      *
      * @param envelopeName
@@ -104,7 +117,6 @@ public class EnvelopeController {
 //    }
 
     /**
-     *
      * getEnvelopesByCenterId
      *
      * @param centerId
@@ -113,13 +125,13 @@ public class EnvelopeController {
     @RequestMapping(value = "getEnvelopesByCenterId", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public List<Envelope> getEnvelopesByCenterId(@RequestParam("centerId") String centerId,
-                                                 @RequestParam("limit")Integer limit,
-                                                 @RequestParam("offset")Integer offset,
-                                                 @RequestParam("datetime") Long date ) {
+                                                 @RequestParam("limit") Integer limit,
+                                                 @RequestParam("offset") Integer offset,
+                                                 @RequestParam("datetime") Long date) {
         Timestamp timestamp = new Timestamp(date);
-        Date date1 =  new Date(timestamp.getTime());
+        Date date1 = new Date(timestamp.getTime());
 
-        List<Envelope>envelopeList =  envelopeDAOService.getEnvelopesByCenterId(centerId,limit,offset,date1);
+        List<Envelope> envelopeList = envelopeDAOService.getEnvelopesByCenterId(centerId, limit, offset, date1);
         return envelopeList;
 
     }
@@ -130,38 +142,38 @@ public class EnvelopeController {
      * @param envelope
      * @return
      */
-    @RequestMapping(value = "getEnvelopeByCenterIdDate",method = RequestMethod.POST)
+    @RequestMapping(value = "getEnvelopeByCenterIdDate", method = RequestMethod.POST)
     @ResponseBody
-    public List<Envelope> getEnvelopesByCenterId(@RequestBody EnvelopeModel envelope){
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM--dd");
+    public List<Envelope> getEnvelopesByCenterId(@RequestBody EnvelopeModel envelope) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
         String formatedDate = simpleDateFormat.format(envelope.getDate());
-        return envelopeDAOService.getEnvelopeByCenterIdDate(envelope.getCenter(),envelope.getLimit(),envelope.getOffset(),formatedDate);
+        return envelopeDAOService.getEnvelopeByCenterIdDate(envelope.getCenter(), envelope.getLimit(), envelope.getOffset(), formatedDate);
 
     }
 
-    @RequestMapping(value = "getEnvelopeByCenterIdNIndividualIdDate",method = RequestMethod.POST)
+    @RequestMapping(value = "getEnvelopeByCenterIdNIndividualIdDate", method = RequestMethod.POST)
     @ResponseBody
-    public boolean getEnvelopeByCenterIdNIndividualIdDate(@RequestBody EnvelopeModel envelope){
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM--dd");
+    public boolean getEnvelopeByCenterIdNIndividualIdDate(@RequestBody EnvelopeModel envelope) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
         String formatedDate = simpleDateFormat.format(envelope.getDate());
-        return envelopeDAOService.getEnvelopeByCenterIdNIndividualIdDate(envelope.getCenter(),envelope.getIndividualId(),formatedDate);
+        return envelopeDAOService.getEnvelopeByCenterIdNIndividualIdDate(envelope.getCenter(), envelope.getIndividualId(), formatedDate);
 
     }
 
     @RequestMapping(value = "getEnvelopesByIndividualIdByDate", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public List<Envelope> getEnvelopesByIndividualIdByDate(@RequestParam("individualId") String individualId,
-                                                 @RequestParam("limit")Integer limit,
-                                                 @RequestParam("offset")Integer offset,
-                                                 @RequestParam("datetime") Long date) {
+                                                           @RequestParam("limit") Integer limit,
+                                                           @RequestParam("offset") Integer offset,
+                                                           @RequestParam("datetime") Long date) {
 
 
         Timestamp timestamp = new Timestamp(date);
-        Date date1 =  new Date(timestamp.getTime());
+        Date date1 = new Date(timestamp.getTime());
 
 
-        List<Envelope>envelopeList =  envelopeDAOService.getEnvelopesByIndividualIdByDate(individualId,limit,offset,date1);
-        return  envelopeList;
+        List<Envelope> envelopeList = envelopeDAOService.getEnvelopesByIndividualIdByDate(individualId, limit, offset, date1);
+        return envelopeList;
     }
 
     /**
@@ -185,14 +197,12 @@ public class EnvelopeController {
     @RequestMapping(value = "getAllPagination", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public List<Envelope> getAllBranchersByPagination(@RequestParam("limit") Integer limit,
-                                                        @RequestParam("offset") Integer offset) {
+                                                      @RequestParam("offset") Integer offset) {
         return envelopeDAOService.getAllBranchersByPagination(limit, offset);
     }
 
     /***
-     *
      * getAllBranches
-     *
      *
      * @param limit
      * @param offset
@@ -202,8 +212,8 @@ public class EnvelopeController {
     @RequestMapping(value = "getAllBranches", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public List<Envelope> getAllBranches(@RequestParam("limit") Integer limit,
-                                           @RequestParam("offset") Integer offset,
-                                           @RequestParam("type") Integer type) {
+                                         @RequestParam("offset") Integer offset,
+                                         @RequestParam("type") Integer type) {
         return envelopeDAOService.getAllBranchersByPagination(limit, offset);
     }
 
@@ -229,6 +239,7 @@ public class EnvelopeController {
 
     /**
      * ob
+     *
      * @return
      */
     @RequestMapping(value = "getEnvelopeByCenterIdDateOB", method = RequestMethod.GET, headers = "Accept=application/json")
@@ -239,8 +250,6 @@ public class EnvelopeController {
 
 
     /**
-     *
-     *
      * getBranchCode
      *
      * @param locationName
@@ -251,7 +260,7 @@ public class EnvelopeController {
     public String getBranchCode(@RequestParam("locationName") String locationName) {
 
         String id = envelopeDAOService.getNextID();
-        String name=locationName.substring(0, 2)+id;
+        String name = locationName.substring(0, 2) + id;
         return name;
     }
 
@@ -264,12 +273,15 @@ public class EnvelopeController {
     @RequestMapping(value = "getEnvelopesByIndividualIdByDateNCenterId", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
     public Envelope getEnvelopesByIndividualIdByDateNCenterId(@RequestBody Envelope envelope) {
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM--dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
 
         String formatedDate = simpleDateFormat.format(envelope.getDate());
 
-        return envelopeDAOService.getEnvelopesByIndividualIdByDateNCenterId(envelope.getIndividualId(),formatedDate,envelope.getCenter());
+        return envelopeDAOService.getEnvelopesByIndividualIdByDateNCenterId(envelope.getIndividualId(), formatedDate, envelope.getCenter());
 
     }
+
+
+
 
 }

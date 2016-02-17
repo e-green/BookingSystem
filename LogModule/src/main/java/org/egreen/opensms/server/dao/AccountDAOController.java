@@ -8,4 +8,6 @@ import org.egreen.opensms.server.entity.Account;
 public interface AccountDAOController extends DAOController<Account,String> {
 
     Account getAccountByCenterOIndividualId(String memberid);
+
+    Account getAccountByMemberId(String memberId);
 }

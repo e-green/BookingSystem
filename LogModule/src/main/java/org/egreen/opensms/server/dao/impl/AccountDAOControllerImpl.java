@@ -30,4 +30,11 @@ public class AccountDAOControllerImpl extends AbstractDAOController<Account,Stri
         }
         return foAccount;
     }
+
+    @Override
+    public Account getAccountByMemberId(String memberId) {
+        return null;
+    }
+
+
 }

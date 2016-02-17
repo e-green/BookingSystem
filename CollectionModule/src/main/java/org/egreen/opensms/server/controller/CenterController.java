@@ -50,7 +50,33 @@ public class CenterController {
         return returnIdModel1;
 
     }
-//
+
+
+    /**
+     * create Accounts
+     *
+     * @return
+     */
+    @RequestMapping(value = "createAccounts", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseMessage createAccount() {
+
+        List<Center> all = centerDAOService.getAll();
+        for (Center center : all) {
+            Account account = accountDAOService.getAccountByCenterOIndividualId(center.getCenterid());
+            String centerid = center.getCenterid();
+            if (account!=null){
+                if (null != centerid) {
+                    account = new Account();
+                    account.setMemberId(centerid);
+                    String res = accountDAOService.save(account);
+                }
+            }
+        }
+
+        return ResponseMessage.SUCCESS;
+
+    }
 //
     /**
      * Update Center

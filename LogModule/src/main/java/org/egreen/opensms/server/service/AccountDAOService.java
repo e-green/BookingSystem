@@ -54,6 +54,8 @@ public class AccountDAOService {
         return accountDAOController.getAll();
     }
 
+    public Account getById(String id){return  accountDAOController.read(id);}
+
 
     /**
      * Get Random String
@@ -71,5 +73,8 @@ public class AccountDAOService {
         for (int i = 0; i < len; i++)
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
         return sb.toString();
+    }
+    public Account getAccountByCenterOIndividualId(String memberId){
+        return accountDAOController.getAccountByCenterOIndividualId(memberId);
     }
 }

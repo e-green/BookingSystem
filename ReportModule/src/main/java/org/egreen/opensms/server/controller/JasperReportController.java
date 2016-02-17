@@ -3,16 +3,14 @@ package org.egreen.opensms.server.controller;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import org.apache.commons.io.IOUtils;
-import org.egreen.opensms.server.entity.Chit;
-import org.egreen.opensms.server.entity.Envelope;
-import org.egreen.opensms.server.service.ChitDAOService;
-import org.egreen.opensms.server.service.EnvelopeDAOService;
-import org.egreen.opensms.server.service.IndividualDAOService;
+import org.egreen.opensms.server.entity.*;
+import org.egreen.opensms.server.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.*;
@@ -22,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +45,11 @@ public class JasperReportController {
     @Autowired
     private ChitDAOService chitDAOService;
 
+    @Autowired
+    private TransactionDAOService transactionDAOService;
+
+    @Autowired
+    private AccountDAOService accountDAOService;
 
 
     /**
@@ -63,7 +67,7 @@ public class JasperReportController {
 
 
         Timestamp timestamp = new Timestamp(date);
-        Date date1 =  new Date(timestamp.getTime());
+        Date date1 = new Date(timestamp.getTime());
 
         JRTableModelDataSource ds = null;
         Map<String, Object> map = null;
@@ -71,10 +75,10 @@ public class JasperReportController {
 
 
         map.put("centerName", centerId);
-        map.put("date", date+"");
+        map.put("date", date + "");
 
 
-        List<Envelope> envelopesByCenterId = envelopeDAOService.getEnvelopesByCenterId(centerId,null,null,date1);
+        List<Envelope> envelopesByCenterId = envelopeDAOService.getEnvelopesByCenterId(centerId, null, null, date1);
 
         DefaultTableModel model = new DefaultTableModel();
         JTable table = new JTable(model);
@@ -129,7 +133,7 @@ public class JasperReportController {
 
     /**
      * getGeneralSummaryReceipt
-     *
+     * <p/>
      * 0== Center
      * 1== individual
      *
@@ -141,40 +145,84 @@ public class JasperReportController {
      */
     @RequestMapping(value = "getGeneralSummaryReceipt", method = RequestMethod.GET)
     public void getGeneralSummaryReceipt(HttpSession session, HttpServletResponse response,
-                                  @RequestParam("centerId") String centerId,
-                                  @RequestParam("individualId") String individualId,
-                                  @RequestParam("datetime") Long date,
-                                  @RequestParam("type") Integer type
+                                         @RequestParam("centerId") String centerId,
+                                         @RequestParam("individualId") String individualId,
+                                         @RequestParam("datetime") Long date,
+                                         @RequestParam("type") Integer type
     ) {
 
 
+        double inValue = 0;
+        double outValue = 0;
+        Double totInvesment = inValue;
+
         Timestamp timestamp = new Timestamp(date);
-        Date date1 =  new Date(timestamp.getTime());
+        Date date1 = new Date(timestamp.getTime());
 
         JRTableModelDataSource ds = null;
         Map<String, Object> map = null;
         map = new HashMap<String, Object>();
 
 
-        map.put("date", date+"");
+        map.put("date", date + "");
 
-
-        map.put("nc", "--");
         map.put("pc", "--");
         map.put("ln", "--");
         map.put("pd", "--");
-        map.put("com","--");
-        map.put("exp","--");
-        map.put("lon","--");
-        map.put("csh","--");
+        map.put("com", "--");
+
+        map.put("lon", "--");
+
+        Transaction tra = new Transaction();
+        Account account = accountDAOService.getAccountByCenterOIndividualId(individualId);
+        Individual individual = individualDAOService.getBranchById(individualId);
+
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+        String formatedDate = simpleDateFormat.format(new Date(date));
+
+        List<Transaction> transactionList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(formatedDate, account.getAccountNo());
+        for (Transaction transaction : transactionList) {
+            if (transaction != null) {
+                tra = transaction;
+
+                double value = 0;
+                if (tra.getCredit() != null && tra.getCredit().doubleValue() != 0) {
+                    value = tra.getCredit().doubleValue();
+                    outValue += value;
+
+                } else if (tra.getDebit() != null && tra.getDebit().doubleValue() != 0) {
+                    value = tra.getDebit().doubleValue();
+                    inValue += value;
+                }
+
+                map.put(tra.getTypeId().toLowerCase(), value + "");
+
+
+//                if(tra.getTypeId().equals("NC")){
+//
+//                }
+//                if(tra.getTypeId().equals("CASH")){
+//                    map.put("csh",tra.getCredit()+"");
+//                }
+//                if(tra.getTypeId().equals("exp")){
+//                    map.put("exp",tra.getCredit()+"");
+//                }
+
+                if (tra.getTypeId().equals("Inv")) {
+                    totInvesment = tra.getDebit().doubleValue();
+                }
+            }
+        }
+
 
         List<Envelope> envelopesByCenterId = null;
 
-        if (type==0) {
-            map.put("Individual", centerId==null ? "--" :centerId);
-           envelopesByCenterId = envelopeDAOService.getEnvelopesByCenterId(centerId, null, null, date1);
-        }else if(type==1){
-            map.put("Individual", individualId==null ? "--" :individualId);
+        if (type == 0) {
+            map.put("Individual", centerId == null ? "--" : centerId);
+            envelopesByCenterId = envelopeDAOService.getEnvelopesByCenterId(centerId, null, null, date1);
+        } else if (type == 1 && individual != null) {
+            map.put("Individual", individual.getName());
             envelopesByCenterId = envelopeDAOService.getEnvelopesByIndividualIdByDate(individualId, null, null, date1);
         }
 
@@ -186,9 +234,12 @@ public class JasperReportController {
         model.addColumn("Pay");
 
 
-
         Double totPayment = 0.0;
-        Double totInvesment = 0.0;
+//        Double totInDouble = 0.0;
+        Double tpyPayment = outValue;
+        Double tpyInvestment = inValue;
+
+
         for (Envelope envelope : envelopesByCenterId) {
 
             List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId());
@@ -197,33 +248,35 @@ public class JasperReportController {
             for (Chit chit : chits) {
 
 
-                model.addRow(new Object[]{chit.getNumber(), chit.getInvesment()==null ? "--" :chit.getInvesment()+"", chit.getAmount() ==null ? "--" :chit.getAmount()+""});
+                model.addRow(new Object[]{chit.getNumber(), chit.getInvesment() == null ? "--" : chit.getInvesment() + "", chit.getAmount() == null ? "--" : chit.getAmount() + ""});
 
                 if (chit.getAmount() != null) {
                     totPayment += chit.getAmount().doubleValue();
                 }
 
-                if (chit.getInvesment() != null) {
-                    totInvesment += chit.getInvesment().doubleValue();
-                }
+//                if (chit.getInvesment() != null) {
+//                    totInvesment += chit.getInvesment().doubleValue();
+//                }
             }
 
         }
 
-        map.put("totInv", totInvesment==null ? "--" :totInvesment+"");
-        map.put("totPay", totPayment==null ? "--" :totPayment+"");
+        tpyPayment += totPayment;
+
+        map.put("totInv", totInvesment == null ? "--" : totInvesment + "");
+        map.put("totPay", totPayment == null ? "--" : totPayment + "");
 
 
-        map.put("tpyPay", totPayment==null ? "--" :totPayment+"");
-        map.put("tpyInv", totInvesment==null ? "--" :totInvesment+"");
+        map.put("tpyPay", tpyPayment == null ? "--" : tpyPayment + "");
+        map.put("tpyInv", tpyInvestment == null ? "--" : tpyInvestment + "");
 
-        Double dueAmount=0.0;
+        Double dueAmount = tpyInvestment - tpyPayment;
+//
+//        if (totInvesment != null && totPayment != null) {
+//            dueAmount = tpyInvestment.doubleValue() - totPayment.doubleValue();
+//        }
 
-        if (totInvesment!=null && totPayment!=null){
-            dueAmount = totInvesment.doubleValue()-totPayment.doubleValue();
-        }
-
-        map.put("due", dueAmount==null ? "--" :dueAmount+"");
+        map.put("due", dueAmount == null ? "--" : dueAmount + "");
 
 
         ds = new JRTableModelDataSource(model);
@@ -252,7 +305,6 @@ public class JasperReportController {
 
 
     }
-
 
 
 }
