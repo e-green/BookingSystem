@@ -1,32 +1,19 @@
 package org.egreen.opensms.server.controller;
 
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import org.apache.commons.io.IOUtils;
 import org.egreen.opensms.server.entity.*;
+import org.egreen.opensms.server.models.EnvelopeDetailModel;
 import org.egreen.opensms.server.models.EnvelopeModel;
 
-import org.egreen.opensms.server.models.GenralSummeryReportModel;
 import org.egreen.opensms.server.models.ReturnIdModel1;
 import org.egreen.opensms.server.service.EnvelopeDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Date;
-import java.util.Map;
 
 
 /**
@@ -281,6 +268,25 @@ public class EnvelopeController {
 
     }
 
+    @RequestMapping(value = "getEnvelopesByDateNByIndividualId", method = RequestMethod.POST, headers = "Accept=application/json")
+    @ResponseBody
+    public EnvelopeDetailModel getEnvelopesByIndividualIdByDateNCenterId(@RequestBody EnvelopeDetailModel envelopeDetailModel) {
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+//        String formatedDate = simpleDateFormat.format(envelopeDetailModel.getDate());
+//        return envelopeDAOService.getEnvelopesByDateNByIndividualId(formatedDate,envelopeDetailModel.getIndividualId());
+        return  null;
+    }
+
+    @RequestMapping(value = "getEnvelopesDetailModel", method = RequestMethod.POST, headers = "Accept=application/json")
+    @ResponseBody
+    public EnvelopeDetailModel getEnvelopesDetailModel(@RequestBody EnvelopeDetailModel envelopeDetailModel) {
+        return envelopeDAOService.getEnvelopesDetailModel(envelopeDetailModel);
+    }
+    @RequestMapping(value = "EnvelopesDetailModelOB", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public EnvelopeDetailModel getEnvelopeDetailModelOB() {
+        return new EnvelopeDetailModel();
+    }
 
 
 
