@@ -67,6 +67,8 @@ public class TypeController {
         return all;
     }
 
+
+
     @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public Type getob() {

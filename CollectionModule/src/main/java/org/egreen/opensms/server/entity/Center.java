@@ -3,6 +3,7 @@ package org.egreen.opensms.server.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 /**
  * Created by Pramoda Fernando on 3/18/2015.
@@ -17,19 +18,18 @@ public class Center implements EntityInterface <String> {
     private String location;
     private String description;
     private Integer orderBy;
-    private Boolean hasCommision;
+    private BigDecimal commision;
+    private BigDecimal lessComissionSingle;
+    private BigDecimal pcChargers;
 
 
     @Id
     @Column(name = "centerid")
-    public String getCenterid() {
-        return centerid;
-    }
+    public String getCenterid() { return centerid; }
 
     public void setCenterid(String centerid) {
         this.centerid = centerid;
     }
-
 
     public String getName() {
         return name;
@@ -63,12 +63,20 @@ public class Center implements EntityInterface <String> {
         this.orderBy = orderBy;
     }
 
-    public Boolean getHasCommision() {
-        return hasCommision;
+    public BigDecimal getCommision() {
+        return commision;
     }
 
-    public void setHasCommision(Boolean hasCommision) {
-        this.hasCommision = hasCommision;
+    public void setCommision(BigDecimal commision) {
+        this.commision = commision;
+    }
+
+    public BigDecimal getLessComissionSingle() {
+        return lessComissionSingle;
+    }
+
+    public void setLessComissionSingle(BigDecimal lessComissionSingle) {
+        this.lessComissionSingle = lessComissionSingle;
     }
 
     @Override
@@ -77,6 +85,13 @@ public class Center implements EntityInterface <String> {
         return getCenterid();
     }
 
+    public BigDecimal getPcChargers() {
+        return pcChargers;
+    }
+
+    public void setPcChargers(BigDecimal pcChargers) {
+        this.pcChargers = pcChargers;
+    }
 
     @Override
     public String toString() {
@@ -86,9 +101,9 @@ public class Center implements EntityInterface <String> {
                 ", location='" + location + '\'' +
                 ", description='" + description + '\'' +
                 ", orderBy=" + orderBy +
-                ", hasCommision=" + hasCommision +
+                ", commision=" + commision +
+                ", lessComissionSingle=" + lessComissionSingle +
+                ", pcChargers=" + pcChargers +
                 '}';
     }
-
-
 }

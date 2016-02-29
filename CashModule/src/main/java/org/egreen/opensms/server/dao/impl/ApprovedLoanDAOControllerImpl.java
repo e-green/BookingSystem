@@ -87,4 +87,21 @@ public class ApprovedLoanDAOControllerImpl extends AbstractDAOController<Approve
         List<ApprovedLoan> unpaidLoanList = query.list();
         return unpaidLoanList;
     }
+
+    @Override
+    public ApprovedLoan getApprovedLoanByDateNIndividualId(String formatedDate, String individualId) {
+        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.individualId = :individualId AND DATE(a.datetime) = :date");
+        query.setString("date", formatedDate);
+        query.setString("individualId", individualId);
+
+        ApprovedLoan approvedLoan=null;
+        List<ApprovedLoan>  approvedLoanList= query.list();
+        if(!approvedLoanList.isEmpty()){
+            for (ApprovedLoan aLoan:approvedLoanList) {
+                approvedLoan=aLoan;
+            }
+        }
+
+        return approvedLoan;
+    }
 }

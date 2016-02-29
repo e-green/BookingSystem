@@ -78,9 +78,9 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
     }
 
     @Override
-    public List<Envelope> getEnvelopesByIndividualIdByDate(String individualId, Integer limit, Integer offset, Date date) {
+    public List<Envelope> getEnvelopesByIndividualIdByDate(String individualId, Integer limit, Integer offset, String date) {
         Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND DATE(e.date) = :date");
-        query.setDate("date", date);
+        query.setString("date", date);
         query.setString("individualId", individualId);
 
         if (limit!=null&&offset!=null) {
@@ -141,6 +141,22 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
             }
         }
         return b;
+    }
+
+    @Override
+    public Envelope getEnvelopesByDateNByIndividualId(String individualId, String formatedDate) {
+        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND DATE(e.date) = DATE( :date)");
+        query.setString("date", formatedDate);
+        query.setString("individualId", individualId);
+        Envelope envelope1=null;
+        List<Envelope> envelopeList= query.list();
+        for (Envelope envelope:envelopeList ) {
+            if(envelope!=null){
+                envelope1=envelope;
+            }
+        }
+
+        return envelope1;
     }
 
 }

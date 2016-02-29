@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
@@ -22,6 +23,10 @@ public class Envelope implements EntityInterface<String> {
     private BigDecimal cash;
     private BigDecimal notCommision;
     private BigDecimal expences;
+    private BigDecimal salary;
+    private Boolean isLessCommisionSingle;
+    private BigInteger chitCount;
+    private BigInteger commision;
     private String center;
     private String individualId;
 
@@ -71,9 +76,16 @@ public class Envelope implements EntityInterface<String> {
     public BigDecimal getCash() {
         return cash;
     }
-
     public void setCash(BigDecimal cash) {
         this.cash = cash;
+    }
+
+    public Boolean getLessCommisionSingle() {
+        return isLessCommisionSingle;
+    }
+
+    public void setLessCommisionSingle(Boolean lessCommisionSingle) {
+        isLessCommisionSingle = lessCommisionSingle;
     }
 
     public BigDecimal getNotCommision() {
@@ -92,6 +104,14 @@ public class Envelope implements EntityInterface<String> {
         this.expences = expences;
     }
 
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
+
     public String getCenter() {
         return center;
     }
@@ -108,11 +128,27 @@ public class Envelope implements EntityInterface<String> {
         this.individualId = individualId;
     }
 
+    public BigInteger getChitCount() {
+        return chitCount;
+    }
+
+    public void setChitCount(BigInteger chitCount) {
+        this.chitCount = chitCount;
+    }
 
     @Override
     @Transient
     public String getId() {
         return getEnvelopId();
+    }
+
+
+    public BigInteger getCommision() {
+        return commision;
+    }
+
+    public void setCommision(BigInteger commision) {
+        this.commision = commision;
     }
 
     @Override
@@ -126,6 +162,10 @@ public class Envelope implements EntityInterface<String> {
                 ", cash=" + cash +
                 ", notCommision=" + notCommision +
                 ", expences=" + expences +
+                ", salary=" + salary +
+                ", isLessCommisionSingle=" + isLessCommisionSingle +
+                ", chitCount=" + chitCount +
+                ", commision=" + commision +
                 ", center='" + center + '\'' +
                 ", individualId='" + individualId + '\'' +
                 '}';

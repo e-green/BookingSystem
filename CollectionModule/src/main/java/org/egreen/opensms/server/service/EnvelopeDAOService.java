@@ -39,6 +39,8 @@ public class EnvelopeDAOService {
     @Autowired
     private ApprovedLoanDAOService approvedLoanDAOService;
 
+
+
     private List<Envelope> all;
     private String id;
 
@@ -55,6 +57,9 @@ public class EnvelopeDAOService {
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
         String newid = hexaid + "" + randomString(10);
         envelope.setEnvelopId(newid);
+        if(envelope.getChitCount() == null){
+            envelope.setChitCount(new BigInteger("0"));
+        }
 
         String s = envelopeDAOController.create(envelope);
         if (s != null) {
@@ -180,7 +185,7 @@ public class EnvelopeDAOService {
                 transaction.setTypeId("LN");
 
 
-                BigDecimal dueAmount = approvedLoan.getDueamount().divide(BigDecimal.valueOf(Long.parseLong(approvedLoan.getDuration())));
+                BigDecimal dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
 
                 transaction.setDebit(dueAmount);
                 transaction.setTime(envelope.getDate());
@@ -324,7 +329,7 @@ public class EnvelopeDAOService {
     }
 
     /**
-     * Get Envelope list by individualId & date
+     * Get Envelopes list by individualId & date
      *
      * @param individualId
      * @param limit
@@ -332,21 +337,21 @@ public class EnvelopeDAOService {
      * @param date
      * @return
      */
-    public List<Envelope> getEnvelopesByIndividualIdByDate(String individualId, Integer limit, Integer offset, Date date) {
+    public List<Envelope> getEnvelopesByIndividualIdByDate(String individualId, Integer limit, Integer offset, String date) {
         return envelopeDAOController.getEnvelopesByIndividualIdByDate(individualId, limit, offset, date);
     }
 
-    /**
-     * Get Envelope by individualId, date & centerId
-     *
-     * @param individualId
-     * @param formatedDate
-     * @param centerId
-     * @return
-     */
-    public Envelope getEnvelopesByIndividualIdByDateNCenterId(String individualId, String formatedDate, String centerId) {
-        return envelopeDAOController.getEnvelopesByIndividualIdByDateNCenterId(individualId, formatedDate, centerId);
-    }
+//    /**
+//     * Get Envelope by individualId, date & centerId
+//     *
+//     * @param individualId
+//     * @param formatedDate
+//     * @param centerId
+//     * @return
+//     */
+//    public Envelope getEnvelopeByIndividualIdByDateNCenterId(String individualId, String formatedDate, String centerId) {
+//        return envelopeDAOController.getEnvelopeByIndividualIdByDateNCenterId(individualId, formatedDate, centerId);
+//    }
 
     /**
      * Get Envelope by centerId & date
@@ -480,7 +485,7 @@ public class EnvelopeDAOService {
             transaction.setTransactionId(newid1);
 
             transaction.setTypeId("Salary");
-            BigDecimal salary = calculateSalary(envelope.getInvesment(),transactionModel.getSalaryPresentage());
+            BigDecimal salary = calculateSalary(envelope.getInvesment());
             transaction.setCredit(salary);
             transaction.setTime(envelope.getDate());
             transactionDAOController.create(transaction);
@@ -580,7 +585,7 @@ public class EnvelopeDAOService {
             transaction.setTypeId("LN");
 
 
-            BigDecimal dueAmount = approvedLoan.getDueamount().divide(BigDecimal.valueOf(Long.parseLong(approvedLoan.getDuration())));
+            BigDecimal dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
 
             transaction.setDebit(dueAmount);
             transaction.setTime(transactionModel.getDate());
@@ -599,11 +604,25 @@ public class EnvelopeDAOService {
      * calculate salary
      *
      * @param invesment
-     * @param salaryPresentage
      * @return
      */
-    private BigDecimal calculateSalary(BigDecimal invesment, BigDecimal salaryPresentage) {
-        BigDecimal salary=invesment.divide(BigDecimal.valueOf(100)).multiply(salaryPresentage);
+    private BigDecimal calculateSalary(BigDecimal invesment) {
+        BigDecimal salary=null;
+        if(invesment.doubleValue() < 1500.00){
+            salary=new BigDecimal(300.00);
+        }
+        if(invesment.doubleValue() >= 1500.00 && invesment.doubleValue() <= 2000.00){
+            salary=new BigDecimal(400.00);
+        }
+        if(invesment.doubleValue() > 2000.00 && invesment.doubleValue() <= 3000.00){
+            salary=new BigDecimal(500.00);
+        }
+        if(invesment.doubleValue() > 3000.00 && invesment.doubleValue() <= 6000.00){
+            salary=new BigDecimal(600.00);
+        }
+        if(invesment.doubleValue() > 6000.00){
+            salary=new BigDecimal(600).add(BigDecimal.valueOf((invesment.doubleValue()-6000.00)/100*5));
+        }
         return salary;
     }
 
@@ -665,20 +684,43 @@ public class EnvelopeDAOService {
         Individual individual = individualDAOController.read(individualId);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
         String formatedDate = simpleDateFormat.format(envelopeDetailModel.getDate());
-        Envelope envelope = envelopeDAOController.getEnvelopesByDateNByIndividualId(individualId, formatedDate);
+        //Envelope envelope = envelopeDAOController.getEnvelopesByDateNByIndividualId(individualId, formatedDate);
+        ApprovedLoan approvedLoan=approvedLoanDAOService.getApprovedLoanByDateNIndividualId(formatedDate,individualId);
         System.out.println(individual.getCommision());
         BigDecimal commision=null;
         BigDecimal salary=null;
+        BigDecimal lessCommissionSingle=null;
         if(envelopeDetailModel.getInvestment() != null){
             if(individual != null){
+                model.setIndividualId(individual.getIndividualId());
+                model.setDate(envelopeDetailModel.getDate());
+                model.setInvestment(envelopeDetailModel.getInvestment());
                 commision= calculateCommision(envelopeDetailModel.getInvestment(), individual.getCommision());
-                salary = calculateSalary(envelopeDetailModel.getInvestment(), envelope.getSalary());
-                if(commision != null && salary != null){
-                    model.setCommision(commision);
+                if(individual.isSalaryPay() == true){
+                    salary = calculateSalary(envelopeDetailModel.getInvestment());
                     model.setSalary(salary);
                 }
+                if(commision != null ){
+                    model.setCommision(commision);
+                }
+                if(approvedLoan != null){
+                    model.setLoanAmount(approvedLoan.getAmount());
+                    model.setLdPayment(approvedLoan.getDueamount());
+                    model.setLoanCharges(approvedLoan.getDeductionPayment());
+                }
+                if(individual.getPcChargers() !=null){
+                    model.setPcCharges(individual.getPcChargers());
+                }
+                //lessCommissionSingle value
+                BigDecimal lCS=new BigDecimal(1000.00);
+                lessCommissionSingle = calculateLessCommisionSingle(lCS);
+                model.setLessComissionSingle(lessCommissionSingle);
             }
         }
         return model;
+    }
+
+    public Envelope getEnvelopesByIndividualIdByDateNCenterId(String individualId, String formatedDate, String center) {
+        return envelopeDAOController.getEnvelopesByIndividualIdByDateNCenterId(individualId,formatedDate,center);
     }
 }

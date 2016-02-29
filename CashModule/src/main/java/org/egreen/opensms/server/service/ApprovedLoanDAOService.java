@@ -109,4 +109,15 @@ public class ApprovedLoanDAOService {
     public List<ApprovedLoan> getUnpaidLoans() {
         return approvedLoanDAOController.getAllUnpaidLoans();
     }
+
+    /**
+     * get Approve loan by date & individual Id
+     *
+     * @param formatedDate
+     * @param individualId
+     * @return
+     */
+    public ApprovedLoan getApprovedLoanByDateNIndividualId(String formatedDate, String individualId) {
+        return approvedLoanDAOController.getApprovedLoanByDateNIndividualId(formatedDate,individualId);
+    }
 }

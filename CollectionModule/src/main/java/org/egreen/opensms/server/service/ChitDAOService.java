@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -37,10 +38,20 @@ public class ChitDAOService {
         Hashids hashids = new Hashids(id);
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
         String newid = hexaid + "" + randomString(10);
-       chit.setChitId(newid);
-        chit.setDatetime(new Timestamp(new Date().getTime()));
+        chit.setChitId(newid);
 
-        String s = chitDAOController.create(chit);
+        chit.setDatetime(new Timestamp(new Date().getTime()));
+        //checking weather the chit individualId & date finished or not
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+        String formatedDate = simpleDateFormat.format(chit.getDatetime());
+        List<Chit> chitList = chitDAOController.getAllChithsByFormattedDateNIndividualId(formatedDate, chit.getIndividualId());
+        String s=null;
+        for (Chit chit1:chitList) {
+            if(chit1.getFinish()){
+                s = chitDAOController.create(chit);
+            }
+        }
+
         return s;
     }
 
@@ -114,5 +125,9 @@ public class ChitDAOService {
 
     public Long getAllChitByIdCount(String id, Integer type, Date date1) {
         return chitDAOController.getAllChitByIdCount(id,type,date1);
+    }
+
+    public List<Chit> getAllChithsByFormattedDateNIndividualId(String formatedDate, String individualId) {
+        return chitDAOController.getAllChithsByFormattedDateNIndividualId(formatedDate,individualId);
     }
 }

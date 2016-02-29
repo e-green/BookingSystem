@@ -20,7 +20,7 @@ public class ApprovedLoan implements EntityInterface<String> {
     private String individualId;
     private Timestamp datetime;
     private BigDecimal amount;
-    private String duration;
+    private BigDecimal deductionPayment;
     private Timestamp duedate;
     private BigDecimal dueamount;
 
@@ -63,16 +63,16 @@ public class ApprovedLoan implements EntityInterface<String> {
         return amount;
     }
 
+    public BigDecimal getDeductionPayment() {
+        return deductionPayment;
+    }
+
+    public void setDeductionPayment(BigDecimal deductionPayment) {
+        this.deductionPayment = deductionPayment;
+    }
+
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
     }
 
     public Timestamp getDuedate() {
@@ -98,7 +98,6 @@ public class ApprovedLoan implements EntityInterface<String> {
         return getApprovedloanId();
     }
 
-
     @Override
     public String toString() {
         return "ApprovedLoan{" +
@@ -107,7 +106,7 @@ public class ApprovedLoan implements EntityInterface<String> {
                 ", individualId='" + individualId + '\'' +
                 ", datetime=" + datetime +
                 ", amount=" + amount +
-                ", duration='" + duration + '\'' +
+                ", deductionPayment=" + deductionPayment +
                 ", duedate=" + duedate +
                 ", dueamount=" + dueamount +
                 '}';

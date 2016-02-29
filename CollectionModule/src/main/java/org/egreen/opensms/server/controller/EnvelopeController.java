@@ -147,19 +147,16 @@ public class EnvelopeController {
 
     }
 
-    @RequestMapping(value = "getEnvelopesByIndividualIdByDate", method = RequestMethod.GET, headers = "Accept=application/json")
+    @RequestMapping(value = "getEnvelopesByIndividualIdByDate", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
-    public List<Envelope> getEnvelopesByIndividualIdByDate(@RequestParam("individualId") String individualId,
-                                                           @RequestParam("limit") Integer limit,
-                                                           @RequestParam("offset") Integer offset,
-                                                           @RequestParam("datetime") Long date) {
+    public List<Envelope> getEnvelopesByIndividualIdByDate(@RequestBody EnvelopeModel envelopeModel) {
 
 
-        Timestamp timestamp = new Timestamp(date);
-        Date date1 = new Date(timestamp.getTime());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+        String formatedDate = simpleDateFormat.format(envelopeModel.getDate());
 
 
-        List<Envelope> envelopeList = envelopeDAOService.getEnvelopesByIndividualIdByDate(individualId, limit, offset, date1);
+        List<Envelope> envelopeList = envelopeDAOService.getEnvelopesByIndividualIdByDate(envelopeModel.getIndividualId(), null, null, formatedDate);
         return envelopeList;
     }
 
@@ -282,6 +279,7 @@ public class EnvelopeController {
     public EnvelopeDetailModel getEnvelopesDetailModel(@RequestBody EnvelopeDetailModel envelopeDetailModel) {
         return envelopeDAOService.getEnvelopesDetailModel(envelopeDetailModel);
     }
+
     @RequestMapping(value = "EnvelopesDetailModelOB", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public EnvelopeDetailModel getEnvelopeDetailModelOB() {

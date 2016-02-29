@@ -10,7 +10,9 @@ import org.egreen.opensms.server.utils.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -111,8 +113,18 @@ public class IndividualDAOService {
     }
 
     public List<Individual> getIndividualsByCenterId(String centerId) {
+        List<Individual> individualList = individualDAOController.getAllByPropertyByStringValue(centerId, "center");
+        List<Individual> list=new ArrayList<Individual>();
+        for (Individual individual:individualList ) {
 
-        return individualDAOController.getAllByPropertyByStringValue(centerId,"center");
+            if(null== individual.getCommision()){
+                individual.setCommision(BigDecimal.valueOf(0.0));
+                System.out.println(individual.getCommision());
+            }
+            System.out.println(individual.getCommision());
+            list.add(individual);
+        }
+        return list;
     }
 
     public Individual getIndividualsByCenterIdAndIndividualId(String centerId, String individualId) {

@@ -17,6 +17,7 @@
     <orderEntry type="module" module-name="main" exported="" />
     <orderEntry type="module" module-name="basicweb" exported="" />
     <orderEntry type="module" module-name="dbcontroller" exported="" />
+    <orderEntry type="module" module-name="CashModule" exported="" />
     <orderEntry type="library" exported="" name="Gradle: org.slf4j:jcl-over-slf4j:1.5.8" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.slf4j:jul-to-slf4j:1.5.8" level="project" />
     <orderEntry type="library" exported="" name="Gradle: javax.mail:mail:1.4.3" level="project" />
@@ -33,6 +34,5 @@
     <orderEntry type="library" exported="" name="Gradle: commons-io:commons-io:2.2" level="project" />
     <orderEntry type="library" exported="" scope="RUNTIME" name="Gradle: org.slf4j:slf4j-log4j12:1.5.8" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.7" level="project" />
-    <orderEntry type="module" module-name="CashModule" exported="" />
   </component>
 </module>

@@ -1,6 +1,7 @@
 package org.egreen.opensms.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -19,7 +20,10 @@ public class Individual implements EntityInterface <String> {
     private String nic;
     private String center;
     private BigDecimal commision;
+    private BigDecimal lessComissionSingle;
+    private boolean isSalaryPay;
     private BigDecimal pcChargers;
+    private BigDecimal fixedSalary;
 
     @Id
     @Column(name = "individualId")
@@ -71,13 +75,20 @@ public class Individual implements EntityInterface <String> {
         this.center = center;
     }
 
-    private BigDecimal notCommision;
     public BigDecimal getCommision() {
         return commision;
     }
 
     public void setCommision(BigDecimal commision) {
         this.commision = commision;
+    }
+
+    public BigDecimal getLessComissionSingle() {
+        return lessComissionSingle;
+    }
+
+    public void setLessComissionSingle(BigDecimal lessComissionSingle) {
+        this.lessComissionSingle = lessComissionSingle;
     }
 
     public BigDecimal getPcChargers() {
@@ -88,6 +99,21 @@ public class Individual implements EntityInterface <String> {
         this.pcChargers = pcChargers;
     }
 
+    public boolean isSalaryPay() {
+        return isSalaryPay;
+    }
+
+    public void setSalaryPay(boolean salaryPay) {
+        isSalaryPay = salaryPay;
+    }
+
+    public BigDecimal getFixedSalary() {
+        return fixedSalary;
+    }
+
+    public void setFixedSalary(BigDecimal fixedSalary) {
+        this.fixedSalary = fixedSalary;
+    }
 
     @Override
     @Transient
@@ -105,9 +131,10 @@ public class Individual implements EntityInterface <String> {
                 ", nic='" + nic + '\'' +
                 ", center='" + center + '\'' +
                 ", commision=" + commision +
+                ", lessComissionSingle=" + lessComissionSingle +
+                ", isSalaryPay=" + isSalaryPay +
                 ", pcChargers=" + pcChargers +
-                ", notCommision=" + notCommision +
+                ", fixedSalary=" + fixedSalary +
                 '}';
     }
-
 }

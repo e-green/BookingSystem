@@ -24,6 +24,7 @@ public class Chit implements EntityInterface <String> {
     private BigDecimal amount;
     private String remark;
     private Boolean status;
+    private Boolean finish;
 
 
     @Id
@@ -108,6 +109,14 @@ public class Chit implements EntityInterface <String> {
         this.status = status;
     }
 
+    public Boolean getFinish() {
+        return finish;
+    }
+
+    public void setFinish(Boolean finish) {
+        this.finish = finish;
+    }
+
 
     @Override
     @Transient
@@ -129,6 +138,8 @@ public class Chit implements EntityInterface <String> {
                 ", amount=" + amount +
                 ", remark='" + remark + '\'' +
                 ", status=" + status +
+                ", finish=" + finish +
                 '}';
     }
+
 }

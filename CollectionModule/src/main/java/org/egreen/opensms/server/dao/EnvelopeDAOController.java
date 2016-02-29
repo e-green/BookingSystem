@@ -20,11 +20,13 @@ public interface EnvelopeDAOController extends DAOController<Envelope,String> {
 
     List<Envelope> getEnvelopesByCenterId(String centerId, Integer limit, Integer offset, Date date);
 
-    List<Envelope> getEnvelopesByIndividualIdByDate(String individualId, Integer limit, Integer offset, Date date);
+    List<Envelope> getEnvelopesByIndividualIdByDate(String individualId, Integer limit, Integer offset, String date);
 
     Envelope getEnvelopesByIndividualIdByDateNCenterId(String individualId, String formatedDate, String centerId);
 
     List<Envelope> getEnvelopeByCenterIdDate(String center, Integer limit, Integer offset, String formatedDate);
 
     boolean getEnvelopeByCenterIdNIndividualIdDate(String center, String individualId, String formatedDate);
+
+    Envelope getEnvelopesByDateNByIndividualId(String individualId, String formatedDate);
 }

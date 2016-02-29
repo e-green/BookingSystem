@@ -1,12 +1,8 @@
 package org.egreen.opensms.server.controller;
 
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import org.apache.commons.io.IOUtils;
 import org.egreen.opensms.server.entity.*;
-
+import org.egreen.opensms.server.models.EnvelopeDetailModel;
 import org.egreen.opensms.server.models.GeneralSummaryReceiptModel;
-import org.egreen.opensms.server.models.GenralSummeryReportModel;
 import org.egreen.opensms.server.models.ReturnIdModel1;
 import org.egreen.opensms.server.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -283,6 +276,18 @@ public class IndividualController {
 
         }
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+        String formatedDate = simpleDateFormat.format(generalSummaryReceiptModel.getDate());
+        String individualId = generalSummaryReceiptModel.getIndividualId();
+        List<Chit> chitList=chitDAOService.getAllChithsByFormattedDateNIndividualId(formatedDate,individualId);
+
+        for (Chit chit : chitList) {
+            if(chit.getFinish()== false){
+                chit.setFinish(true);
+                chitDAOService.update(chit);
+            }
+        }
+
 //        individualDAOService.closeDayBalance(generalSummaryReceiptModel.getIndividualId(),generalSummaryReceiptModel.getDate());
 
 
@@ -367,7 +372,7 @@ public class IndividualController {
             envelopesByCenterId = envelopeDAOService.getEnvelopesByCenterId(generalSummaryReceiptModel.getCenterId(), null, null, generalSummaryReceiptModel.getDate());
         } else if (generalSummaryReceiptModel.getType() == 1 && individual != null) {
             map.put("Individual", individual.getName());
-            envelopesByCenterId = envelopeDAOService.getEnvelopesByIndividualIdByDate(generalSummaryReceiptModel.getIndividualId(), null, null, generalSummaryReceiptModel.getDate());
+            envelopesByCenterId = envelopeDAOService.getEnvelopesByIndividualIdByDate(generalSummaryReceiptModel.getIndividualId(), null, null, generalSummaryReceiptModel.getDate()+"");
         }
 
         DefaultTableModel model = new DefaultTableModel();
@@ -424,6 +429,17 @@ public class IndividualController {
 
 
         return map;
+    }
+
+    /**
+     * Get package Id
+     *
+     * @return
+     */
+    @RequestMapping(value = "getEnvelopeDetailModelByIndividualId", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public EnvelopeDetailModel getEnvelopeDetailModelByIndividualId(@RequestParam("individualId") String individualId) {
+        return null;
     }
 
 

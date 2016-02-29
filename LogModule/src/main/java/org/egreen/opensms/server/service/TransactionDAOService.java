@@ -46,7 +46,15 @@ public class TransactionDAOService {
         return transactionDAOController.getAll();
     }
 
+    /**
+     * Get transaction list by date & account no
+     *
+     * @param date
+     * @param accountNo
+     * @return
+     */
     public List<Transaction> getTodayTransactionDetailByDateNAccountNo(String date, String accountNo) {
         return transactionDAOController.getTodayTransactionDetailByDateNAccountNo(date,accountNo);
     }
+
 }

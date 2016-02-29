@@ -98,4 +98,13 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
         return (Long)query.uniqueResult();
 
     }
+
+    @Override
+    public List<Chit> getAllChithsByFormattedDateNIndividualId(String formatedDate, String individualId) {
+        Query query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :individualId AND DATE(c.datetime) = DATE( :formatedDate)");
+        query.setString("formatedDate", formatedDate);
+        query.setString("individualId", individualId);
+
+        return query.list();
+    }
 }

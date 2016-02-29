@@ -222,8 +222,9 @@ public class JasperReportController {
             map.put("Individual", centerId == null ? "--" : centerId);
             envelopesByCenterId = envelopeDAOService.getEnvelopesByCenterId(centerId, null, null, date1);
         } else if (type == 1 && individual != null) {
+            String fD = simpleDateFormat.format(date1);
             map.put("Individual", individual.getName());
-            envelopesByCenterId = envelopeDAOService.getEnvelopesByIndividualIdByDate(individualId, null, null, date1);
+            envelopesByCenterId = envelopeDAOService.getEnvelopesByIndividualIdByDate(individualId, null, null, fD);
         }
 
         DefaultTableModel model = new DefaultTableModel();
