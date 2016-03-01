@@ -1,7 +1,9 @@
 package org.egreen.opensms.server.service;
 
 import org.egreen.opensms.server.dao.ChitDAOController;
+import org.egreen.opensms.server.dao.EnvelopeDAOController;
 import org.egreen.opensms.server.entity.Chit;
+import org.egreen.opensms.server.entity.Envelope;
 import org.egreen.opensms.server.utils.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,10 @@ public class ChitDAOService {
 
     @Autowired
     private ChitDAOController chitDAOController;
-    
+
+    @Autowired
+    private EnvelopeDAOController envelopeDAOController;
+
     private List<Chit> all;
     private String id;
 
@@ -45,11 +50,27 @@ public class ChitDAOService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
         String formatedDate = simpleDateFormat.format(chit.getDatetime());
         List<Chit> chitList = chitDAOController.getAllChithsByFormattedDateNIndividualId(formatedDate, chit.getIndividualId());
+        Envelope envelope = envelopeDAOController.read(chit.getEnvelopeId());
         String s=null;
-        for (Chit chit1:chitList) {
-            if(chit1.getFinish()){
-                s = chitDAOController.create(chit);
+
+        if(Integer.parseInt(envelope.getChitCount()+"") > chitList.size() && Integer.parseInt(envelope.getChitCount()+"") - chitList.size() > 1){
+            chitDAOController.create(chit);
+            s="1";
+        }
+        if(Integer.parseInt(envelope.getChitCount()+"") - chitList.size() == 1 ){
+            for (Chit chit1:chitList) {
+                chit1.setFinish(true);
+                chitDAOController.update(chit1);
             }
+            chit.setChitId(newid);
+            chit.setFinish(true);
+            chitDAOController.create(chit);
+            s="1";
+        }
+
+        //define the chits are over specified envelope.
+        if(s==null){
+            s="0";
         }
 
         return s;
@@ -91,7 +112,7 @@ public class ChitDAOService {
         return chitDAOController.removeChitById(chitId) ;
     }
 
-    public String getId() {
+    public String getId(){
         String id = new Date().getTime()+"";
         Hashids hashids = new Hashids(id);
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
@@ -108,7 +129,7 @@ public class ChitDAOService {
         return chitDAOController.getNextId();
     }
 
-    public List<Chit> getAllChitById(Integer limit, Integer offset, String id,Integer type,Date date) {
+    public List<Chit> getAllChitById(Integer limit, Integer offset, String id, Integer type, String date) {
 
         return chitDAOController.getAllChitById(limit, offset,id,type,date);
     }

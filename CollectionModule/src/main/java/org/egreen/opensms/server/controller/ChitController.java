@@ -2,6 +2,7 @@ package org.egreen.opensms.server.controller;
 
 import org.egreen.opensms.server.entity.Chit;
 
+import org.egreen.opensms.server.models.ChitModel;
 import org.egreen.opensms.server.models.ReturnIdModel1;
 import org.egreen.opensms.server.service.ChitDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -86,31 +88,21 @@ public class ChitController {
         return chitDAOService.getAll();
     }
 
-
-    /***
+    /**
      *
      * 0= centerId
      * 1= IndividualId
      * getAllChitById
      *
-     *
-     * @param limit
-     * @param offset
-     *
+     * @param chitModel
      * @return
      */
-    @RequestMapping(value = "getAllChitById", method = RequestMethod.GET, headers = "Accept=application/json")
+    @RequestMapping(value = "getAllChitById", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
-    public List<Chit> getAllChitById(@RequestParam("limit") Integer limit,
-                                     @RequestParam("offset") Integer offset,
-                                     @RequestParam("id") String id,
-                                     @RequestParam("type") Integer type,
-                                     @RequestParam("datetime") Long date) {
-
-        Timestamp timestamp = new Timestamp(date);
-        Date date1 =  new Date(timestamp.getTime());
-        return chitDAOService.getAllChitById(limit, offset,id,type,date1);
-
+    public List<Chit> getAllChitById(@RequestBody ChitModel chitModel) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+        String formatedDate = simpleDateFormat.format(chitModel.getDatetime());
+        return chitDAOService.getAllChitById(chitModel.getLimit(), chitModel.getOffset(),chitModel.getIndividualId(),chitModel.getType(),formatedDate);
     }
 
     @RequestMapping(value = "getAllChitByIdCount", method = RequestMethod.GET, headers = "Accept=application/json")
@@ -181,5 +173,12 @@ public class ChitController {
     public Chit getChitById(@RequestParam("chitId") String chitId) {
         return chitDAOService.getChitById(chitId);
     }
+
+    @RequestMapping(value = "ChitModelOB", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public ChitModel getChitModelOB() {
+        return new ChitModel();
+    }
+
 
 }

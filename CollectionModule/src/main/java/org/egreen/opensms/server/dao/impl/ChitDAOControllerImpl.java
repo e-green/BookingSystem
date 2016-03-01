@@ -46,15 +46,15 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
     }
 
     @Override
-    public List<Chit> getAllChitById(Integer limit, Integer offset, String id ,Integer type,Date date) {
+    public List<Chit> getAllChitById(Integer limit, Integer offset, String id ,Integer type,String date) {
         Query query = null;
         if (type==0) {
-         query = getSession().createQuery("SELECT c FROM Chit c WHERE c.centerid = :id AND DATE(c.datetime) = :date  ORDER BY c.datetime ASC");
-            query.setDate("date", date);
+         query = getSession().createQuery("SELECT c FROM Chit c WHERE c.centerid = :id AND DATE(c.datetime) = DATE(:date)  ORDER BY DATE(c.datetime) ASC");
+            query.setString("date", date);
             query.setString("id", id);
         }else  if (type==1){
-            query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :id AND DATE(c.datetime) = :date ORDER BY c.datetime ASC ");
-            query.setDate("date", date);
+            query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :id AND DATE(c.datetime) = DATE(:date) ORDER BY DATE(c.datetime) ASC ");
+            query.setString("date", date);
             query.setString("id", id);
         }
 
