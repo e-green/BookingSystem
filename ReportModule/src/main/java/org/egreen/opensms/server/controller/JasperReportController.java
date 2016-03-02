@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,6 +51,9 @@ public class JasperReportController {
 
     @Autowired
     private AccountDAOService accountDAOService;
+
+    @Autowired
+    private ApprovedLoanDAOService approvedLoanDAOService;
 
 
     /**
@@ -166,16 +170,20 @@ public class JasperReportController {
 
         map.put("date", date + "");
 
-        map.put("pc", "--");
+
+
+
+        Transaction tra = new Transaction();
+        Account account = accountDAOService.getAccountByCenterOIndividualId(individualId);
+        Individual individual = individualDAOService.getBranchById(individualId);
+
+
+        map.put("pc", "");
         map.put("ln", "--");
         map.put("pd", "--");
         map.put("com", "--");
 
         map.put("lon", "--");
-
-        Transaction tra = new Transaction();
-        Account account = accountDAOService.getAccountByCenterOIndividualId(individualId);
-        Individual individual = individualDAOService.getBranchById(individualId);
 
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
@@ -196,18 +204,20 @@ public class JasperReportController {
                     inValue += value;
                 }
 
-                map.put(tra.getTypeId().toLowerCase(), value + "");
 
 
-//                if(tra.getTypeId().equals("NC")){
-//
-//                }
-//                if(tra.getTypeId().equals("CASH")){
-//                    map.put("csh",tra.getCredit()+"");
-//                }
-//                if(tra.getTypeId().equals("exp")){
-//                    map.put("exp",tra.getCredit()+"");
-//                }
+                String ty=tra.getTypeId().toLowerCase();
+                System.out.println(ty+" "+value);
+                if(tra.getDebit()!= null){
+                    Object put = map.put(ty, tra.getDebit() + "");
+                    System.out.println("Debit value :"+ put);
+                }
+                if(tra.getCredit()!= null){
+                    Object put = map.put(ty, tra.getCredit() + "");
+                    System.out.println("Credit value :"+ put);
+                }
+
+
 
                 if (tra.getTypeId().equals("Inv")) {
                     totInvesment = tra.getDebit().doubleValue();
@@ -215,7 +225,7 @@ public class JasperReportController {
             }
         }
 
-
+//        map.put("csh",234234234+"");
         List<Envelope> envelopesByCenterId = null;
 
         if (type == 0) {
@@ -233,10 +243,10 @@ public class JasperReportController {
         model.addColumn("no");
         model.addColumn("Inv");
         model.addColumn("Pay");
+        model.addColumn("ncOfTable");
 
 
         Double totPayment = 0.0;
-//        Double totInDouble = 0.0;
         Double tpyPayment = outValue;
         Double tpyInvestment = inValue;
 
@@ -245,20 +255,19 @@ public class JasperReportController {
 
             List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId());
             Double payment = null;
-
+            double ncValue=0.0;
             for (Chit chit : chits) {
 
-
-                model.addRow(new Object[]{chit.getNumber(), chit.getInvesment() == null ? "--" : chit.getInvesment() + "", chit.getAmount() == null ? "--" : chit.getAmount() + ""});
-
+                model.addRow(new Object[]{chit.getNumber(), chit.getInvesment() == null ? "--" : chit.getInvesment() + "", chit.getAmount() == null ? "--" : chit.getAmount() + "", chit.getNC() == null ? " " :  "NC"});
                 if (chit.getAmount() != null) {
                     totPayment += chit.getAmount().doubleValue();
                 }
-
-//                if (chit.getInvesment() != null) {
-//                    totInvesment += chit.getInvesment().doubleValue();
-//                }
+                if(chit.getNC() == true && chit.getNcOLCValue().doubleValue() > 0){
+                    ncValue+=Double.parseDouble(chit.getNcOLCValue()+"");
+                }
             }
+            //this must be change after center persentage addded
+            map.put("nc",ncValue/100*14+"");
 
         }
 
@@ -278,12 +287,17 @@ public class JasperReportController {
 //        }
 
         map.put("due", dueAmount == null ? "--" : dueAmount + "");
-
+        ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
+        if(approvedLoan != null){
+            BigDecimal approveLoanDueAmount = approvedLoan.getDueamount();
+            map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
+        }
 
         ds = new JRTableModelDataSource(model);
         try {
             InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual.jrxml");
             JasperReport jr = JasperCompileManager.compileReport(systemResourceAsStream);
+            System.out.println(map);
             JasperPrint jp = JasperFillManager.fillReport(jr, map, ds);
             // JasperViewer.viewReport(jp, false);
             File pdf = File.createTempFile("output.", ".pdf");
@@ -306,6 +320,4 @@ public class JasperReportController {
 
 
     }
-
-
 }

@@ -183,16 +183,19 @@ public class EnvelopeDAOService {
 
 
                 transaction.setTypeId("LN");
+                BigDecimal dueAmount=null;
+                if(approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null){
+                    dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
+                }
 
-
-                BigDecimal dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
 
                 transaction.setDebit(dueAmount);
                 transaction.setTime(envelope.getDate());
                 transactionDAOController.create(transaction);
 
-
-                approvedLoan.setDueamount(approvedLoan.getDueamount().subtract(dueAmount));
+                if(approvedLoan.getDueamount() != null && dueAmount != null){
+                    approvedLoan.setDueamount(approvedLoan.getDueamount().subtract(dueAmount));
+                }
                 approvedLoanDAOService.update(approvedLoan);
 
             }
@@ -606,7 +609,7 @@ public class EnvelopeDAOService {
      * @param invesment
      * @return
      */
-    private BigDecimal calculateSalary(BigDecimal invesment) {
+    public BigDecimal calculateSalary(BigDecimal invesment) {
         BigDecimal salary=null;
         if(invesment.doubleValue() < 1500.00){
             salary=new BigDecimal(300.00);
@@ -632,7 +635,7 @@ public class EnvelopeDAOService {
      * @param commisionPresentage
      * @return
      */
-    private BigDecimal calculateCommision(BigDecimal invesment, BigDecimal commisionPresentage) {
+    public BigDecimal calculateCommision(BigDecimal invesment, BigDecimal commisionPresentage) {
         BigDecimal commision=invesment.divide(BigDecimal.valueOf(100)).multiply(commisionPresentage);
         return commision;
     }
@@ -644,7 +647,7 @@ public class EnvelopeDAOService {
      * @param notCommisionPresentage
      * @return
      */
-    private BigDecimal calculateNotCommision(BigDecimal notCommision, BigDecimal notCommisionPresentage) {
+    public BigDecimal calculateNotCommision(BigDecimal notCommision, BigDecimal notCommisionPresentage) {
         BigDecimal nCommision=notCommision.divide(BigDecimal.valueOf(100)).multiply(notCommisionPresentage);
         return nCommision;
     }
@@ -655,7 +658,7 @@ public class EnvelopeDAOService {
      * @param lessCommisionSingle
      * @return
      */
-    private BigDecimal calculateLessCommisionSingle(BigDecimal lessCommisionSingle){
+    public BigDecimal calculateLessCommisionSingle(BigDecimal lessCommisionSingle){
         BigDecimal lcs=lessCommisionSingle.divide(BigDecimal.valueOf(100)).multiply(BigDecimal.valueOf(4));//do calculation here
         return lcs;
     }

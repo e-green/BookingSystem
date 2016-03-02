@@ -27,6 +27,7 @@ public class Chit implements EntityInterface <String> {
     private Boolean isNC;
     private Boolean isLCS;
     private Boolean finish;
+    private BigDecimal ncOLCValue;
 
 
     @Id
@@ -135,6 +136,14 @@ public class Chit implements EntityInterface <String> {
         isLCS = LCS;
     }
 
+    public BigDecimal getNcOLCValue() {
+        return ncOLCValue;
+    }
+
+    public void setNcOLCValue(BigDecimal ncOLCValue) {
+        this.ncOLCValue = ncOLCValue;
+    }
+
     @Override
     @Transient
     public String getId() {
@@ -158,6 +167,7 @@ public class Chit implements EntityInterface <String> {
                 ", isNC=" + isNC +
                 ", isLCS=" + isLCS +
                 ", finish=" + finish +
+                ", ncOLCValue=" + ncOLCValue +
                 '}';
     }
 }
