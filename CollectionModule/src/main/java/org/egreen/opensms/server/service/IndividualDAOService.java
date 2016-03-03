@@ -46,6 +46,12 @@ public class IndividualDAOService {
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
         String newid = hexaid + "" + randomString(10);
         individual.setIndividualId(newid);
+        if(individual.getLessComissionSingle() == null){
+            individual.setLessComissionSingle(BigDecimal.ZERO);
+        }
+        if(individual.getNotCommisionPersentage() == null){
+            individual.setNotCommisionPersentage(BigDecimal.ZERO);
+        }
         String s = individualDAOController.create(individual);
         return s;
     }

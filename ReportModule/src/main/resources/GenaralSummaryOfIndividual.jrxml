@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="java" pageWidth="216" pageHeight="432" whenNoDataType="AllSectionsNoDetail" columnWidth="176" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.8531167061100065"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="32"/>
+	<property name="ireport.y" value="192"/>
 	<parameter name="Individual" class="java.lang.String"/>
 	<parameter name="no" class="java.lang.String"/>
 	<parameter name="fc" class="java.lang.String"/>
@@ -326,7 +326,7 @@
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="-1" y="124" width="64" height="12"/>
+				<reportElement x="-1" y="124" width="71" height="12"/>
 				<box leftPadding="2"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Serif" size="9" isBold="true"/>
@@ -334,7 +334,7 @@
 				<text><![CDATA[Loan balance :]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="63" y="124" width="56" height="12"/>
+				<reportElement x="70" y="124" width="56" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Serif" size="8"/>
 				</textElement>

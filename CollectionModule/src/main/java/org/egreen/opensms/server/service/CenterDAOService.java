@@ -12,6 +12,7 @@ import org.egreen.opensms.server.utils.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +44,12 @@ public class CenterDAOService {
      * @return
      */
     public String save(Center center) {
+        if(center.getLessComissionSingle() == null){
+            center.setLessComissionSingle(BigDecimal.ZERO);
+        }
+        if(center.getNotCommisionPersentage() == null){
+            center.setNotCommisionPersentage(BigDecimal.ZERO);
+        }
        return centerDAOController.create(center);
     }
 
@@ -132,4 +139,6 @@ public class CenterDAOService {
         Account account=accountDAOController.getAccountByCenterOIndividualId(center.getCenterid());
         return account.getAccountNo();
     }
+
+
 }

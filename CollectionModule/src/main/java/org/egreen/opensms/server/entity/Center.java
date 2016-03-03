@@ -21,6 +21,7 @@ public class Center implements EntityInterface <String> {
     private BigDecimal commision;
     private BigDecimal lessComissionSingle;
     private BigDecimal pcChargers;
+    private BigDecimal notCommisionPersentage;
 
 
     @Id
@@ -79,6 +80,14 @@ public class Center implements EntityInterface <String> {
         this.lessComissionSingle = lessComissionSingle;
     }
 
+    public BigDecimal getNotCommisionPersentage() {
+        return notCommisionPersentage;
+    }
+
+    public void setNotCommisionPersentage(BigDecimal notCommisionPersentage) {
+        this.notCommisionPersentage = notCommisionPersentage;
+    }
+
     @Override
     @Transient
     public String getId() {
@@ -104,6 +113,7 @@ public class Center implements EntityInterface <String> {
                 ", commision=" + commision +
                 ", lessComissionSingle=" + lessComissionSingle +
                 ", pcChargers=" + pcChargers +
+                ", notCommisionPersentage=" + notCommisionPersentage +
                 '}';
     }
 }

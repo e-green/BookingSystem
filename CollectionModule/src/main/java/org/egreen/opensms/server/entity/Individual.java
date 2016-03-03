@@ -24,6 +24,7 @@ public class Individual implements EntityInterface <String> {
     private boolean isSalaryPay;
     private BigDecimal pcChargers;
     private BigDecimal fixedSalary;
+    private BigDecimal notCommisionPersentage;
 
     @Id
     @Column(name = "individualId")
@@ -115,6 +116,14 @@ public class Individual implements EntityInterface <String> {
         this.fixedSalary = fixedSalary;
     }
 
+    public BigDecimal getNotCommisionPersentage() {
+        return notCommisionPersentage;
+    }
+
+    public void setNotCommisionPersentage(BigDecimal notCommisionPersentage) {
+        this.notCommisionPersentage = notCommisionPersentage;
+    }
+
     @Override
     @Transient
     public String getId() {
@@ -135,6 +144,7 @@ public class Individual implements EntityInterface <String> {
                 ", isSalaryPay=" + isSalaryPay +
                 ", pcChargers=" + pcChargers +
                 ", fixedSalary=" + fixedSalary +
+                ", notCommisionPersentage=" + notCommisionPersentage +
                 '}';
     }
 }

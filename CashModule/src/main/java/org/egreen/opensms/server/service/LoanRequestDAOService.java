@@ -38,11 +38,11 @@ public class LoanRequestDAOService {
      * @return
      */
     public String save(LoanRequest loanRequest) {
-        boolean canRequest=loanRequestDAOController.checkIsThereAlreadyRequestedLoanHaveSpecifiedCenterIndividual(loanRequest.getCenterid(),loanRequest.getIndividualId());
+//        boolean canRequest=loanRequestDAOController.checkIsThereAlreadyRequestedLoanHaveSpecifiedCenterIndividual(loanRequest.getCenterid(),loanRequest.getIndividualId());
         String res=null;
-        if(canRequest == true){
-            boolean isOk=approvedLoanDAOController.checkApprovedLoanDueAmountsZero(loanRequest.getCenterid(),loanRequest.getIndividualId());
-            if(isOk == true){
+//        if(canRequest == true){
+//            boolean isOk=approvedLoanDAOController.checkApprovedLoanDueAmountsZero(loanRequest.getCenterid(),loanRequest.getIndividualId());
+//            if(isOk == true){
                 String id = new Date().getTime() + "";
                 Hashids hashids = new Hashids(id);
                 String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
@@ -51,12 +51,12 @@ public class LoanRequestDAOService {
                 loanRequest.setRequestDate(new Timestamp(new Date().getTime()));
                 loanRequestDAOController.create(loanRequest);
                 res="3";
-            }else{
-                res="2";
-            }
-        }else{
-            res="1";
-        }
+//            }else{
+//                res="2";
+//            }
+//        }else{
+//            res="1";
+//        }
 
         return res;
     }

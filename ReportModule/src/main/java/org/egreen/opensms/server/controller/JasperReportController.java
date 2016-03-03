@@ -55,6 +55,9 @@ public class JasperReportController {
     @Autowired
     private ApprovedLoanDAOService approvedLoanDAOService;
 
+    @Autowired
+    private CenterDAOService centerDAOService;
+
 
     /**
      * getGeneralSummaryReport
@@ -256,18 +259,51 @@ public class JasperReportController {
             List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId());
             Double payment = null;
             double ncValue=0.0;
+            double lcsValue=0.0;
+            BigDecimal notCommisionValue=BigDecimal.ZERO;
+            BigDecimal notcommisionPersentageForCenter=BigDecimal.ZERO;
+            BigDecimal lessCommisionSingleValue=BigDecimal.ZERO;
+            BigDecimal lessCommisionSinglePersentageForCenter=BigDecimal.ZERO;
+            BigDecimal notCommisionsTot =BigDecimal.ZERO;
+            BigDecimal lessCommisionSingleTot =BigDecimal.ZERO;
             for (Chit chit : chits) {
 
                 model.addRow(new Object[]{chit.getNumber(), chit.getInvesment() == null ? "--" : chit.getInvesment() + "", chit.getAmount() == null ? "--" : chit.getAmount() + "", chit.getNC() == null ? " " :  "NC"});
                 if (chit.getAmount() != null) {
                     totPayment += chit.getAmount().doubleValue();
                 }
-                if(chit.getNC() == true && chit.getNcOLCValue().doubleValue() > 0){
+                if(chit != null && chit.getNC()!=null && chit.getNC() == true  && chit.getNcOLCValue()!= null && chit.getNcOLCValue().doubleValue() > 0){
                     ncValue+=Double.parseDouble(chit.getNcOLCValue()+"");
                 }
+                if(chit != null && chit.getLCS()!=null && chit.getLCS() == true  && chit.getNcOLCValue()!= null && chit.getNcOLCValue().doubleValue() > 0){
+                    lcsValue+=Double.parseDouble(chit.getNcOLCValue()+"");
+                }
             }
+            notCommisionValue= BigDecimal.valueOf(ncValue);
+            lessCommisionSingleValue= BigDecimal.valueOf(lcsValue);
             //this must be change after center persentage addded
-            map.put("nc",ncValue/100*14+"");
+            Center center = centerDAOService.getCenterById(centerId);
+            Individual individual1 = individualDAOService.getBranchById(individualId);
+
+            if(center != null && center.getNotCommisionPersentage() != null){
+                notcommisionPersentageForCenter=center.getNotCommisionPersentage();
+                notCommisionsTot=envelopeDAOService.calculateNotCommision(notCommisionValue, notcommisionPersentageForCenter);
+            }
+            if(center != null && center.getLessComissionSingle() != null){
+                lessCommisionSinglePersentageForCenter=center.getLessComissionSingle();
+                lessCommisionSingleTot=envelopeDAOService.calculateLessCommisionSingle(lessCommisionSingleValue, lessCommisionSinglePersentageForCenter);
+            }
+            if(individual1 != null && individual1.getNotCommisionPersentage() != null){
+                notcommisionPersentageForCenter=individual1.getNotCommisionPersentage();
+                notCommisionsTot=envelopeDAOService.calculateNotCommision(notCommisionValue, notcommisionPersentageForCenter);
+            }
+            if(individual1 != null && individual1.getLessComissionSingle() != null){
+                lessCommisionSinglePersentageForCenter=individual1.getLessComissionSingle();
+                lessCommisionSingleTot=envelopeDAOService.calculateNotCommision(lessCommisionSingleValue, lessCommisionSinglePersentageForCenter);
+            }
+
+            map.put("nc",notCommisionsTot+"");
+            map.put("lcs",lessCommisionSingleTot+"");
 
         }
 
@@ -287,11 +323,18 @@ public class JasperReportController {
 //        }
 
         map.put("due", dueAmount == null ? "--" : dueAmount + "");
-        ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
-        if(approvedLoan != null){
-            BigDecimal approveLoanDueAmount = approvedLoan.getDueamount();
-            map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
+//        ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
+        List<ApprovedLoan> approvedLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
+        BigDecimal approveLoanDueAmount =BigDecimal.ZERO;
+        for (ApprovedLoan approvedLoan:approvedLoanList){
+            System.out.println(approvedLoan);
+            System.out.println(approvedLoan.getDueamount());
+            if(approvedLoan != null && approvedLoan.getDueamount()!=null ){
+                approveLoanDueAmount=approveLoanDueAmount.add(approvedLoan.getDueamount());
+                //map.put("ln", approvedLoan.getDeductionPayment()+"");
+            }
         }
+        map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
 
         ds = new JRTableModelDataSource(model);
         try {

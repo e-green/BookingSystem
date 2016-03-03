@@ -99,18 +99,18 @@ public class EnvelopeDAOService {
             }
 
 
-            if (envelope.getNotCommision() != null && envelope.getNotCommision().doubleValue() != 0) {
-                transaction = new Transaction();
-                createTransactinonAccount(individualId, transaction);
-                //genarate new transactionId for transaction and set it
-                String newid1 = getStringID(id, hashids, hexaid);
-                transaction.setTransactionId(newid1);
-
-                transaction.setTypeId("NC");
-                transaction.setDebit(envelope.getNotCommision());
-                transaction.setTime(envelope.getDate());
-                transactionDAOController.create(transaction);
-            }
+//            if (envelope.getNotCommision() != null && envelope.getNotCommision().doubleValue() != 0) {
+//                transaction = new Transaction();
+//                createTransactinonAccount(individualId, transaction);
+//                //genarate new transactionId for transaction and set it
+//                String newid1 = getStringID(id, hashids, hexaid);
+//                transaction.setTransactionId(newid1);
+//
+//                transaction.setTypeId("NC");
+//                transaction.setDebit(envelope.getNotCommision());
+//                transaction.setTime(envelope.getDate());
+//                transactionDAOController.create(transaction);
+//            }
 
             if (envelope.getExpences() != null && envelope.getExpences().doubleValue() != 0) {
                 transaction = new Transaction();
@@ -156,7 +156,13 @@ public class EnvelopeDAOService {
             }
 
             ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
-
+//            System.out.println(approvedLoan);
+////            System.out.println(approvedLoan.getDatetime().getYear());
+//            System.out.println(envelope.getDate().getYear());
+//            System.out.println(approvedLoan.getDatetime().getMonth());
+//            System.out.println(envelope.getDate().getMonth());
+//            System.out.println(approvedLoan.getDatetime().getDate());
+//            System.out.println(envelope.getDate().getDate());
             if (approvedLoan!=null&&approvedLoan.getDatetime().getYear() == envelope.getDate().getYear()
                     && approvedLoan.getDatetime().getMonth() == envelope.getDate().getMonth()
                     && approvedLoan.getDatetime().getDate() == envelope.getDate().getDate()
@@ -168,9 +174,8 @@ public class EnvelopeDAOService {
                 transaction.setTransactionId(newid1);
 
                 transaction.setTypeId("LON");
-
-
-                transaction.setCredit(approvedLoan.getAmount());
+//                transaction.setCredit(approvedLoan.getAmount());
+                transaction.setCredit(approvedLoan.getDueamount());
                 transaction.setTime(envelope.getDate());
                 transactionDAOController.create(transaction);
             } else if (approvedLoan!=null&&approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
@@ -184,17 +189,18 @@ public class EnvelopeDAOService {
 
                 transaction.setTypeId("LN");
                 BigDecimal dueAmount=null;
-                if(approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null){
+                if(approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null && envelope.getLoanDeduct() != null && envelope.getLoanDeduct() == true){
                     dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
                 }
 
-
-                transaction.setDebit(dueAmount);
-                transaction.setTime(envelope.getDate());
-                transactionDAOController.create(transaction);
+                if(envelope.getLoanDeduct() != null && envelope.getLoanDeduct() == true){
+                    transaction.setDebit(approvedLoan.getDeductionPayment());
+                    transaction.setTime(envelope.getDate());
+                    transactionDAOController.create(transaction);
+                }
 
                 if(approvedLoan.getDueamount() != null && dueAmount != null){
-                    approvedLoan.setDueamount(approvedLoan.getDueamount().subtract(dueAmount));
+                    approvedLoan.setDueamount(dueAmount);
                 }
                 approvedLoanDAOService.update(approvedLoan);
 
@@ -658,8 +664,8 @@ public class EnvelopeDAOService {
      * @param lessCommisionSingle
      * @return
      */
-    public BigDecimal calculateLessCommisionSingle(BigDecimal lessCommisionSingle){
-        BigDecimal lcs=lessCommisionSingle.divide(BigDecimal.valueOf(100)).multiply(BigDecimal.valueOf(4));//do calculation here
+    public BigDecimal calculateLessCommisionSingle(BigDecimal lessCommisionSingle,BigDecimal lessCommisionSinglePersentageForCenter){
+        BigDecimal lcs=lessCommisionSingle.divide(BigDecimal.valueOf(100)).multiply(lessCommisionSinglePersentageForCenter);
         return lcs;
     }
 
@@ -716,7 +722,6 @@ public class EnvelopeDAOService {
                 }
                 //lessCommissionSingle value
                 BigDecimal lCS=new BigDecimal(1000.00);
-                lessCommissionSingle = calculateLessCommisionSingle(lCS);
                 model.setLessComissionSingle(lessCommissionSingle);
             }
         }

@@ -120,4 +120,8 @@ public class ApprovedLoanDAOService {
     public ApprovedLoan getApprovedLoanByDateNIndividualId(String formatedDate, String individualId) {
         return approvedLoanDAOController.getApprovedLoanByDateNIndividualId(formatedDate,individualId);
     }
+
+    public List<ApprovedLoan> getUnpaidLoansByIndividualId(String individualId) {
+        return approvedLoanDAOController.getUnpaidLoansByIndividualId(individualId);
+    }
 }

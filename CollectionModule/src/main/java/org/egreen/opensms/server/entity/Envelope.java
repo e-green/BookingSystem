@@ -29,6 +29,7 @@ public class Envelope implements EntityInterface<String> {
     private BigInteger commision;
     private String center;
     private String individualId;
+    private Boolean isLoanDeduct;
 
 
     @Id
@@ -136,19 +137,27 @@ public class Envelope implements EntityInterface<String> {
         this.chitCount = chitCount;
     }
 
-    @Override
-    @Transient
-    public String getId() {
-        return getEnvelopId();
-    }
-
-
     public BigInteger getCommision() {
         return commision;
     }
 
     public void setCommision(BigInteger commision) {
         this.commision = commision;
+    }
+
+    public Boolean getLoanDeduct() {
+        return isLoanDeduct;
+    }
+
+    public void setLoanDeduct(Boolean loanDeduct) {
+        isLoanDeduct = loanDeduct;
+    }
+
+
+    @Override
+    @Transient
+    public String getId() {
+        return getEnvelopId();
     }
 
     @Override
@@ -168,6 +177,7 @@ public class Envelope implements EntityInterface<String> {
                 ", commision=" + commision +
                 ", center='" + center + '\'' +
                 ", individualId='" + individualId + '\'' +
+                ", isLoanDeduct=" + isLoanDeduct +
                 '}';
     }
 }
