@@ -185,7 +185,8 @@ public class JasperReportController {
         map.put("ln", "--");
         map.put("pd", "--");
         map.put("com", "--");
-
+        map.put("nc","--");
+        map.put("lcs","--");
         map.put("lon", "--");
 
 
@@ -301,9 +302,12 @@ public class JasperReportController {
                 lessCommisionSinglePersentageForCenter=individual1.getLessComissionSingle();
                 lessCommisionSingleTot=envelopeDAOService.calculateNotCommision(lessCommisionSingleValue, lessCommisionSinglePersentageForCenter);
             }
-
-            map.put("nc",notCommisionsTot+"");
-            map.put("lcs",lessCommisionSingleTot+"");
+            if(notCommisionsTot != null && notCommisionsTot.doubleValue() >0.0){
+                map.put("nc",notCommisionsTot+"");
+            }
+            if(lessCommisionSingleTot != null && lessCommisionSingleTot.doubleValue() > 0.0 ){
+                map.put("lcs",lessCommisionSingleTot+"");
+            }
 
         }
 
