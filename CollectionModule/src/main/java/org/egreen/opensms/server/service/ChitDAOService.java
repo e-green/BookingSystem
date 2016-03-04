@@ -64,42 +64,8 @@ public class ChitDAOService {
         List<Chit> chitList = chitDAOController.getAllChithsByFormattedDateNIndividualId(formatedDate, chit.getIndividualId());
         Envelope envelope = envelopeDAOController.read(chit.getEnvelopeId());
         String s = null;
-//        BigDecimal lessCommisionSingle = BigDecimal.ZERO;
-//        Transaction transaction =null;
+
         if (Integer.parseInt(envelope.getChitCount() + "") > chitList.size() && Integer.parseInt(envelope.getChitCount() + "") - chitList.size() > 1) {
-//            if (chit.getLCS() != null && chit.getLCS() == true) {
-//                if (chit.getCenterid() != null) {
-//                    Center centerById = centerDAOService.getCenterById(chit.getCenterid());
-//                    if (centerById != null && centerById.getLessComissionSingle() != null && centerById.getLessComissionSingle().doubleValue() > 0.0) {
-//                        transaction = new Transaction();
-//                        String newid1 = hexaid + "" + randomString(10);
-//                        transaction.setTransactionId(newid1);
-//                        transaction.setTime(chit.getDatetime());
-//                        transaction.setTypeId("LCS");
-//                        lessCommisionSingle = envelopeDAOService.calculateLessCommisionSingle(chit.getNcOLCValue(), centerById.getLessComissionSingle());
-//                        transaction.setDebit(lessCommisionSingle);
-//                        Account account = accountDAOService.getAccountByCenterOIndividualId(chit.getCenterid());
-//                        transaction.setAccountNo(account.getAccountNo());
-//                        transactionDAOService.save(transaction);
-//                    }
-//
-//                }
-//                if (chit.getIndividualId() != null) {
-//                    Individual individualById = individualDAOService.getBranchById(chit.getIndividualId());
-//                    if (individualById != null && individualById.getLessComissionSingle() != null && individualById.getLessComissionSingle().doubleValue() > 0.0) {
-//                        transaction=new Transaction();
-//                        String newid1 = hexaid + "" + randomString(10);
-//                        transaction.setTransactionId(newid1);
-//                        transaction.setTime(chit.getDatetime());
-//                        transaction.setTypeId("LCS");
-//                        lessCommisionSingle = envelopeDAOService.calculateLessCommisionSingle(chit.getNcOLCValue(), individualById.getLessComissionSingle());
-//                        transaction.setDebit(lessCommisionSingle);
-//                        Account account = accountDAOService.getAccountByCenterOIndividualId(chit.getIndividualId());
-//                        transaction.setAccountNo(account.getAccountNo());
-//                        transactionDAOService.save(transaction);
-//                    }
-//                }
-//            }
             //New transactions begin less commision single or not commision are adding
             setLessComSingleVal(chit);
 

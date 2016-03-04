@@ -665,21 +665,23 @@ public class EnvelopeDAOService {
      * @return
      */
     public BigDecimal calculateLessCommisionSingle(BigDecimal lessCommisionSingle,BigDecimal lessCommisionSinglePersentageForCenter){
+        System.out.println(lessCommisionSingle.doubleValue());
+        System.out.println(lessCommisionSinglePersentageForCenter.doubleValue());
         BigDecimal lcs=lessCommisionSingle.divide(BigDecimal.valueOf(100)).multiply(lessCommisionSinglePersentageForCenter);
         return lcs;
     }
 
-    public EnvelopeDetailModel getEnvelopesByDateNByIndividualId(String formatedDate, String individualId) {
+//    public EnvelopeDetailModel getEnvelopesByDateNByIndividualId(String formatedDate, String individualId) {
+////        EnvelopeDetailModel envelopeDetailModel=new EnvelopeDetailModel();
+////        Envelope envelope=envelopeDAOController.getEnvelopesByDateNByIndividualId(individualId,formatedDate);
+////
+////        if(null!= envelope){
+////            envelopeDetailModel.set
+////        }
+////        calculateCommision()
 //        EnvelopeDetailModel envelopeDetailModel=new EnvelopeDetailModel();
-//        Envelope envelope=envelopeDAOController.getEnvelopesByDateNByIndividualId(individualId,formatedDate);
-//
-//        if(null!= envelope){
-//            envelopeDetailModel.set
-//        }
-//        calculateCommision()
-        EnvelopeDetailModel envelopeDetailModel=new EnvelopeDetailModel();
-        return envelopeDetailModel;
-    }
+//        return envelopeDetailModel;
+//    }
 
     /**
      * get envelopeDetailModel view before enter envelope

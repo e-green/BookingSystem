@@ -188,6 +188,10 @@ public class JasperReportController {
         map.put("nc","--");
         map.put("lcs","--");
         map.put("lon", "--");
+        map.put("sal", "--");
+        map.put("overPay", "--");
+        map.put("exces", "--");
+
 
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
@@ -211,17 +215,12 @@ public class JasperReportController {
 
 
                 String ty=tra.getTypeId().toLowerCase();
-                System.out.println(ty+" "+value);
                 if(tra.getDebit()!= null){
                     Object put = map.put(ty, tra.getDebit() + "");
-                    System.out.println("Debit value :"+ put);
                 }
                 if(tra.getCredit()!= null){
                     Object put = map.put(ty, tra.getCredit() + "");
-                    System.out.println("Credit value :"+ put);
                 }
-
-
 
                 if (tra.getTypeId().equals("Inv")) {
                     totInvesment = tra.getDebit().doubleValue();
@@ -263,13 +262,22 @@ public class JasperReportController {
             double lcsValue=0.0;
             BigDecimal notCommisionValue=BigDecimal.ZERO;
             BigDecimal notcommisionPersentageForCenter=BigDecimal.ZERO;
+            BigDecimal lessCommisionSinglePersentageForIndividual=BigDecimal.ZERO;
+            BigDecimal notcommisionPersentageForIndividual=BigDecimal.ZERO;
             BigDecimal lessCommisionSingleValue=BigDecimal.ZERO;
             BigDecimal lessCommisionSinglePersentageForCenter=BigDecimal.ZERO;
             BigDecimal notCommisionsTot =BigDecimal.ZERO;
             BigDecimal lessCommisionSingleTot =BigDecimal.ZERO;
             for (Chit chit : chits) {
-
-                model.addRow(new Object[]{chit.getNumber(), chit.getInvesment() == null ? "--" : chit.getInvesment() + "", chit.getAmount() == null ? "--" : chit.getAmount() + "", chit.getNC() == null ? " " :  "NC"});
+                String ncOLCS=null;
+                if(chit.getNC() != null && chit.getNC() == true){
+                    ncOLCS="NC";
+                }else if(chit.getLCS() != null && chit.getLCS() == true){
+                    ncOLCS="LCS";
+                }else if(chit.getNC() == null && chit.getLCS() == null){
+                    ncOLCS="";
+                }
+                model.addRow(new Object[]{chit.getNumber(), chit.getInvesment() == null ? "--" : chit.getInvesment() + "", chit.getAmount() == null ? "--" : chit.getAmount() + "", ncOLCS});
                 if (chit.getAmount() != null) {
                     totPayment += chit.getAmount().doubleValue();
                 }
@@ -277,11 +285,13 @@ public class JasperReportController {
                     ncValue+=Double.parseDouble(chit.getNcOLCValue()+"");
                 }
                 if(chit != null && chit.getLCS()!=null && chit.getLCS() == true  && chit.getNcOLCValue()!= null && chit.getNcOLCValue().doubleValue() > 0){
+//                    System.out.println("LCS ->"+chit.getNcOLCValue());
                     lcsValue+=Double.parseDouble(chit.getNcOLCValue()+"");
                 }
             }
             notCommisionValue= BigDecimal.valueOf(ncValue);
             lessCommisionSingleValue= BigDecimal.valueOf(lcsValue);
+//            System.out.println("lessCommisionSingleValue"+lessCommisionSingleValue);
             //this must be change after center persentage addded
             Center center = centerDAOService.getCenterById(centerId);
             Individual individual1 = individualDAOService.getBranchById(individualId);
@@ -292,22 +302,46 @@ public class JasperReportController {
             }
             if(center != null && center.getLessComissionSingle() != null){
                 lessCommisionSinglePersentageForCenter=center.getLessComissionSingle();
+                System.out.println("lessCommisionSingleValue for center"+lessCommisionSingleValue);
                 lessCommisionSingleTot=envelopeDAOService.calculateLessCommisionSingle(lessCommisionSingleValue, lessCommisionSinglePersentageForCenter);
+                System.out.println("lessCommisionSingleTot for center"+lessCommisionSingleTot);
             }
             if(individual1 != null && individual1.getNotCommisionPersentage() != null){
-                notcommisionPersentageForCenter=individual1.getNotCommisionPersentage();
-                notCommisionsTot=envelopeDAOService.calculateNotCommision(notCommisionValue, notcommisionPersentageForCenter);
+                notcommisionPersentageForIndividual=individual1.getNotCommisionPersentage();
+                notCommisionsTot=envelopeDAOService.calculateNotCommision(notCommisionValue, notcommisionPersentageForIndividual);
             }
             if(individual1 != null && individual1.getLessComissionSingle() != null){
-                lessCommisionSinglePersentageForCenter=individual1.getLessComissionSingle();
-                lessCommisionSingleTot=envelopeDAOService.calculateNotCommision(lessCommisionSingleValue, lessCommisionSinglePersentageForCenter);
+                lessCommisionSinglePersentageForIndividual=individual1.getLessComissionSingle();
+//                System.out.println("lessCommisionSingleValue for individual "+lessCommisionSinglePersentageForIndividual);
+                lessCommisionSingleTot=envelopeDAOService.calculateLessCommisionSingle(lessCommisionSingleValue, lessCommisionSinglePersentageForIndividual);
+//                System.out.println("lessCommisionSingleTot for individual "+lessCommisionSingleTot);
+                map.put("lcs",lessCommisionSingleTot.doubleValue()+"");
             }
             if(notCommisionsTot != null && notCommisionsTot.doubleValue() >0.0){
                 map.put("nc",notCommisionsTot+"");
             }
-            if(lessCommisionSingleTot != null && lessCommisionSingleTot.doubleValue() > 0.0 ){
-                map.put("lcs",lessCommisionSingleTot+"");
+            if (individual1!=null&&individual1.getCommision() == null && individual1.getFixedSalary() == null && individual1.getCommision() == null) {
+                if (individual1.isSalaryPay() == false  ) {
+                    BigDecimal salary = envelopeDAOService.calculateSalary(BigDecimal.valueOf(totInvesment));
+                    map.put("sal",salary+"");
+
+                }
             }
+//            System.out.println(individual1);
+//            System.out.println(individual1.getFixedSalary());
+
+
+            if (individual1!=null&&individual1.getCommision() == null && individual1.getFixedSalary() != null && individual1.getCommision() == null) {
+
+                if (individual1.isSalaryPay() && individual1.getFixedSalary().doubleValue() > 0.0 ) {
+
+                    BigDecimal salary = individual1.getFixedSalary();
+                    System.out.println("inside the condition" + individual1.getFixedSalary());
+                    map.put("sal", salary+"");
+
+                }
+            }
+
 
         }
 
@@ -331,8 +365,8 @@ public class JasperReportController {
         List<ApprovedLoan> approvedLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
         BigDecimal approveLoanDueAmount =BigDecimal.ZERO;
         for (ApprovedLoan approvedLoan:approvedLoanList){
-            System.out.println(approvedLoan);
-            System.out.println(approvedLoan.getDueamount());
+//            System.out.println(approvedLoan);
+//            System.out.println(approvedLoan.getDueamount());
             if(approvedLoan != null && approvedLoan.getDueamount()!=null ){
                 approveLoanDueAmount=approveLoanDueAmount.add(approvedLoan.getDueamount());
                 //map.put("ln", approvedLoan.getDeductionPayment()+"");
@@ -342,7 +376,7 @@ public class JasperReportController {
 
         ds = new JRTableModelDataSource(model);
         try {
-            InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual.jrxml");
+            InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual1.jrxml");
             JasperReport jr = JasperCompileManager.compileReport(systemResourceAsStream);
             System.out.println(map);
             JasperPrint jp = JasperFillManager.fillReport(jr, map, ds);

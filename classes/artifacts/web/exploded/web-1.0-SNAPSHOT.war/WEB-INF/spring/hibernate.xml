@@ -29,7 +29,7 @@
 
     <!-- TODO 9: Define a bean named 'sessionFactory' that configures a test SessionFactory -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="developingServer"/>
+        <property name="dataSource" ref="testingServer"/>
         <property name="packagesToScan">
             <value>
                 org.egreen.opensms.server.entity
