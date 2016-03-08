@@ -299,20 +299,16 @@ public class IndividualController {
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
-            transaction.setDebit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
+            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
             transaction.setTypeId("Balance");
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
-            String formatedDate = simpleDateFormat.format(generalSummaryReceiptModel.getDate());
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
             double pd=0.0;
-            if(dueValue > 0){
-                pd=dueValue-generalSummaryReceiptModel.getBalance();
-                transaction.setCredit(BigDecimal.valueOf(pd));
-            }
+            pd=dueValue-generalSummaryReceiptModel.getBalance();
+            transaction.setDebit(BigDecimal.valueOf(pd));
             if(dueValue<0){
                 pd=dueValue+generalSummaryReceiptModel.getBalance();
                 transaction.setDebit(BigDecimal.valueOf(pd));
@@ -321,6 +317,24 @@ public class IndividualController {
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
 
+        }
+        if(dueValue < 0){
+            transaction = new Transaction();
+            transaction.setTransactionId(getNewId());
+            transaction.setAccountNo(account.getAccountNo());
+            transaction.setDebit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
+            transaction.setTypeId("Balance");
+            transaction.setTime(generalSummaryReceiptModel.getDate());
+            transactionDAOService.save(transaction);
+
+            transaction.setTransactionId(getNewId());
+            transaction.setAccountNo(account.getAccountNo());
+            double pd=0.0;
+            pd=dueValue+generalSummaryReceiptModel.getBalance();
+            transaction.setCredit(BigDecimal.valueOf(pd));
+            transaction.setTypeId("PD");
+            transaction.setTime(generalSummaryReceiptModel.getDate());
+            transactionDAOService.save(transaction);
         }
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
@@ -346,23 +360,6 @@ public class IndividualController {
         tpyPayment += totPayment;
 
         Double dueAmount = dueValue-generalSummaryReceiptModel.getBalance();
-
-        transaction = new Transaction();
-        transaction.setTransactionId(getNewId());
-        transaction.setAccountNo(account.getAccountNo());
-        if (dueAmount > 0) {
-            transaction.setDebit(BigDecimal.valueOf(dueAmount));
-            transaction.setTypeId("PD");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
-            transactionDAOService.save(transaction);
-        }
-        if (dueAmount < 0) {
-            transaction.setCredit(BigDecimal.valueOf(dueAmount));
-            transaction.setTypeId("PD");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
-            transactionDAOService.save(transaction);
-        }
-
 
 //        individualDAOService.closeDayBalance(generalSummaryReceiptModel.getIndividualId(),generalSummaryReceiptModel.getDate());
 
@@ -411,6 +408,7 @@ public class IndividualController {
         map.put("exces", "--");
 
         Double dueAmount=0.0;
+        Double perDue=0.0;
         List<Transaction> transactionList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(formatedDate, account.getAccountNo());
         for (Transaction transaction : transactionList) {
             if (transaction != null) {
@@ -442,13 +440,25 @@ public class IndividualController {
                 if (tra.getTypeId().equals("Balance")) {
                     balance = tra.getDebit().doubleValue();
                 }
-
-//                if(tra.getTypeId().equals("PD")){
-//                    dueAmount=tra.getDebit().doubleValue();
-//                }
             }
         }
 
+        Date curDate=generalSummaryReceiptModel.getDate();
+        Date yesterday=new Date(curDate.getTime() - (1000 * 60 * 60 * 24));
+        String yesterdayfD = simpleDateFormat.format(yesterday);
+
+        //yesterday transation
+        List<Transaction> trlist = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(yesterdayfD, account.getAccountNo());
+        for (Transaction transaction : trlist) {
+            if (transaction != null) {
+                tra = transaction;
+
+                if (tra.getCredit() != null && tra.getTypeId().equals("Balance")) {
+                    perDue = tra.getCredit().doubleValue();
+                    map.put("pd",perDue);
+                }
+            }
+        }
 //        map.put("csh",234234234+"");
         List<Envelope> envelopesByCenterId = null;
 
