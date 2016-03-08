@@ -291,7 +291,6 @@ public class JasperReportController {
             }
             notCommisionValue= BigDecimal.valueOf(ncValue);
             lessCommisionSingleValue= BigDecimal.valueOf(lcsValue);
-//            System.out.println("lessCommisionSingleValue"+lessCommisionSingleValue);
             //this must be change after center persentage addded
             Center center = centerDAOService.getCenterById(centerId);
             Individual individual1 = individualDAOService.getBranchById(individualId);
@@ -302,9 +301,7 @@ public class JasperReportController {
             }
             if(center != null && center.getLessComissionSingle() != null){
                 lessCommisionSinglePersentageForCenter=center.getLessComissionSingle();
-                System.out.println("lessCommisionSingleValue for center"+lessCommisionSingleValue);
                 lessCommisionSingleTot=envelopeDAOService.calculateLessCommisionSingle(lessCommisionSingleValue, lessCommisionSinglePersentageForCenter);
-                System.out.println("lessCommisionSingleTot for center"+lessCommisionSingleTot);
             }
             if(individual1 != null && individual1.getNotCommisionPersentage() != null){
                 notcommisionPersentageForIndividual=individual1.getNotCommisionPersentage();
@@ -312,9 +309,7 @@ public class JasperReportController {
             }
             if(individual1 != null && individual1.getLessComissionSingle() != null){
                 lessCommisionSinglePersentageForIndividual=individual1.getLessComissionSingle();
-//                System.out.println("lessCommisionSingleValue for individual "+lessCommisionSinglePersentageForIndividual);
                 lessCommisionSingleTot=envelopeDAOService.calculateLessCommisionSingle(lessCommisionSingleValue, lessCommisionSinglePersentageForIndividual);
-//                System.out.println("lessCommisionSingleTot for individual "+lessCommisionSingleTot);
                 map.put("lcs",lessCommisionSingleTot.doubleValue()+"");
             }
             if(notCommisionsTot != null && notCommisionsTot.doubleValue() >0.0){
@@ -327,8 +322,6 @@ public class JasperReportController {
 
                 }
             }
-//            System.out.println(individual1);
-//            System.out.println(individual1.getFixedSalary());
 
 
             if (individual1!=null&&individual1.getCommision() == null && individual1.getFixedSalary() != null && individual1.getCommision() == null) {
@@ -365,8 +358,6 @@ public class JasperReportController {
         List<ApprovedLoan> approvedLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
         BigDecimal approveLoanDueAmount =BigDecimal.ZERO;
         for (ApprovedLoan approvedLoan:approvedLoanList){
-//            System.out.println(approvedLoan);
-//            System.out.println(approvedLoan.getDueamount());
             if(approvedLoan != null && approvedLoan.getDueamount()!=null ){
                 approveLoanDueAmount=approveLoanDueAmount.add(approvedLoan.getDueamount());
                 //map.put("ln", approvedLoan.getDeductionPayment()+"");

@@ -65,29 +65,35 @@ public class ChitDAOService {
         Envelope envelope = envelopeDAOController.read(chit.getEnvelopeId());
         String s = null;
 
-        if (Integer.parseInt(envelope.getChitCount() + "") > chitList.size() && Integer.parseInt(envelope.getChitCount() + "") - chitList.size() > 1) {
-            //New transactions begin less commision single or not commision are adding
-            setLessComSingleVal(chit);
-
-            chitDAOController.create(chit);
-            s = "1";
+        boolean ok=false;
+        Chit ch=null;
+        for (Chit chit1 : chitList) {
+            ch=chit1;
         }
-        if (Integer.parseInt(envelope.getChitCount() + "") - chitList.size() == 1) {
-            for (Chit chit1 : chitList) {
-                chit1.setFinish(true);
-                chitDAOController.update(chit1);
+        if(chitList.size() > 0){
+            if(ch.getFinish() == null ){
+                ok=true;
             }
-            chit.setChitId(newid);
-            chit.setFinish(true);
-            //New transactions begin less commision single or not commision are adding
-            setLessComSingleVal(chit);
-            chitDAOController.create(chit);
-            s = "1";
+            if(ch.getFinish() == false){
+                ok=true;
+            }
         }
-
-        //define the chits are over specified envelope.
-        if (s == null) {
-            s = "0";
+        if(chitList.size() == 0){
+            ok=true;
+        }
+        if(chitList.size() > 0){
+            if(ch.getFinish() == true){
+                ok=false;
+            }
+        }
+        if(ok == true){
+            setLessComSingleVal(chit);
+            chit.setFinish(false);
+            chitDAOController.create(chit);
+            s= "1";
+        }
+        if(ok == false){
+            s="0";
         }
 
         return s;
@@ -143,7 +149,7 @@ public class ChitDAOService {
                     transaction.setDebit(lessCommisionSingle);
                     Account account = accountDAOService.getAccountByCenterOIndividualId(chit.getCenterid());
                     transaction.setAccountNo(account.getAccountNo());
-                    String s=transactionDAOService.save(transaction);
+                    transactionDAOService.save(transaction);
                 }
 
             }
@@ -177,7 +183,7 @@ public class ChitDAOService {
                     transaction.setDebit(notCommision);
                     Account account = accountDAOService.getAccountByCenterOIndividualId(chit.getCenterid());
                     transaction.setAccountNo(account.getAccountNo());
-                    String s=transactionDAOService.save(transaction);
+                    transactionDAOService.save(transaction);
                 }
 
             }
