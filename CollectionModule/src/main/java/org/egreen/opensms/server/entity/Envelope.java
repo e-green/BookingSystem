@@ -30,6 +30,7 @@ public class Envelope implements EntityInterface<String> {
     private String center;
     private String individualId;
     private Boolean isLoanDeduct;
+    private Boolean finished;
 
 
     @Id
@@ -153,6 +154,13 @@ public class Envelope implements EntityInterface<String> {
         isLoanDeduct = loanDeduct;
     }
 
+    public Boolean getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Boolean finished) {
+        this.finished = finished;
+    }
 
     @Override
     @Transient
@@ -178,6 +186,7 @@ public class Envelope implements EntityInterface<String> {
                 ", center='" + center + '\'' +
                 ", individualId='" + individualId + '\'' +
                 ", isLoanDeduct=" + isLoanDeduct +
+                ", finished=" + finished +
                 '}';
     }
 }

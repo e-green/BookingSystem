@@ -3,6 +3,7 @@ package org.egreen.opensms.server.controller;
 import org.egreen.opensms.server.entity.Chit;
 
 import org.egreen.opensms.server.models.ChitModel;
+import org.egreen.opensms.server.models.FinishChitModel;
 import org.egreen.opensms.server.models.ReturnIdModel1;
 import org.egreen.opensms.server.service.ChitDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -179,6 +180,14 @@ public class ChitController {
     public ChitModel getChitModelOB() {
         return new ChitModel();
     }
+
+    @RequestMapping(value = "FinishChitModelOB", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public FinishChitModel getFinishChitModelOB() {
+        return new FinishChitModel();
+    }
+
+
 
 
 }

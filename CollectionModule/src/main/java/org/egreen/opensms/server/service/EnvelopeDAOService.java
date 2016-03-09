@@ -733,4 +733,12 @@ public class EnvelopeDAOService {
     public Envelope getEnvelopesByIndividualIdByDateNCenterId(String individualId, String formatedDate, String center) {
         return envelopeDAOController.getEnvelopesByIndividualIdByDateNCenterId(individualId,formatedDate,center);
     }
+
+    public Envelope getEnvelopeById(String envelopeId) {
+        return envelopeDAOController.read(envelopeId);
+    }
+
+    public String checkEnvelopeIsFinished(String envelopeId, String formatedDate) {
+        return envelopeDAOController.checkEnvelopeIsFinished(envelopeId,formatedDate);
+    }
 }

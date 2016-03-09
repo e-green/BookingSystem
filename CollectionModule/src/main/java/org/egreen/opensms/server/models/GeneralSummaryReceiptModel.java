@@ -9,17 +9,11 @@ public class GeneralSummaryReceiptModel {
 
     private String centerId;
     private String individualId;
+    private String envelopeId;
     private Timestamp date;
     private Integer type;
     private double balance;
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
+    private double pd;
 
     public String getCenterId() {
         return centerId;
@@ -35,6 +29,14 @@ public class GeneralSummaryReceiptModel {
 
     public void setIndividualId(String individualId) {
         this.individualId = individualId;
+    }
+
+    public String getEnvelopeId() {
+        return envelopeId;
+    }
+
+    public void setEnvelopeId(String envelopeId) {
+        this.envelopeId = envelopeId;
     }
 
     public Timestamp getDate() {
@@ -53,14 +55,32 @@ public class GeneralSummaryReceiptModel {
         this.type = type;
     }
 
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     @Override
     public String toString() {
         return "GeneralSummaryReceiptModel{" +
                 "centerId='" + centerId + '\'' +
                 ", individualId='" + individualId + '\'' +
+                ", envelopeId='" + envelopeId + '\'' +
                 ", date=" + date +
                 ", type=" + type +
                 ", balance=" + balance +
+                ", pd=" + pd +
                 '}';
+    }
+
+    public double getPd() {
+        return pd;
+    }
+
+    public void setPd(double pd) {
+        this.pd = pd;
     }
 }

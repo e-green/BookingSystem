@@ -57,42 +57,52 @@ public class ChitDAOService {
         String newid = idCreation();
         chit.setChitId(newid);
 
-        chit.setDatetime(new Timestamp(new Date().getTime()));
+//        chit.setDatetime(new Timestamp(new Date().getTime()));
+        chit.setDatetime(chit.getDatetime());
         //checking weather the chit individualId & date finished or not
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
-        String formatedDate = simpleDateFormat.format(chit.getDatetime());
-        List<Chit> chitList = chitDAOController.getAllChithsByFormattedDateNIndividualId(formatedDate, chit.getIndividualId());
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+//        String formatedDate = simpleDateFormat.format(chit.getDatetime());
+//        List<Chit> chitList = chitDAOController.getAllChithsByFormattedDateNIndividualId(formatedDate, chit.getIndividualId());
         Envelope envelope = envelopeDAOController.read(chit.getEnvelopeId());
         String s = null;
 
-        boolean ok=false;
-        Chit ch=null;
-        for (Chit chit1 : chitList) {
-            ch=chit1;
-        }
-        if(chitList.size() > 0){
-            if(ch.getFinish() == null ){
-                ok=true;
-            }
-            if(ch.getFinish() == false){
-                ok=true;
-            }
-        }
-        if(chitList.size() == 0){
-            ok=true;
-        }
-        if(chitList.size() > 0){
-            if(ch.getFinish() == true){
-                ok=false;
-            }
-        }
-        if(ok == true){
+//        boolean ok=false;
+//        Chit ch=null;
+//        for (Chit chit1 : chitList) {
+//            ch=chit1;
+//        }
+//        if(chitList.size() > 0){
+//            if(ch.getFinish() == null ){
+//                ok=true;
+//            }
+//            if(ch.getFinish() == false){
+//                ok=true;
+//            }
+//        }
+//        if(chitList.size() == 0){
+//            ok=true;
+//        }
+//        if(chitList.size() > 0){
+//            if(ch.getFinish() == true){
+//                ok=false;
+//            }
+//        }
+//        if(ok == true){
+//            setLessComSingleVal(chit);
+//            chit.setFinish(false);
+//            chitDAOController.create(chit);
+//            s= "1";
+//        }
+//        if(ok == false){
+//            s="0";
+//        }
+        if(envelope.getFinished() == false){
             setLessComSingleVal(chit);
             chit.setFinish(false);
             chitDAOController.create(chit);
             s= "1";
         }
-        if(ok == false){
+        if(envelope.getFinished() == true){
             s="0";
         }
 
@@ -262,4 +272,5 @@ public class ChitDAOService {
     public List<Chit> getAllChithsByFormattedDateNIndividualId(String formatedDate, String individualId) {
         return chitDAOController.getAllChithsByFormattedDateNIndividualId(formatedDate, individualId);
     }
+
 }

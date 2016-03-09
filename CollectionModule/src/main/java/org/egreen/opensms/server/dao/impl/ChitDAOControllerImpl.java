@@ -46,20 +46,20 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
     }
 
     @Override
-    public List<Chit> getAllChitById(Integer limit, Integer offset, String id ,Integer type,String date) {
+    public List<Chit> getAllChitById(Integer limit, Integer offset, String id, Integer type, String date) {
         Query query = null;
-        if (type==0) {
-         query = getSession().createQuery("SELECT c FROM Chit c WHERE c.centerid = :id AND DATE(c.datetime) = DATE(:date)  ORDER BY DATE(c.datetime) ASC");
+        if (type == 0) {
+            query = getSession().createQuery("SELECT c FROM Chit c WHERE c.centerid = :id AND DATE(c.datetime) = DATE(:date)  ORDER BY DATE(c.datetime) ASC");
             query.setString("date", date);
             query.setString("id", id);
-        }else  if (type==1){
+        } else if (type == 1) {
             query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :id AND DATE(c.datetime) = DATE(:date) ORDER BY DATE(c.datetime) ASC ");
             query.setString("date", date);
             query.setString("id", id);
         }
 
 
-        if (limit!=null&&offset!=null) {
+        if (limit != null && offset != null) {
             query.setMaxResults(limit);
             query.setFirstResult(offset);
         }
@@ -72,7 +72,7 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
         Criteria criteria = getSession().createCriteria(entityType);
         criteria.add(Restrictions.eq("centerid", id));
         criteria.setProjection(Projections.rowCount());
-        return (Long)criteria.uniqueResult();
+        return (Long) criteria.uniqueResult();
 
     }
 
@@ -86,16 +86,16 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
     @Override
     public Long getAllChitByIdCount(String id, Integer type, Date date) {
         Query query = null;
-        if (type==0) {
+        if (type == 0) {
             query = getSession().createQuery("SELECT COUNT(c) FROM Chit c WHERE c.centerid = :id AND DATE(c.datetime) = :date");
             query.setDate("date", date);
             query.setString("id", id);
-        }else  if (type==1){
+        } else if (type == 1) {
             query = getSession().createQuery("SELECT COUNT(c) FROM Chit c WHERE c.individualId = :id AND DATE(c.datetime) = :date");
             query.setDate("date", date);
             query.setString("id", id);
         }
-        return (Long)query.uniqueResult();
+        return (Long) query.uniqueResult();
 
     }
 
@@ -107,4 +107,5 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
 
         return query.list();
     }
+    
 }

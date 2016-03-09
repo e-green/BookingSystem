@@ -299,7 +299,7 @@ public class IndividualController {
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
-            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
+            transaction.setDebit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
             transaction.setTypeId("Balance");
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
@@ -307,12 +307,8 @@ public class IndividualController {
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
             double pd=0.0;
-            pd=dueValue-generalSummaryReceiptModel.getBalance();
-            transaction.setDebit(BigDecimal.valueOf(pd));
-            if(dueValue<0){
-                pd=dueValue+generalSummaryReceiptModel.getBalance();
-                transaction.setDebit(BigDecimal.valueOf(pd));
-            }
+            pd=generalSummaryReceiptModel.getPd();
+            transaction.setCredit(BigDecimal.valueOf(pd));
             transaction.setTypeId("PD");
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
@@ -322,7 +318,7 @@ public class IndividualController {
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
-            transaction.setDebit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
+            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
             transaction.setTypeId("Balance");
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
@@ -330,8 +326,8 @@ public class IndividualController {
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
             double pd=0.0;
-            pd=dueValue+generalSummaryReceiptModel.getBalance();
-            transaction.setCredit(BigDecimal.valueOf(pd));
+            pd=generalSummaryReceiptModel.getPd();
+            transaction.setDebit(BigDecimal.valueOf(pd));
             transaction.setTypeId("PD");
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
@@ -341,6 +337,12 @@ public class IndividualController {
         String formatedDate = simpleDateFormat.format(generalSummaryReceiptModel.getDate());
         String individualId = generalSummaryReceiptModel.getIndividualId();
         List<Chit> chitList = chitDAOService.getAllChithsByFormattedDateNIndividualId(formatedDate, individualId);
+        Envelope envelopeById = envelopeDAOService.getEnvelopeById(generalSummaryReceiptModel.getEnvelopeId());
+        if(envelopeById != null){
+            envelopeById.setFinished(true);
+            envelopeDAOService.update(envelopeById);
+        }
+
 
         if (chitList.size() > 0) {
             for (Chit chit : chitList) {
@@ -396,16 +398,16 @@ public class IndividualController {
         Individual individual = individualDAOService.getBranchById(generalSummaryReceiptModel.getIndividualId());
 
 
-        map.put("pc", "");
-        map.put("ln", "--");
-        map.put("pd", "--");
-        map.put("com", "--");
-        map.put("nc", "--");
-        map.put("lcs", "--");
-        map.put("lon", "--");
-        map.put("sal", "--");
-        map.put("overPay", "--");
-        map.put("exces", "--");
+        map.put("pc", "0.00");
+        map.put("ln", "0.00");
+        map.put("pd", "0.00");
+        map.put("com", "0.00");
+        map.put("nc", "0.00");
+        map.put("lcs", "0.00");
+        map.put("lon", "0.00");
+        map.put("sal", "0.00");
+        map.put("overPay", "0.00");
+        map.put("exces", "0.00");
 
         Double dueAmount=0.0;
         Double perDue=0.0;
@@ -437,9 +439,6 @@ public class IndividualController {
                     totInvesment = tra.getDebit().doubleValue();
                 }
 
-                if (tra.getTypeId().equals("Balance")) {
-                    balance = tra.getDebit().doubleValue();
-                }
             }
         }
 
@@ -453,8 +452,8 @@ public class IndividualController {
             if (transaction != null) {
                 tra = transaction;
 
-                if (tra.getCredit() != null && tra.getTypeId().equals("Balance")) {
-                    perDue = tra.getCredit().doubleValue();
+                if (tra.getDebit() != null && tra.getTypeId().equals("Balance")) {
+                    perDue = tra.getDebit().doubleValue();
                     map.put("pd",perDue);
                 }
             }
@@ -570,6 +569,9 @@ public class IndividualController {
         }
 
         tpyPayment += totPayment;
+        if(perDue > 0.0){
+            tpyInvestment+=perDue;
+        }
 
         map.put("totInv", totInvesment == null ? "--" : totInvesment + "");
         map.put("totPay", totPayment == null ? "--" : totPayment + "");

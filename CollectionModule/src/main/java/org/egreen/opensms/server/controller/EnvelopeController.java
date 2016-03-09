@@ -4,6 +4,7 @@ import org.egreen.opensms.server.entity.*;
 import org.egreen.opensms.server.models.EnvelopeDetailModel;
 import org.egreen.opensms.server.models.EnvelopeModel;
 
+import org.egreen.opensms.server.models.FinishChitModel;
 import org.egreen.opensms.server.models.ReturnIdModel1;
 import org.egreen.opensms.server.service.EnvelopeDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,14 @@ public class EnvelopeController {
     public boolean checkIfExist(@RequestParam("envelopeName") String envelopeName) {
         boolean all = envelopeDAOService.checkIfExist(envelopeName);
         return all;
+    }
+
+
+    @RequestMapping(value = "getEnvelopeById", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public Envelope getEnvelopeById(@RequestParam("envelopeId") String envelopeId) {
+        Envelope envelope=envelopeDAOService.getEnvelopeById(envelopeId);
+        return envelope;
     }
 //
 //    /**
@@ -184,6 +193,15 @@ public class EnvelopeController {
                                                       @RequestParam("offset") Integer offset) {
         return envelopeDAOService.getAllBranchersByPagination(limit, offset);
     }
+
+    @RequestMapping(value = "checkEnvelopeIsFinished", method = RequestMethod.POST, headers = "Accept=application/json")
+    @ResponseBody
+    public String checkEnvelopeIsFinished(@RequestBody FinishChitModel finishChitModel) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+        String formatedDate = simpleDateFormat.format(finishChitModel.getTimestamp());
+        return envelopeDAOService.checkEnvelopeIsFinished(finishChitModel.getEnvelopeId(),formatedDate);
+    }
+
 
     /***
      * getAllBranches

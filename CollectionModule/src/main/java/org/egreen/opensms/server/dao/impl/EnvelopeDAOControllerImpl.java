@@ -159,4 +159,28 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         return envelope1;
     }
 
+    @Override
+    public String checkEnvelopeIsFinished(String envelopeId, String formatedDate) {
+        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.envelopId = :envelopeId AND DATE(e.date) = DATE( :formatedDate)");
+        query.setString("formatedDate", formatedDate);
+        query.setString("envelopeId", envelopeId);
+
+        String val="0";
+        List<Envelope> list = query.list();
+        if (list.size() < 0) {
+            val="0";
+        }
+        if(list.size() > 0){
+            for(Envelope envelope:list){
+                if(envelope.getFinished() == true){
+                    val="1";
+                }
+                if(envelope.getFinished() == false){
+                    val="2";
+                }
+            }
+        }
+        return val;
+    }
+
 }

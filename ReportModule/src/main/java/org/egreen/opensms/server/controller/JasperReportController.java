@@ -338,7 +338,27 @@ public class JasperReportController {
 
         }
 
+        Double perDue=0.0;
+        Date yesterday=new Date(date1.getTime() - (1000 * 60 * 60 * 24));
+        String yesterdayfD = simpleDateFormat.format(yesterday);
+
+        //yesterday transation
+        List<Transaction> trlist = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(yesterdayfD, account.getAccountNo());
+        for (Transaction transaction : trlist) {
+            if (transaction != null) {
+                tra = transaction;
+
+                if (tra.getDebit() != null && tra.getTypeId().equals("Balance")) {
+                    perDue = tra.getDebit().doubleValue();
+                    map.put("pd",perDue);
+                }
+            }
+        }
+
         tpyPayment += totPayment;
+        if(perDue > 0.0){
+            tpyInvestment+=perDue;
+        }
 
         map.put("totInv", totInvesment == null ? "--" : totInvesment + "");
         map.put("totPay", totPayment == null ? "--" : totPayment + "");
