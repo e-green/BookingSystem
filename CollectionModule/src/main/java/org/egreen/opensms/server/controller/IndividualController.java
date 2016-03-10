@@ -482,7 +482,8 @@ public class IndividualController {
         Double totPayment = 0.0;
         Double tpyPayment = outValue;
         Double tpyInvestment = inValue;
-
+        Double salary=0.0;
+        BigDecimal notCommisionsTot = BigDecimal.ZERO;
 
         for (Envelope envelope : envelopesByCenterId) {
 
@@ -496,7 +497,7 @@ public class IndividualController {
             BigDecimal notcommisionPersentageForIndividual = BigDecimal.ZERO;
             BigDecimal lessCommisionSingleValue = BigDecimal.ZERO;
             BigDecimal lessCommisionSinglePersentageForCenter = BigDecimal.ZERO;
-            BigDecimal notCommisionsTot = BigDecimal.ZERO;
+
             BigDecimal lessCommisionSingleTot = BigDecimal.ZERO;
             for (Chit chit : chits) {
                 String ncOLCS = null;
@@ -547,7 +548,7 @@ public class IndividualController {
             }
             if (individual1 != null && individual1.getCommision() == null && individual1.getFixedSalary() == null && individual1.getCommision() == null) {
                 if (individual1.isSalaryPay() == false) {
-                    BigDecimal salary = envelopeDAOService.calculateSalary(BigDecimal.valueOf(totInvesment));
+                    salary = envelopeDAOService.calculateSalary(BigDecimal.valueOf(totInvesment)).doubleValue();
                     map.put("sal", salary + "");
 
                 }
@@ -558,7 +559,7 @@ public class IndividualController {
 
                 if (individual1.isSalaryPay() && individual1.getFixedSalary().doubleValue() > 0.0) {
 
-                    BigDecimal salary = individual1.getFixedSalary();
+                    salary = individual1.getFixedSalary().doubleValue();
                     System.out.println("inside the condition" + individual1.getFixedSalary());
                     map.put("sal", salary + "");
 
@@ -571,6 +572,13 @@ public class IndividualController {
         tpyPayment += totPayment;
         if(perDue > 0.0){
             tpyInvestment+=perDue;
+        }
+
+        if(salary > 0.0){
+            tpyPayment+=salary;
+        }
+        if(notCommisionsTot.doubleValue() > 0.0){
+            tpyInvestment+=notCommisionsTot.doubleValue();
         }
 
         map.put("totInv", totInvesment == null ? "--" : totInvesment + "");

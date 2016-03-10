@@ -199,7 +199,7 @@ public class ChitDAOService {
             }
             if (chit.getIndividualId() != null) {
                 Individual individualById = individualDAOService.getBranchById(chit.getIndividualId());
-                if (individualById != null && individualById.getLessComissionSingle() != null && individualById.getLessComissionSingle().doubleValue() > 0.0) {
+                if (individualById != null && individualById.getNotCommisionPersentage() != null && individualById.getNotCommisionPersentage().doubleValue() > 0.0) {
                     transaction=new Transaction();
                     String newid1=idCreation();
                     transaction.setTransactionId(newid1);

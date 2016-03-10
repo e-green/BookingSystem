@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DateFormatter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -191,10 +192,11 @@ public class JasperReportController {
         map.put("sal", "--");
         map.put("overPay", "--");
         map.put("exces", "--");
+        map.put("exp", "--");
 
 
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formatedDate = simpleDateFormat.format(new Date(date));
 
         List<Transaction> transactionList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(formatedDate, account.getAccountNo());
@@ -252,8 +254,8 @@ public class JasperReportController {
         Double totPayment = 0.0;
         Double tpyPayment = outValue;
         Double tpyInvestment = inValue;
-
-
+        Double salary=0.0;
+        BigDecimal notCommisionsTot =BigDecimal.ZERO;
         for (Envelope envelope : envelopesByCenterId) {
 
             List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId());
@@ -266,7 +268,7 @@ public class JasperReportController {
             BigDecimal notcommisionPersentageForIndividual=BigDecimal.ZERO;
             BigDecimal lessCommisionSingleValue=BigDecimal.ZERO;
             BigDecimal lessCommisionSinglePersentageForCenter=BigDecimal.ZERO;
-            BigDecimal notCommisionsTot =BigDecimal.ZERO;
+
             BigDecimal lessCommisionSingleTot =BigDecimal.ZERO;
             for (Chit chit : chits) {
                 String ncOLCS=null;
@@ -317,7 +319,7 @@ public class JasperReportController {
             }
             if (individual1!=null&&individual1.getCommision() == null && individual1.getFixedSalary() == null && individual1.getCommision() == null) {
                 if (individual1.isSalaryPay() == false  ) {
-                    BigDecimal salary = envelopeDAOService.calculateSalary(BigDecimal.valueOf(totInvesment));
+                    salary = envelopeDAOService.calculateSalary(BigDecimal.valueOf(totInvesment)).doubleValue();
                     map.put("sal",salary+"");
 
                 }
@@ -327,8 +329,7 @@ public class JasperReportController {
             if (individual1!=null&&individual1.getCommision() == null && individual1.getFixedSalary() != null && individual1.getCommision() == null) {
 
                 if (individual1.isSalaryPay() && individual1.getFixedSalary().doubleValue() > 0.0 ) {
-
-                    BigDecimal salary = individual1.getFixedSalary();
+                    salary = individual1.getFixedSalary().doubleValue();
                     System.out.println("inside the condition" + individual1.getFixedSalary());
                     map.put("sal", salary+"");
 
@@ -350,7 +351,7 @@ public class JasperReportController {
 
                 if (tra.getDebit() != null && tra.getTypeId().equals("Balance")) {
                     perDue = tra.getDebit().doubleValue();
-                    map.put("pd",perDue);
+                    map.put("pd",perDue+"");
                 }
             }
         }
@@ -358,6 +359,14 @@ public class JasperReportController {
         tpyPayment += totPayment;
         if(perDue > 0.0){
             tpyInvestment+=perDue;
+        }
+        if(salary > 0.0){
+            tpyPayment+=salary;
+
+        }
+
+        if(notCommisionsTot.doubleValue() > 0.0){
+            tpyInvestment+=notCommisionsTot.doubleValue();
         }
 
         map.put("totInv", totInvesment == null ? "--" : totInvesment + "");
@@ -397,9 +406,9 @@ public class JasperReportController {
             try {
                 InputStream inputStream = new FileInputStream(pdf);
                 response.setContentType("application/pdf");
-
-                response.setHeader("Content-Disposition", "attachment; filename=" + centerId + ".pdf");
-
+                SimpleDateFormat sDF = new SimpleDateFormat("dd-MM-yyyy");
+                String fDate = simpleDateFormat.format(new Date(date));
+                response.setHeader("Content-Disposition", "attachment; filename=" + individual.getName() +" "+  fDate + ".pdf");
                 IOUtils.copy(inputStream, response.getOutputStream());
                 response.flushBuffer();
                 inputStream.close();
