@@ -14,6 +14,12 @@ public class GeneralSummaryReceiptModel {
     private Integer type;
     private double balance;
     private double pd;
+    private double pay;
+    private double salary;
+    private double overPayment;
+    private double excess;
+    private double nc;
+    private double lcs;
 
     public String getCenterId() {
         return centerId;
@@ -63,6 +69,62 @@ public class GeneralSummaryReceiptModel {
         this.balance = balance;
     }
 
+    public double getPd() {
+        return pd;
+    }
+
+    public void setPd(double pd) {
+        this.pd = pd;
+    }
+
+    public double getPay() {
+        return pay;
+    }
+
+    public void setPay(double pay) {
+        this.pay = pay;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    public double getOverPayment() {
+        return overPayment;
+    }
+
+    public void setOverPayment(double overPayment) {
+        this.overPayment = overPayment;
+    }
+
+    public double getExcess() {
+        return excess;
+    }
+
+    public void setExcess(double excess) {
+        this.excess = excess;
+    }
+
+    public double getNc() {
+        return nc;
+    }
+
+    public void setNc(double nc) {
+        this.nc = nc;
+    }
+
+    public double getLcs() {
+        return lcs;
+    }
+
+    public void setLcs(double lcs) {
+        this.lcs = lcs;
+    }
+
     @Override
     public String toString() {
         return "GeneralSummaryReceiptModel{" +
@@ -73,14 +135,12 @@ public class GeneralSummaryReceiptModel {
                 ", type=" + type +
                 ", balance=" + balance +
                 ", pd=" + pd +
+                ", pay=" + pay +
+                ", salary=" + salary +
+                ", overPayment=" + overPayment +
+                ", excess=" + excess +
+                ", nc=" + nc +
+                ", lcs=" + lcs +
                 '}';
-    }
-
-    public double getPd() {
-        return pd;
-    }
-
-    public void setPd(double pd) {
-        this.pd = pd;
     }
 }

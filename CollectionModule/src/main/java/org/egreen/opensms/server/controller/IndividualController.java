@@ -283,6 +283,8 @@ public class IndividualController {
         } catch (Exception e) {
 
         }
+        double nc = generalSummaryReceiptModel.getNc();
+        double lcs = generalSummaryReceiptModel.getLcs();
 
         double inValue = 0;
         double outValue = 0;
@@ -333,14 +335,122 @@ public class IndividualController {
             transactionDAOService.save(transaction);
         }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+        if(generalSummaryReceiptModel.getPay() > 0.0){
+            transaction = new Transaction();
+            transaction.setTransactionId(getNewId());
+            transaction.setAccountNo(account.getAccountNo());
+            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPay()));
+            transaction.setTypeId("PAY");
+            transaction.setTime(generalSummaryReceiptModel.getDate());
+            transactionDAOService.save(transaction);
+        }
+
+        if(generalSummaryReceiptModel.getSalary() > 0.0){
+            transaction = new Transaction();
+            transaction.setTransactionId(getNewId());
+            transaction.setAccountNo(account.getAccountNo());
+            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getSalary()));
+            transaction.setTypeId("Salary");
+            transaction.setTime(generalSummaryReceiptModel.getDate());
+            transactionDAOService.save(transaction);
+        }
+
+        if(generalSummaryReceiptModel.getOverPayment() > 0.0){
+            transaction = new Transaction();
+            transaction.setTransactionId(getNewId());
+            transaction.setAccountNo(account.getAccountNo());
+            transaction.setDebit(BigDecimal.valueOf(generalSummaryReceiptModel.getOverPayment()));
+            transaction.setTypeId("OverPayment");
+            transaction.setTime(generalSummaryReceiptModel.getDate());
+            transactionDAOService.save(transaction);
+        }
+
+        if(generalSummaryReceiptModel.getExcess() > 0.0){
+            transaction = new Transaction();
+            transaction.setTransactionId(getNewId());
+            transaction.setAccountNo(account.getAccountNo());
+            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getExcess()));
+            transaction.setTypeId("Excess");
+            transaction.setTime(generalSummaryReceiptModel.getDate());
+            transactionDAOService.save(transaction);
+        }
+
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formatedDate = simpleDateFormat.format(generalSummaryReceiptModel.getDate());
         String individualId = generalSummaryReceiptModel.getIndividualId();
         List<Chit> chitList = chitDAOService.getAllChithsByFormattedDateNIndividualId(formatedDate, individualId);
+        List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(generalSummaryReceiptModel.getEnvelopeId());
         Envelope envelopeById = envelopeDAOService.getEnvelopeById(generalSummaryReceiptModel.getEnvelopeId());
         if(envelopeById != null){
             envelopeById.setFinished(true);
             envelopeDAOService.update(envelopeById);
+        }
+
+        Center center = centerDAOService.getCenterById(generalSummaryReceiptModel.getCenterId());
+        Individual individual1 = individualDAOService.getBranchById(generalSummaryReceiptModel.getIndividualId());
+        BigDecimal notcommisionPersentageForCenter = BigDecimal.ZERO;
+        BigDecimal notcommisionPersentageForIndividual = BigDecimal.ZERO;
+        BigDecimal notCommisionsTot = BigDecimal.ZERO;
+        BigDecimal lessCommisionSinglePersentageForCenter = BigDecimal.ZERO;
+        BigDecimal lessCommisionSingleTot = BigDecimal.ZERO;
+        BigDecimal lessCommisionSingleValue = BigDecimal.ZERO;
+        BigDecimal lessCommisionSinglePersentageForIndividual = BigDecimal.ZERO;
+        List<Transaction> todayTransactionDetailByDateNAccountNo = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(formatedDate, account.getAccountNo());
+        boolean ncAvailable=false;
+        boolean lcsAvailable=false;
+        for(Transaction transaction1:todayTransactionDetailByDateNAccountNo){
+            if(transaction1.getTypeId() == "NC"){
+                if(nc > 0.0){
+                    if (center != null && center.getNotCommisionPersentage() != null) {
+                        notcommisionPersentageForCenter = center.getNotCommisionPersentage();
+                        notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForCenter);
+                    }
+                    if (individual1 != null && individual1.getNotCommisionPersentage() != null) {
+                        notcommisionPersentageForIndividual = individual1.getNotCommisionPersentage();
+                        notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForIndividual);
+                    }
+                    transaction1.setDebit(notCommisionsTot);
+                    transactionDAOService.update(transaction1);
+                }
+                ncAvailable=true;
+            }
+            if(transaction1.getTypeId() == "LCS"){
+                if(lcs > 0.0){
+                    if (center != null && center.getLessComissionSingle() != null) {
+                        lessCommisionSinglePersentageForCenter = center.getLessComissionSingle();
+                        lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(lessCommisionSingleValue, lessCommisionSinglePersentageForCenter);
+                    }
+                    if (individual1 != null && individual1.getLessComissionSingle() != null) {
+                        lessCommisionSinglePersentageForIndividual = individual1.getLessComissionSingle();
+                        lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(lessCommisionSingleValue, lessCommisionSinglePersentageForIndividual);
+                    }
+                    transaction1.setDebit(lessCommisionSingleTot);
+                    transactionDAOService.update(transaction1);
+                }
+                ncAvailable=true;
+            }
+
+        }
+        if(ncAvailable == false && nc > 0.0){
+            transaction = new Transaction();
+            transaction.setTransactionId(getNewId());
+            transaction.setAccountNo(account.getAccountNo());
+            notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForIndividual);
+            transaction.setDebit(notCommisionsTot);
+            transaction.setTypeId("NC");
+            transaction.setTime(generalSummaryReceiptModel.getDate());
+            transactionDAOService.save(transaction);
+        }
+        if(lcsAvailable == false && nc > 0.0){
+            transaction = new Transaction();
+            transaction.setTransactionId(getNewId());
+            transaction.setAccountNo(account.getAccountNo());
+            lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(BigDecimal.valueOf(lcs), lessCommisionSinglePersentageForIndividual);
+            transaction.setDebit(lessCommisionSingleTot);
+            transaction.setTypeId("LCS");
+            transaction.setTime(generalSummaryReceiptModel.getDate());
+            transactionDAOService.save(transaction);
         }
 
 
@@ -359,6 +469,10 @@ public class IndividualController {
             }
 
         }
+
+        if(chits.size() < 0){
+
+        }
         tpyPayment += totPayment;
 
         Double dueAmount = dueValue-generalSummaryReceiptModel.getBalance();
@@ -373,7 +487,7 @@ public class IndividualController {
     @RequestMapping(value = "getGeneralSummaryReceiptModel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getGeneralSummaryReceipt(@RequestBody GeneralSummaryReceiptModel generalSummaryReceiptModel) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formatedDate = simpleDateFormat.format(generalSummaryReceiptModel.getDate());
 
         System.out.println(generalSummaryReceiptModel);
@@ -484,6 +598,7 @@ public class IndividualController {
         Double tpyInvestment = inValue;
         Double salary=0.0;
         BigDecimal notCommisionsTot = BigDecimal.ZERO;
+        BigDecimal lessCommisionSingleTot = BigDecimal.ZERO;
 
         for (Envelope envelope : envelopesByCenterId) {
 
@@ -498,7 +613,7 @@ public class IndividualController {
             BigDecimal lessCommisionSingleValue = BigDecimal.ZERO;
             BigDecimal lessCommisionSinglePersentageForCenter = BigDecimal.ZERO;
 
-            BigDecimal lessCommisionSingleTot = BigDecimal.ZERO;
+
             for (Chit chit : chits) {
                 String ncOLCS = null;
                 if (chit.getNC() != null && chit.getNC() == true) {
@@ -550,7 +665,6 @@ public class IndividualController {
                 if (individual1.isSalaryPay() == false) {
                     salary = envelopeDAOService.calculateSalary(BigDecimal.valueOf(totInvesment)).doubleValue();
                     map.put("sal", salary + "");
-
                 }
             }
 
@@ -558,15 +672,10 @@ public class IndividualController {
             if (individual1 != null && individual1.getCommision() == null && individual1.getFixedSalary() != null && individual1.getCommision() == null) {
 
                 if (individual1.isSalaryPay() && individual1.getFixedSalary().doubleValue() > 0.0) {
-
                     salary = individual1.getFixedSalary().doubleValue();
-                    System.out.println("inside the condition" + individual1.getFixedSalary());
                     map.put("sal", salary + "");
-
                 }
             }
-
-
         }
 
         tpyPayment += totPayment;
@@ -579,6 +688,10 @@ public class IndividualController {
         }
         if(notCommisionsTot.doubleValue() > 0.0){
             tpyInvestment+=notCommisionsTot.doubleValue();
+        }
+
+        if(lessCommisionSingleTot.doubleValue() > 0.0){
+            tpyInvestment+=lessCommisionSingleTot.doubleValue();
         }
 
         map.put("totInv", totInvesment == null ? "--" : totInvesment + "");

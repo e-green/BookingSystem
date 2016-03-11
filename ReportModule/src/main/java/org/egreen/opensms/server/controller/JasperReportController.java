@@ -256,6 +256,7 @@ public class JasperReportController {
         Double tpyInvestment = inValue;
         Double salary=0.0;
         BigDecimal notCommisionsTot =BigDecimal.ZERO;
+        BigDecimal lessCommisionSingleTot =BigDecimal.ZERO;
         for (Envelope envelope : envelopesByCenterId) {
 
             List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId());
@@ -269,7 +270,7 @@ public class JasperReportController {
             BigDecimal lessCommisionSingleValue=BigDecimal.ZERO;
             BigDecimal lessCommisionSinglePersentageForCenter=BigDecimal.ZERO;
 
-            BigDecimal lessCommisionSingleTot =BigDecimal.ZERO;
+
             for (Chit chit : chits) {
                 String ncOLCS=null;
                 if(chit.getNC() != null && chit.getNC() == true){
@@ -367,6 +368,10 @@ public class JasperReportController {
 
         if(notCommisionsTot.doubleValue() > 0.0){
             tpyInvestment+=notCommisionsTot.doubleValue();
+        }
+
+        if(lessCommisionSingleTot.doubleValue() > 0.0){
+            tpyInvestment+=lessCommisionSingleTot.doubleValue();
         }
 
         map.put("totInv", totInvesment == null ? "--" : totInvesment + "");
