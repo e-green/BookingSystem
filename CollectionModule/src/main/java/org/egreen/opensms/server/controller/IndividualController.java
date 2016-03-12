@@ -285,6 +285,8 @@ public class IndividualController {
         }
         double nc = generalSummaryReceiptModel.getNc();
         double lcs = generalSummaryReceiptModel.getLcs();
+        System.out.println("Get from model ok "+nc);
+        System.out.println("Get from model ok "+lcs);
 
         double inValue = 0;
         double outValue = 0;
@@ -394,13 +396,12 @@ public class IndividualController {
         BigDecimal notCommisionsTot = BigDecimal.ZERO;
         BigDecimal lessCommisionSinglePersentageForCenter = BigDecimal.ZERO;
         BigDecimal lessCommisionSingleTot = BigDecimal.ZERO;
-        BigDecimal lessCommisionSingleValue = BigDecimal.ZERO;
         BigDecimal lessCommisionSinglePersentageForIndividual = BigDecimal.ZERO;
         List<Transaction> todayTransactionDetailByDateNAccountNo = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(formatedDate, account.getAccountNo());
         boolean ncAvailable=false;
         boolean lcsAvailable=false;
         for(Transaction transaction1:todayTransactionDetailByDateNAccountNo){
-            if(transaction1.getTypeId() == "NC"){
+            if(transaction1.getTypeId().equals("NC")){
                 if(nc > 0.0){
                     if (center != null && center.getNotCommisionPersentage() != null) {
                         notcommisionPersentageForCenter = center.getNotCommisionPersentage();
@@ -415,20 +416,20 @@ public class IndividualController {
                 }
                 ncAvailable=true;
             }
-            if(transaction1.getTypeId() == "LCS"){
+            if(transaction1.getTypeId().equals("LCS")){
                 if(lcs > 0.0){
                     if (center != null && center.getLessComissionSingle() != null) {
                         lessCommisionSinglePersentageForCenter = center.getLessComissionSingle();
-                        lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(lessCommisionSingleValue, lessCommisionSinglePersentageForCenter);
+                        lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(BigDecimal.valueOf(lcs), lessCommisionSinglePersentageForCenter);
                     }
                     if (individual1 != null && individual1.getLessComissionSingle() != null) {
                         lessCommisionSinglePersentageForIndividual = individual1.getLessComissionSingle();
-                        lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(lessCommisionSingleValue, lessCommisionSinglePersentageForIndividual);
+                        lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(BigDecimal.valueOf(lcs), lessCommisionSinglePersentageForIndividual);
                     }
                     transaction1.setDebit(lessCommisionSingleTot);
                     transactionDAOService.update(transaction1);
                 }
-                ncAvailable=true;
+                lcsAvailable=true;
             }
 
         }
@@ -442,7 +443,7 @@ public class IndividualController {
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
         }
-        if(lcsAvailable == false && nc > 0.0){
+        if(lcsAvailable == false && lcs > 0.0){
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
