@@ -189,7 +189,7 @@ public class ChitDAOService {
                     transaction.setTransactionId(newid1);
                     transaction.setTime(chit.getDatetime());
                     transaction.setTypeId("NC");
-                    notCommision = envelopeDAOService.calculateNotCommision(chit.getNcOLCValue(), centerById.getLessComissionSingle());
+                    notCommision = envelopeDAOService.calculateNotCommision(chit.getNcOLCValue(), centerById.getNotCommisionPersentage());
                     transaction.setDebit(notCommision);
                     Account account = accountDAOService.getAccountByCenterOIndividualId(chit.getCenterid());
                     transaction.setAccountNo(account.getAccountNo());
@@ -205,7 +205,7 @@ public class ChitDAOService {
                     transaction.setTransactionId(newid1);
                     transaction.setTime(chit.getDatetime());
                     transaction.setTypeId("NC");
-                    notCommision = envelopeDAOService.calculateNotCommision(chit.getNcOLCValue(), individualById.getLessComissionSingle());
+                    notCommision = envelopeDAOService.calculateNotCommision(chit.getNcOLCValue(), individualById.getNotCommisionPersentage());
                     transaction.setDebit(notCommision);
                     Account account = accountDAOService.getAccountByCenterOIndividualId(chit.getIndividualId());
                     transaction.setAccountNo(account.getAccountNo());
