@@ -1,6 +1,7 @@
 package org.egreen.opensms.server.dao;
 
 import org.egreen.opensms.server.entity.Envelope;
+import org.egreen.opensms.server.models.FinishEnvelopeModel;
 
 import java.util.Date;
 import java.util.List;
@@ -26,7 +27,7 @@ public interface EnvelopeDAOController extends DAOController<Envelope,String> {
 
     List<Envelope> getEnvelopeByCenterIdDate(String center, Integer limit, Integer offset, String formatedDate);
 
-    boolean getEnvelopeByCenterIdNIndividualIdDate(String center, String individualId, String formatedDate);
+    FinishEnvelopeModel getEnvelopeByCenterIdNIndividualIdDate(String center, String individualId, String formatedDate);
 
     Envelope getEnvelopesByDateNByIndividualId(String individualId, String formatedDate);
 

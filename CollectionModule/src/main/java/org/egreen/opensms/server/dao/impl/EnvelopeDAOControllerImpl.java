@@ -2,6 +2,7 @@ package org.egreen.opensms.server.dao.impl;
 
 import org.egreen.opensms.server.dao.EnvelopeDAOController;
 import org.egreen.opensms.server.entity.Envelope;
+import org.egreen.opensms.server.models.FinishEnvelopeModel;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -50,9 +51,9 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         Criteria criteria = getSession().createCriteria(entityType);
         criteria.add(Restrictions.eq("name", centerName));
         int size = criteria.list().size();
-        if (size>0){
+        if (size > 0) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -68,7 +69,7 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         query.setDate("date", date);
         query.setString("centerId", centerId);
 
-        if (limit!=null&&offset!=null) {
+        if (limit != null && offset != null) {
             query.setMaxResults(limit);
             query.setFirstResult(offset);
         }
@@ -83,7 +84,7 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         query.setString("date", date);
         query.setString("individualId", individualId);
 
-        if (limit!=null&&offset!=null) {
+        if (limit != null && offset != null) {
             query.setMaxResults(limit);
             query.setFirstResult(offset);
         }
@@ -99,10 +100,10 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         query.setString("centerId", centerId);
 
         List<Envelope> list = query.list();
-        Envelope envelope=new Envelope();
-        if (list.size()>0){
-            for (Envelope en:list) {
-                envelope=en;
+        Envelope envelope = new Envelope();
+        if (list.size() > 0) {
+            for (Envelope en : list) {
+                envelope = en;
             }
         }
         return envelope;
@@ -114,7 +115,7 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         query.setString("formatedDate", formatedDate);
         query.setString("center", center);
 
-        if (limit!=null&&offset!=null) {
+        if (limit != null && offset != null) {
             query.setMaxResults(limit);
             query.setFirstResult(offset);
         }
@@ -123,24 +124,28 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
     }
 
     @Override
-    public boolean getEnvelopeByCenterIdNIndividualIdDate(String center, String individualId, String formatedDate) {
+    public FinishEnvelopeModel getEnvelopeByCenterIdNIndividualIdDate(String center, String individualId, String formatedDate) {
         Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.individualId = :individualId AND DATE(e.date) = DATE( :formatedDate)");
         query.setString("formatedDate", formatedDate);
         query.setString("center", center);
         query.setString("individualId", individualId);
-        boolean b=false;
-        List<Envelope> envelopeList= query.list();
-        for (Envelope envelope:envelopeList) {
-            if (null!= envelope){
-                if(!envelope.getCenter().equals(null)){
-                    b=true;
-                }
-                else {
-                    b=false;
+        boolean b = false;
+        FinishEnvelopeModel finishEnvelopeModel = new FinishEnvelopeModel();
+        List<Envelope> envelopeList = query.list();
+        for (Envelope envelope : envelopeList) {
+            if (null != envelope) {
+                if (!envelope.getCenter().equals(null)) {
+                    finishEnvelopeModel.setInvestment(envelope.getInvesment());
+                    finishEnvelopeModel.setCash(envelope.getCash());
+                    finishEnvelopeModel.setChitRange(envelope.getChitNumbers());
+                    finishEnvelopeModel.setCanAdd(true);
+                    finishEnvelopeModel.setDate(envelope.getDate());
+                } else {
+                    finishEnvelopeModel.setCanAdd(false);
                 }
             }
         }
-        return b;
+        return finishEnvelopeModel;
     }
 
     @Override
@@ -148,11 +153,11 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND DATE(e.date) = DATE( :date)");
         query.setString("date", formatedDate);
         query.setString("individualId", individualId);
-        Envelope envelope1=null;
-        List<Envelope> envelopeList= query.list();
-        for (Envelope envelope:envelopeList ) {
-            if(envelope!=null){
-                envelope1=envelope;
+        Envelope envelope1 = null;
+        List<Envelope> envelopeList = query.list();
+        for (Envelope envelope : envelopeList) {
+            if (envelope != null) {
+                envelope1 = envelope;
             }
         }
 
@@ -165,18 +170,18 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         query.setString("formatedDate", formatedDate);
         query.setString("envelopeId", envelopeId);
 
-        String val="0";
+        String val = "0";
         List<Envelope> list = query.list();
         if (list.size() < 0) {
-            val="0";
+            val = "0";
         }
-        if(list.size() > 0){
-            for(Envelope envelope:list){
-                if(envelope.getFinished() == true){
-                    val="1";
+        if (list.size() > 0) {
+            for (Envelope envelope : list) {
+                if (envelope.getFinished() == true) {
+                    val = "1";
                 }
-                if(envelope.getFinished() == false){
-                    val="2";
+                if (envelope.getFinished() == false) {
+                    val = "2";
                 }
             }
         }

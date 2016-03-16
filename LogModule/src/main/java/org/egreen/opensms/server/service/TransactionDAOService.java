@@ -57,4 +57,13 @@ public class TransactionDAOService {
         return transactionDAOController.getTodayTransactionDetailByDateNAccountNo(date,accountNo);
     }
 
+    /**
+     * to delete transaction
+     * @param transaction
+     * @return
+     */
+    public int delete(Transaction transaction){
+        return transactionDAOController.delete(transaction);
+    }
+
 }

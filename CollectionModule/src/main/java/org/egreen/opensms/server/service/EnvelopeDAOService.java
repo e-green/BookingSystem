@@ -3,6 +3,7 @@ package org.egreen.opensms.server.service;
 import org.egreen.opensms.server.dao.*;
 import org.egreen.opensms.server.entity.*;
 import org.egreen.opensms.server.models.EnvelopeDetailModel;
+import org.egreen.opensms.server.models.FinishEnvelopeModel;
 import org.egreen.opensms.server.models.TransactionModel;
 import org.egreen.opensms.server.utils.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -383,8 +384,13 @@ public class EnvelopeDAOService {
      * @param formatedDate
      * @return
      */
-    public boolean getEnvelopeByCenterIdNIndividualIdDate(String center, String individualId, String formatedDate) {
-        return envelopeDAOController.getEnvelopeByCenterIdNIndividualIdDate(center, individualId, formatedDate);
+    public FinishEnvelopeModel getEnvelopeByCenterIdNIndividualIdDate(String center, String individualId, String formatedDate) {
+        System.out.println(center);
+        System.out.println(individualId);
+        System.out.println(formatedDate);
+        FinishEnvelopeModel envelopeByCenterIdNIndividualIdDate = envelopeDAOController.getEnvelopeByCenterIdNIndividualIdDate(center, individualId, formatedDate);
+        System.out.println(envelopeByCenterIdNIndividualIdDate);
+        return envelopeByCenterIdNIndividualIdDate;
     }
 
     /**

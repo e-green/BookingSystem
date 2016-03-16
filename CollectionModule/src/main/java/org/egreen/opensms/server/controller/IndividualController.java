@@ -279,6 +279,11 @@ public class IndividualController {
     @ResponseBody
     public ResponseMessage closeGenralSummery(@RequestBody GeneralSummaryReceiptModel generalSummaryReceiptModel) {
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date curDate=generalSummaryReceiptModel.getDate();
+        Date tomorrow=new Date(curDate.getTime() + (1000 * 60 * 60 * 24));
+        Timestamp tomorrowTimeStamp = new java.sql.Timestamp(tomorrow.getTime());
+
         Transaction tra = new Transaction();
         Map<String, Object> summaryReceipt = getGeneralSummaryReceipt(generalSummaryReceiptModel);
 
@@ -314,13 +319,14 @@ public class IndividualController {
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
 
+
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
             double pd=0.0;
             pd=generalSummaryReceiptModel.getPd();
             transaction.setCredit(BigDecimal.valueOf(pd));
             transaction.setTypeId("PD");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
+            transaction.setTime(tomorrowTimeStamp);
             transactionDAOService.save(transaction);
 
         }
@@ -339,7 +345,7 @@ public class IndividualController {
             pd=generalSummaryReceiptModel.getPd();
             transaction.setDebit(BigDecimal.valueOf(pd));
             transaction.setTypeId("PD");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
+            transaction.setTime(tomorrowTimeStamp);
             transactionDAOService.save(transaction);
         }
 
@@ -384,7 +390,6 @@ public class IndividualController {
         }
 
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formatedDate = simpleDateFormat.format(generalSummaryReceiptModel.getDate());
         String individualId = generalSummaryReceiptModel.getIndividualId();
         List<Chit> chitList = chitDAOService.getAllChithsByFormattedDateNIndividualId(formatedDate, individualId);
@@ -406,6 +411,8 @@ public class IndividualController {
         List<Transaction> todayTransactionDetailByDateNAccountNo = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(formatedDate, account.getAccountNo());
         boolean ncAvailable=false;
         boolean lcsAvailable=false;
+        List<Transaction> ncTransactionList= new ArrayList<Transaction>();
+        List<Transaction> lcsTransactionList= new ArrayList<Transaction>();
         for(Transaction transaction1:todayTransactionDetailByDateNAccountNo){
             if(transaction1.getTypeId().equals("NC")){
                 if(nc > 0.0){
@@ -418,6 +425,7 @@ public class IndividualController {
                         notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForIndividual);
                     }
                     transaction1.setDebit(notCommisionsTot);
+                    ncTransactionList.add(transaction1);
                     transactionDAOService.update(transaction1);
                 }
                 ncAvailable=true;
@@ -433,11 +441,30 @@ public class IndividualController {
                         lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(BigDecimal.valueOf(lcs), lessCommisionSinglePersentageForIndividual);
                     }
                     transaction1.setDebit(lessCommisionSingleTot);
+                    lcsTransactionList.add(transaction1);
                     transactionDAOService.update(transaction1);
                 }
                 lcsAvailable=true;
             }
 
+        }
+        if(ncTransactionList.size() > 1){
+                int count=0;
+                for(Transaction transaction1:ncTransactionList){
+                    if(ncTransactionList.size()-count > 1){
+                        transactionDAOService.delete(transaction1);
+                        count++;
+                    }
+                }
+        }
+        if(lcsTransactionList.size() > 1){
+            int count=0;
+            for(Transaction transaction1:lcsTransactionList){
+                if(lcsTransactionList.size()-count > 1){
+                    transactionDAOService.delete(transaction1);
+                    count++;
+                }
+            }
         }
         if(ncAvailable == false && nc > 0.0){
             if (center != null && center.getNotCommisionPersentage() != null && center.getNotCommisionPersentage().doubleValue() > 0.0) {
@@ -477,28 +504,17 @@ public class IndividualController {
 
         if (chitList.size() > 0) {
             for (Chit chit : chitList) {
-                System.out.println(chit);
                 if (chit.getAmount() != null) {
                     totPayment += chit.getAmount().doubleValue();
                 }
                 if (chit.getFinish() == null || chit.getFinish() == false) {
                     chit.setFinish(true);
-                    System.out.println(chit);
                     chitDAOService.update(chit);
 
                 }
             }
 
         }
-
-        if(chits.size() < 0){
-
-        }
-        tpyPayment += totPayment;
-
-        Double dueAmount = dueValue-generalSummaryReceiptModel.getBalance();
-
-//        individualDAOService.closeDayBalance(generalSummaryReceiptModel.getIndividualId(),generalSummaryReceiptModel.getDate());
 
 
         return ResponseMessage.SUCCESS;
@@ -724,15 +740,9 @@ public class IndividualController {
 
 
         dueAmount = tpyInvestment-tpyPayment ;
-//
-//        if (totInvesment != null && totPayment != null) {
-//            dueAmount = tpyInvestment.doubleValue() - totPayment.doubleValue();
-//        }
-
 
         map.put("dueBalance", dueAmount == null ? "--" : dueAmount + "");
 
-//        ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
         List<ApprovedLoan> approvedLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(generalSummaryReceiptModel.getIndividualId());
         BigDecimal approveLoanDueAmount = BigDecimal.ZERO;
         for (ApprovedLoan approvedLoan : approvedLoanList) {

@@ -163,6 +163,21 @@ public class JasperReportController {
         double inValue = 0;
         double outValue = 0;
         Double totInvesment = inValue;
+        double ncValue=0.0;
+        double lcsValue=0.0;
+        Double totPayment = 0.0;
+        Double tpyPayment = outValue;
+        Double tpyInvestment = inValue;
+        Double salary=0.0;
+        Double overPayment=0.0;
+        Double excess=0.0;
+        Double expenses=0.0;
+        Double pcCharges=0.0;
+        Double loanDeductionPayment=0.0;
+        Double paymentDue=0.0;
+        Double cash=0.0;
+        Double commision=0.0;
+        Double loan=0.0;
 
         Timestamp timestamp = new Timestamp(date);
         Date date1 = new Date(timestamp.getTime());
@@ -174,15 +189,12 @@ public class JasperReportController {
 
         map.put("date", date + "");
 
-
-
-
         Transaction tra = new Transaction();
         Account account = accountDAOService.getAccountByCenterOIndividualId(individualId);
         Individual individual = individualDAOService.getBranchById(individualId);
 
 
-        map.put("pc", "");
+        map.put("pc", "--");
         map.put("ln", "--");
         map.put("pd", "--");
         map.put("com", "--");
@@ -214,8 +226,6 @@ public class JasperReportController {
                     inValue += value;
                 }
 
-
-
                 String ty=tra.getTypeId().toLowerCase();
                 if(tra.getDebit()!= null){
                     Object put = map.put(ty, tra.getDebit() + "");
@@ -223,16 +233,53 @@ public class JasperReportController {
                 if(tra.getCredit()!= null){
                     Object put = map.put(ty, tra.getCredit() + "");
                 }
-
                 if (tra.getTypeId().equals("Inv")) {
                     totInvesment = tra.getDebit().doubleValue();
+                }
+                if(tra.getDebit() != null && tra.getTypeId().equals("NC")){
+                    ncValue+=tra.getDebit().doubleValue();
+                }
+                if(tra.getDebit() != null && tra.getTypeId().equals("LCS")){
+                    lcsValue+=tra.getDebit().doubleValue();
+                }
+
+                if(tra.getTypeId().equals("Salary")){
+                    salary+=tra.getCredit().doubleValue();
+                }
+                if(tra.getTypeId().equals("OverPayment")){
+                    overPayment+=tra.getDebit().doubleValue();
+                }
+                if(tra.getTypeId().equals("Excess")){
+                    excess+=tra.getCredit().doubleValue();
+                }
+                if(tra.getTypeId().equals("EXP")){
+                    expenses+=tra.getCredit().doubleValue();
+                }
+                if(tra.getTypeId().equals("PC")){
+                    pcCharges+=tra.getDebit().doubleValue();
+                }
+                if(tra.getTypeId().equals("LN")){
+                    loanDeductionPayment+=tra.getDebit().doubleValue();
+                }
+                if(tra.getTypeId().equals("PD")){
+                    paymentDue+=tra.getDebit().doubleValue();
+                }
+                if(tra.getTypeId().equals("PAY")){
+                    totPayment+=tra.getCredit().doubleValue();
+                }
+                if(tra.getTypeId().equals("CSH")){
+                    cash+=tra.getCredit().doubleValue();
+                }
+                if(tra.getTypeId().equals("COM")){
+                    commision+=tra.getCredit().doubleValue();
+                }
+                if(tra.getTypeId().equals("LON")){
+                    loan+=tra.getCredit().doubleValue();
                 }
             }
         }
 
-//        map.put("csh",234234234+"");
         List<Envelope> envelopesByCenterId = null;
-
         if (type == 0) {
             map.put("Individual", centerId == null ? "--" : centerId);
             envelopesByCenterId = envelopeDAOService.getEnvelopesByCenterId(centerId, null, null, date1);
@@ -251,25 +298,9 @@ public class JasperReportController {
         model.addColumn("ncOfTable");
 
 
-        Double totPayment = 0.0;
-        Double tpyPayment = outValue;
-        Double tpyInvestment = inValue;
-        Double salary=0.0;
-        BigDecimal notCommisionsTot =BigDecimal.ZERO;
-        BigDecimal lessCommisionSingleTot =BigDecimal.ZERO;
+
         for (Envelope envelope : envelopesByCenterId) {
-
             List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId());
-            Double payment = null;
-            double ncValue=0.0;
-            double lcsValue=0.0;
-            BigDecimal notCommisionValue=BigDecimal.ZERO;
-            BigDecimal notcommisionPersentageForCenter=BigDecimal.ZERO;
-            BigDecimal lessCommisionSinglePersentageForIndividual=BigDecimal.ZERO;
-            BigDecimal notcommisionPersentageForIndividual=BigDecimal.ZERO;
-            BigDecimal lessCommisionSingleValue=BigDecimal.ZERO;
-            BigDecimal lessCommisionSinglePersentageForCenter=BigDecimal.ZERO;
-
 
             for (Chit chit : chits) {
                 String ncOLCS=null;
@@ -281,97 +312,71 @@ public class JasperReportController {
                     ncOLCS="";
                 }
                 model.addRow(new Object[]{chit.getNumber(), chit.getInvesment() == null ? "--" : chit.getInvesment() + "", chit.getAmount() == null ? "--" : chit.getAmount() + "", ncOLCS});
-                if (chit.getAmount() != null) {
-                    totPayment += chit.getAmount().doubleValue();
-                }
-                if(chit != null && chit.getNC()!=null && chit.getNC() == true  && chit.getNcOLCValue()!= null && chit.getNcOLCValue().doubleValue() > 0){
-                    ncValue+=Double.parseDouble(chit.getNcOLCValue()+"");
-                }
-                if(chit != null && chit.getLCS()!=null && chit.getLCS() == true  && chit.getNcOLCValue()!= null && chit.getNcOLCValue().doubleValue() > 0){
-//                    System.out.println("LCS ->"+chit.getNcOLCValue());
-                    lcsValue+=Double.parseDouble(chit.getNcOLCValue()+"");
-                }
             }
-            notCommisionValue= BigDecimal.valueOf(ncValue);
-            lessCommisionSingleValue= BigDecimal.valueOf(lcsValue);
-            //this must be change after center persentage addded
-            Center center = centerDAOService.getCenterById(centerId);
-            Individual individual1 = individualDAOService.getBranchById(individualId);
-
-            if(center != null && center.getNotCommisionPersentage() != null){
-                notcommisionPersentageForCenter=center.getNotCommisionPersentage();
-                notCommisionsTot=envelopeDAOService.calculateNotCommision(notCommisionValue, notcommisionPersentageForCenter);
-            }
-            if(center != null && center.getLessComissionSingle() != null){
-                lessCommisionSinglePersentageForCenter=center.getLessComissionSingle();
-                lessCommisionSingleTot=envelopeDAOService.calculateLessCommisionSingle(lessCommisionSingleValue, lessCommisionSinglePersentageForCenter);
-            }
-            if(individual1 != null && individual1.getNotCommisionPersentage() != null){
-                notcommisionPersentageForIndividual=individual1.getNotCommisionPersentage();
-                notCommisionsTot=envelopeDAOService.calculateNotCommision(notCommisionValue, notcommisionPersentageForIndividual);
-            }
-            if(individual1 != null && individual1.getLessComissionSingle() != null){
-                lessCommisionSinglePersentageForIndividual=individual1.getLessComissionSingle();
-                lessCommisionSingleTot=envelopeDAOService.calculateLessCommisionSingle(lessCommisionSingleValue, lessCommisionSinglePersentageForIndividual);
-                map.put("lcs",lessCommisionSingleTot.doubleValue()+"");
-            }
-            if(notCommisionsTot != null && notCommisionsTot.doubleValue() >0.0){
-                map.put("nc",notCommisionsTot+"");
-            }
-            if (individual1!=null&&individual1.getCommision() == null && individual1.getFixedSalary() == null && individual1.getCommision() == null) {
-                if (individual1.isSalaryPay() == false  ) {
-                    salary = envelopeDAOService.calculateSalary(BigDecimal.valueOf(totInvesment)).doubleValue();
-                    map.put("sal",salary+"");
-
-                }
-            }
-
-
-            if (individual1!=null&&individual1.getCommision() == null && individual1.getFixedSalary() != null && individual1.getCommision() == null) {
-
-                if (individual1.isSalaryPay() && individual1.getFixedSalary().doubleValue() > 0.0 ) {
-                    salary = individual1.getFixedSalary().doubleValue();
-                    System.out.println("inside the condition" + individual1.getFixedSalary());
-                    map.put("sal", salary+"");
-
-                }
-            }
-
-
         }
 
         Double perDue=0.0;
-        Date yesterday=new Date(date1.getTime() - (1000 * 60 * 60 * 24));
-        String yesterdayfD = simpleDateFormat.format(yesterday);
-
-        //yesterday transation
-        List<Transaction> trlist = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(yesterdayfD, account.getAccountNo());
-        for (Transaction transaction : trlist) {
-            if (transaction != null) {
-                tra = transaction;
-
-                if (tra.getDebit() != null && tra.getTypeId().equals("Balance")) {
-                    perDue = tra.getDebit().doubleValue();
-                    map.put("pd",perDue+"");
-                }
-            }
-        }
 
         tpyPayment += totPayment;
+        tpyInvestment+=totInvesment;
         if(perDue > 0.0){
             tpyInvestment+=perDue;
         }
         if(salary > 0.0){
+            map.put("sal",salary+"");
             tpyPayment+=salary;
-
         }
-
-        if(notCommisionsTot.doubleValue() > 0.0){
-            tpyInvestment+=notCommisionsTot.doubleValue();
+//        if(totPayment > 0.0){
+//            map.put("totPay",totPayment+"");
+//            tpyPayment+=totPayment;
+//        }
+//        if(totInvesment > 0.0){
+//            map.put("totInv",totInvesment+"");
+//            tpyInvestment+=totInvesment;
+//        }
+        if(cash > 0.0){
+            map.put("csh",cash+"");
+            tpyPayment+=cash;
         }
-
-        if(lessCommisionSingleTot.doubleValue() > 0.0){
-            tpyInvestment+=lessCommisionSingleTot.doubleValue();
+        if(commision > 0.0){
+            map.put("com",commision+"");
+            tpyPayment+=commision;
+        }
+        if(ncValue > 0.0){
+            map.put("nc",ncValue+"");
+            tpyInvestment+=ncValue;
+        }
+        if(loanDeductionPayment > 0.0){
+            map.put("ln",loanDeductionPayment+"");
+            tpyInvestment+=loanDeductionPayment;
+        }
+        if(lcsValue > 0.0){
+            map.put("lcs",lcsValue+"");
+            tpyInvestment+=lcsValue;
+        }
+        if(paymentDue > 0.0){
+            map.put("pd",paymentDue+"");
+            tpyInvestment+=paymentDue;
+        }
+        if(overPayment > 0.0){
+            map.put("overPay",overPayment+"");
+            tpyInvestment+=overPayment;
+        }
+        if(pcCharges > 0.0){
+            map.put("pc",pcCharges+"");
+            tpyInvestment+=pcCharges;
+        }
+        if(excess > 0.0){
+            map.put("exces",excess+"");
+            tpyPayment+=excess;
+        }
+        if(expenses > 0.0){
+            map.put("exp",expenses+"");
+            tpyPayment+=expenses;
+        }
+        if(loan > 0.0){
+            map.put("lon",loan+"");
+            tpyPayment+=loan;
         }
 
         map.put("totInv", totInvesment == null ? "--" : totInvesment + "");
@@ -382,19 +387,15 @@ public class JasperReportController {
         map.put("tpyInv", tpyInvestment == null ? "--" : tpyInvestment + "");
 
         Double dueAmount = tpyInvestment - tpyPayment;
-//
-//        if (totInvesment != null && totPayment != null) {
-//            dueAmount = tpyInvestment.doubleValue() - totPayment.doubleValue();
-//        }
+
 
         map.put("due", dueAmount == null ? "--" : dueAmount + "");
-//        ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
+
         List<ApprovedLoan> approvedLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
         BigDecimal approveLoanDueAmount =BigDecimal.ZERO;
         for (ApprovedLoan approvedLoan:approvedLoanList){
             if(approvedLoan != null && approvedLoan.getDueamount()!=null ){
                 approveLoanDueAmount=approveLoanDueAmount.add(approvedLoan.getDueamount());
-                //map.put("ln", approvedLoan.getDeductionPayment()+"");
             }
         }
         map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");

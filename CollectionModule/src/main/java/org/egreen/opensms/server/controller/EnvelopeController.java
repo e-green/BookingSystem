@@ -1,11 +1,8 @@
 package org.egreen.opensms.server.controller;
 
 import org.egreen.opensms.server.entity.*;
-import org.egreen.opensms.server.models.EnvelopeDetailModel;
-import org.egreen.opensms.server.models.EnvelopeModel;
+import org.egreen.opensms.server.models.*;
 
-import org.egreen.opensms.server.models.FinishChitModel;
-import org.egreen.opensms.server.models.ReturnIdModel1;
 import org.egreen.opensms.server.service.EnvelopeDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -141,7 +138,7 @@ public class EnvelopeController {
     @RequestMapping(value = "getEnvelopeByCenterIdDate", method = RequestMethod.POST)
     @ResponseBody
     public List<Envelope> getEnvelopesByCenterId(@RequestBody EnvelopeModel envelope) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formatedDate = simpleDateFormat.format(envelope.getDate());
         return envelopeDAOService.getEnvelopeByCenterIdDate(envelope.getCenter(), envelope.getLimit(), envelope.getOffset(), formatedDate);
 
@@ -149,8 +146,8 @@ public class EnvelopeController {
 
     @RequestMapping(value = "getEnvelopeByCenterIdNIndividualIdDate", method = RequestMethod.POST)
     @ResponseBody
-    public boolean getEnvelopeByCenterIdNIndividualIdDate(@RequestBody EnvelopeModel envelope) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+    public FinishEnvelopeModel getEnvelopeByCenterIdNIndividualIdDate(@RequestBody EnvelopeModel envelope) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formatedDate = simpleDateFormat.format(envelope.getDate());
         return envelopeDAOService.getEnvelopeByCenterIdNIndividualIdDate(envelope.getCenter(), envelope.getIndividualId(), formatedDate);
 
@@ -161,7 +158,7 @@ public class EnvelopeController {
     public List<Envelope> getEnvelopesByIndividualIdByDate(@RequestBody EnvelopeModel envelopeModel) {
 
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formatedDate = simpleDateFormat.format(envelopeModel.getDate());
 
 
