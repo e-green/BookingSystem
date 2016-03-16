@@ -324,7 +324,7 @@ public class IndividualController {
             transaction.setAccountNo(account.getAccountNo());
             double pd=0.0;
             pd=generalSummaryReceiptModel.getPd();
-            transaction.setCredit(BigDecimal.valueOf(pd));
+            transaction.setDebit(BigDecimal.valueOf(pd));
             transaction.setTypeId("PD");
             transaction.setTime(tomorrowTimeStamp);
             transactionDAOService.save(transaction);
@@ -343,7 +343,7 @@ public class IndividualController {
             transaction.setAccountNo(account.getAccountNo());
             double pd=0.0;
             pd=generalSummaryReceiptModel.getPd();
-            transaction.setDebit(BigDecimal.valueOf(pd));
+            transaction.setCredit(BigDecimal.valueOf(pd));
             transaction.setTypeId("PD");
             transaction.setTime(tomorrowTimeStamp);
             transactionDAOService.save(transaction);
