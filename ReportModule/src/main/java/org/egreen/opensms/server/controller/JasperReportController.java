@@ -261,9 +261,8 @@ public class JasperReportController {
                 if(tra.getTypeId().equals("LN")){
                     loanDeductionPayment+=tra.getDebit().doubleValue();
                 }
-                if(tra.getTypeId().equals("PD")){
+                if(tra.getDebit() != null && tra.getTypeId().equals("PD")){
                     paymentDue+=tra.getDebit().doubleValue();
-                    System.out.println(paymentDue);
                 }
                 if(tra.getTypeId().equals("PAY")){
                     totPayment+=tra.getCredit().doubleValue();
@@ -354,12 +353,10 @@ public class JasperReportController {
         if(lcsValue > 0.0) {
             map.put("lcs", lcsValue + "");
             tpyInvestment += lcsValue;
-            System.out.println("lcs value ->" + lcsValue + "  " + "TPY Investment" + tpyInvestment);
         }
         if(paymentDue > 0.0){
             map.put("pd",paymentDue+"");
             tpyInvestment+=paymentDue;
-            System.out.println("TPY Investment ->"+tpyInvestment+"  "+"Payment Due"+ paymentDue);
         }
         if(overPayment > 0.0){
             map.put("overPay",overPayment+"");
@@ -385,7 +382,6 @@ public class JasperReportController {
         map.put("totInv", totInvesment == null ? "--" : totInvesment + "");
         map.put("totPay", totPayment == null ? "--" : totPayment + "");
 
-        System.out.println("TPY Investment  -->"+tpyInvestment);
         map.put("tpyPay", tpyPayment == null ? "--" : tpyPayment + "");
         map.put("tpyInv", tpyInvestment == null ? "--" : tpyInvestment + "");
 
@@ -407,7 +403,7 @@ public class JasperReportController {
         try {
             InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual1.jrxml");
             JasperReport jr = JasperCompileManager.compileReport(systemResourceAsStream);
-            System.out.println(map);
+//            System.out.println(map);
             JasperPrint jp = JasperFillManager.fillReport(jr, map, ds);
             // JasperViewer.viewReport(jp, false);
             File pdf = File.createTempFile("output.", ".pdf");
