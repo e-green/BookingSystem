@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="java" pageWidth="216" pageHeight="432" whenNoDataType="AllSectionsNoDetail" columnWidth="176" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.8531167061100065"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="Individual" class="java.lang.String"/>
 	<parameter name="no" class="java.lang.String"/>
 	<parameter name="fc" class="java.lang.String"/>
@@ -402,7 +402,7 @@
 			<textField>
 				<reportElement x="1" y="105" width="39" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Serif" size="9" isBold="true"/>
+					<font fontName="Serif" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dueLable}]]></textFieldExpression>
 			</textField>
@@ -417,7 +417,7 @@
 			<textField>
 				<reportElement x="91" y="105" width="35" height="12"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Serif" size="9" isBold="true"/>
+					<font fontName="Serif" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{paymentLable}]]></textFieldExpression>
 			</textField>
