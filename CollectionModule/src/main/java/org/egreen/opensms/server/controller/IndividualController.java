@@ -624,7 +624,6 @@ public class IndividualController {
                 }
                 if(tra.getCredit() != null && tra.getTypeId().equals("Payment")){
                     paymentToDeduct= tra.getCredit().doubleValue()*-1;
-                    System.out.println(paymentToDeduct);
                 }
 
             }

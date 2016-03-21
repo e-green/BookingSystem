@@ -410,6 +410,14 @@ public class JasperReportController {
             map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment+"");
             map.put("tpyInvDeduct", "");
         }
+        if(dueAmount == 0.0){
+            map.put("due","");
+            map.put("paymentLable", "Balance");
+            map.put("payment", "0.0");
+            map.put("tpyInvDeduct", "");
+            map.put("tpyPayDeduct", "");
+            map.put("dueLable", "");
+        }
 
 
         List<ApprovedLoan> approvedLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
