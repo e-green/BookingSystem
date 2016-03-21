@@ -64,10 +64,6 @@ public class CompanyExpencesDAOControllerImpl extends AbstractDAOController<Comp
     @Override
     public List<CompanyExpences> getAllCompanyExpencessByCenter(String center, String firstDate, String secondDate, Integer limit, Integer offset) {
         SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
-
-        System.out.println(firstDate);
-        System.out.println(secondDate);
-
         Date fDa = null;
         Date sDa = null;
 

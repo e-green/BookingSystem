@@ -4,9 +4,11 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import org.apache.commons.io.IOUtils;
 import org.egreen.opensms.server.entity.*;
+import org.egreen.opensms.server.models.ReportModel;
 import org.egreen.opensms.server.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -139,8 +141,10 @@ public class JasperReportController {
     }
 
 
+
+
     /**
-     * getGeneralSummaryReceipt
+     * * getGeneralSummaryReceipt
      * <p/>
      * 0== Center
      * 1== individual
@@ -181,13 +185,15 @@ public class JasperReportController {
 
         Timestamp timestamp = new Timestamp(date);
         Date date1 = new Date(timestamp.getTime());
+        SimpleDateFormat ssd=new SimpleDateFormat("yyyy-MM-dd");
+        String formatDate = ssd.format(date1);
 
         JRTableModelDataSource ds = null;
         Map<String, Object> map = null;
         map = new HashMap<String, Object>();
 
 
-        map.put("date", date + "");
+        map.put("date", formatDate + "");
 
         Transaction tra = new Transaction();
         Account account = accountDAOService.getAccountByCenterOIndividualId(individualId);
@@ -387,8 +393,24 @@ public class JasperReportController {
 
         Double dueAmount = tpyInvestment - tpyPayment;
 
+        if(dueAmount > 0.0){
+            map.put("due", dueAmount == null ? "--" : dueAmount + "");
+            map.put("dueLable", "Due");
+            map.put("paymentLable", "");
+            map.put("payment", "");
+            map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment+"");
+            map.put("tpyPayDeduct", "");
+        }
 
-        map.put("due", dueAmount == null ? "--" : dueAmount + "");
+        if(dueAmount < 0.0){
+            map.put("payment", dueAmount == null ? "--" : dueAmount + "");
+            map.put("dueLable", "");
+            map.put("due", "");
+            map.put("paymentLable", "Payment");
+            map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment+"");
+            map.put("tpyInvDeduct", "");
+        }
+
 
         List<ApprovedLoan> approvedLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
         BigDecimal approveLoanDueAmount =BigDecimal.ZERO;
@@ -401,9 +423,8 @@ public class JasperReportController {
 
         ds = new JRTableModelDataSource(model);
         try {
-            InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual1.jrxml");
+            InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual2.jrxml");
             JasperReport jr = JasperCompileManager.compileReport(systemResourceAsStream);
-//            System.out.println(map);
             JasperPrint jp = JasperFillManager.fillReport(jr, map, ds);
             // JasperViewer.viewReport(jp, false);
             File pdf = File.createTempFile("output.", ".pdf");

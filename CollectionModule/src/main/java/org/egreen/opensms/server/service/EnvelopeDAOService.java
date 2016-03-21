@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -157,13 +158,6 @@ public class EnvelopeDAOService {
             }
 
             ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
-//            System.out.println(approvedLoan);
-////            System.out.println(approvedLoan.getDatetime().getYear());
-//            System.out.println(envelope.getDate().getYear());
-//            System.out.println(approvedLoan.getDatetime().getMonth());
-//            System.out.println(envelope.getDate().getMonth());
-//            System.out.println(approvedLoan.getDatetime().getDate());
-//            System.out.println(envelope.getDate().getDate());
             if (approvedLoan!=null&&approvedLoan.getDatetime().getYear() == envelope.getDate().getYear()
                     && approvedLoan.getDatetime().getMonth() == envelope.getDate().getMonth()
                     && approvedLoan.getDatetime().getDate() == envelope.getDate().getDate()
@@ -385,11 +379,7 @@ public class EnvelopeDAOService {
      * @return
      */
     public FinishEnvelopeModel getEnvelopeByCenterIdNIndividualIdDate(String center, String individualId, String formatedDate) {
-        System.out.println(center);
-        System.out.println(individualId);
-        System.out.println(formatedDate);
         FinishEnvelopeModel envelopeByCenterIdNIndividualIdDate = envelopeDAOController.getEnvelopeByCenterIdNIndividualIdDate(center, individualId, formatedDate);
-        System.out.println(envelopeByCenterIdNIndividualIdDate);
         return envelopeByCenterIdNIndividualIdDate;
     }
 
@@ -638,7 +628,10 @@ public class EnvelopeDAOService {
         if(invesment.doubleValue() > 6000.00){
             salary=new BigDecimal(600).add(BigDecimal.valueOf((invesment.doubleValue()-6000.00)/100*5));
         }
-        return salary;
+        double doubleValue = salary.doubleValue();
+        long round = Math.round(doubleValue);
+        BigDecimal sal = BigDecimal.valueOf(round);
+        return sal;
     }
 
     /**
@@ -649,7 +642,10 @@ public class EnvelopeDAOService {
      */
     public BigDecimal calculateCommision(BigDecimal invesment, BigDecimal commisionPresentage) {
         BigDecimal commision=invesment.divide(BigDecimal.valueOf(100)).multiply(commisionPresentage);
-        return commision;
+        double doubleValue = commision.doubleValue();
+        long l = Math.round(doubleValue);
+        BigDecimal bigDecimal = BigDecimal.valueOf(l);
+        return bigDecimal;
     }
 
     /**
@@ -661,7 +657,10 @@ public class EnvelopeDAOService {
      */
     public BigDecimal calculateNotCommision(BigDecimal notCommision, BigDecimal notCommisionPresentage) {
         BigDecimal nCommision=notCommision.divide(BigDecimal.valueOf(100)).multiply(notCommisionPresentage);
-        return nCommision;
+        double doubleValue = nCommision.doubleValue();
+        long val = Math.round(doubleValue);
+        BigDecimal nCom = BigDecimal.valueOf(val);
+        return nCom;
     }
 
     /**
@@ -671,10 +670,11 @@ public class EnvelopeDAOService {
      * @return
      */
     public BigDecimal calculateLessCommisionSingle(BigDecimal lessCommisionSingle,BigDecimal lessCommisionSinglePersentageForCenter){
-        System.out.println(lessCommisionSingle.doubleValue());
-        System.out.println(lessCommisionSinglePersentageForCenter.doubleValue());
         BigDecimal lcs=lessCommisionSingle.divide(BigDecimal.valueOf(100)).multiply(lessCommisionSinglePersentageForCenter);
-        return lcs;
+        double doubleValue = lcs.doubleValue();
+        long round = Math.round(doubleValue);
+        BigDecimal lcsVal = BigDecimal.valueOf(round);
+        return lcsVal;
     }
 
 //    public EnvelopeDetailModel getEnvelopesByDateNByIndividualId(String formatedDate, String individualId) {
@@ -703,17 +703,22 @@ public class EnvelopeDAOService {
         String formatedDate = simpleDateFormat.format(envelopeDetailModel.getDate());
         //Envelope envelope = envelopeDAOController.getEnvelopesByDateNByIndividualId(individualId, formatedDate);
         ApprovedLoan approvedLoan=approvedLoanDAOService.getApprovedLoanByDateNIndividualId(formatedDate,individualId);
-        System.out.println(individual.getCommision());
         BigDecimal commision=null;
         BigDecimal salary=null;
         BigDecimal lessCommissionSingle=null;
         if(envelopeDetailModel.getInvestment() != null){
-            if(individual != null){
+            if(individual != null ){
                 model.setIndividualId(individual.getIndividualId());
                 model.setDate(envelopeDetailModel.getDate());
                 model.setInvestment(envelopeDetailModel.getInvestment());
-                commision= calculateCommision(envelopeDetailModel.getInvestment(), individual.getCommision());
+                if(individual.getCommision() != null) {
+                    commision = calculateCommision(envelopeDetailModel.getInvestment(), individual.getCommision());
+                }
                 if(individual.isSalaryPay() == true){
+                    salary=individual.getFixedSalary();
+                    model.setSalary(salary);
+                }
+                if(individual.getFixedSalary() == null && individual.getCommision() == null && individual.isSalaryPay() == false ) {
                     salary = calculateSalary(envelopeDetailModel.getInvestment());
                     model.setSalary(salary);
                 }

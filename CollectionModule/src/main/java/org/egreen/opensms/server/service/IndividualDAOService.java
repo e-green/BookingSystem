@@ -125,9 +125,7 @@ public class IndividualDAOService {
 
             if(null== individual.getCommision()){
                 individual.setCommision(BigDecimal.valueOf(0.0));
-                System.out.println(individual.getCommision());
             }
-            System.out.println(individual.getCommision());
             list.add(individual);
         }
         return list;

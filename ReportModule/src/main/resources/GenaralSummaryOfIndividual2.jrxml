@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="java" pageWidth="216" pageHeight="432" whenNoDataType="AllSectionsNoDetail" columnWidth="176" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.8531167061100065"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="144"/>
 	<parameter name="Individual" class="java.lang.String"/>
 	<parameter name="no" class="java.lang.String"/>
 	<parameter name="fc" class="java.lang.String"/>
@@ -24,6 +24,12 @@
 	<parameter name="exces" class="java.lang.String"/>
 	<parameter name="overPay" class="java.lang.String"/>
 	<parameter name="sal" class="java.lang.String"/>
+	<parameter name="dueLable" class="java.lang.String"/>
+	<parameter name="paymentLable" class="java.lang.String"/>
+	<parameter name="tpyPayDeduct" class="java.lang.String"/>
+	<parameter name="tpyInvDeduct" class="java.lang.String"/>
+	<parameter name="payment" class="java.lang.String"/>
+	<parameter name="date" class="java.lang.String"/>
 	<field name="no" class="java.lang.String"/>
 	<field name="Inv" class="java.lang.String"/>
 	<field name="Pay" class="java.lang.String"/>
@@ -44,13 +50,12 @@
 			<line>
 				<reportElement x="0" y="22" width="176" height="1"/>
 			</line>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement x="117" y="0" width="59" height="20"/>
-				<box rightPadding="3"/>
+			<textField>
+				<reportElement x="118" y="0" width="58" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -277,14 +282,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{due}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="-1" y="105" width="39" height="12"/>
-				<box leftPadding="2"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Serif" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Due :]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="40" y="83" width="48" height="12"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -295,13 +292,6 @@
 			<textField>
 				<reportElement x="117" y="83" width="59" height="12"/>
 				<box rightPadding="3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{tpyPay}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="40" y="93" width="48" height="12"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -373,7 +363,7 @@
 			</staticText>
 			<textField>
 				<reportElement x="26" y="25" width="62" height="11"/>
-				<box rightPadding="3"/>
+				<box rightPadding="0"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Serif" size="8"/>
 				</textElement>
@@ -381,6 +371,7 @@
 			</textField>
 			<textField>
 				<reportElement x="118" y="36" width="58" height="11"/>
+				<box rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Serif" size="8"/>
 				</textElement>
@@ -409,12 +400,49 @@
 				<textFieldExpression><![CDATA[$P{overPay}]]></textFieldExpression>
 			</textField>
 			<textField>
+				<reportElement x="1" y="105" width="39" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Serif" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dueLable}]]></textFieldExpression>
+			</textField>
+			<textField>
 				<reportElement x="117" y="69" width="59" height="11"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Serif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{sal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="105" width="35" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Serif" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{paymentLable}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="95" width="73" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tpyInvDeduct}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="95" width="72" height="10"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tpyPayDeduct}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="105" width="58" height="12"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{payment}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

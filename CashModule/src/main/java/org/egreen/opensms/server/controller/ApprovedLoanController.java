@@ -114,7 +114,6 @@ public class ApprovedLoanController {
             numOnly[i] = Integer.parseInt(str[i].replaceAll("\\D", ""));
             myMap.put(numOnly[i], str[i]);
         }
-        System.out.println(myMap.values());
     }
 
     /**

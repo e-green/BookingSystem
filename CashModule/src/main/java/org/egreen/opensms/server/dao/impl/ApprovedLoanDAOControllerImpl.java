@@ -96,7 +96,7 @@ public class ApprovedLoanDAOControllerImpl extends AbstractDAOController<Approve
 
         ApprovedLoan approvedLoan=null;
         List<ApprovedLoan>  approvedLoanList= query.list();
-        if(!approvedLoanList.isEmpty()){
+        if(approvedLoanList.size() > 0){
             for (ApprovedLoan aLoan:approvedLoanList) {
                 approvedLoan=aLoan;
             }
