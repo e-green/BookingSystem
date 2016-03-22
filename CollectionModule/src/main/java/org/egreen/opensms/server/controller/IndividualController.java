@@ -816,6 +816,12 @@ public class IndividualController {
         return newid;
     }
 
+    @RequestMapping(value = "readById", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public Individual readById(String IndividualId) {
+        return individualDAOService.readById(IndividualId);
+    }
+
     /**
      * Get Random String
      *

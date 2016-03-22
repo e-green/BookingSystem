@@ -158,4 +158,8 @@ public class IndividualDAOService {
         Account account=accountDAOController.getAccountByCenterOIndividualId(individual.getIndividualId());
         return account.getAccountNo();
     }
+
+    public Individual readById(String individualId) {
+        return individualDAOController.read(individualId);
+    }
 }

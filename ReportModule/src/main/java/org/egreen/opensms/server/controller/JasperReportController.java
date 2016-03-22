@@ -403,7 +403,7 @@ public class JasperReportController {
         }
 
         if(dueAmount < 0.0){
-            map.put("payment", dueAmount == null ? "--" : dueAmount + "");
+            map.put("payment", dueAmount == null ? "--" : dueAmount*-1 + "");
             map.put("dueLable", "");
             map.put("due", "");
             map.put("paymentLable", "Payment");
@@ -431,7 +431,7 @@ public class JasperReportController {
 
         ds = new JRTableModelDataSource(model);
         try {
-            InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual2.jrxml");
+            InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual3.jrxml");
             JasperReport jr = JasperCompileManager.compileReport(systemResourceAsStream);
             JasperPrint jp = JasperFillManager.fillReport(jr, map, ds);
             // JasperViewer.viewReport(jp, false);
