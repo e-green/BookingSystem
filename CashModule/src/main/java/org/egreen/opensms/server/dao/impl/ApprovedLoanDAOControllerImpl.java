@@ -112,4 +112,14 @@ public class ApprovedLoanDAOControllerImpl extends AbstractDAOController<Approve
 
         return query.list();
     }
+
+    @Override
+    public List<ApprovedLoan> getAllApprovedLoansByIndividualId(String individualId, Integer limit, Integer offset) {
+        Criteria criteria = getSession().createCriteria(entityType);
+        criteria.add(Restrictions.eq("individualId", individualId));
+        criteria.setFirstResult(offset);
+        criteria.setMaxResults(limit);
+        return criteria.list();
+
+    }
 }

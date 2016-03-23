@@ -282,6 +282,13 @@ public class JasperReportController {
                 if(tra.getTypeId().equals("LON")){
                     loan+=tra.getCredit().doubleValue();
                 }
+
+                if(tra.getCredit() != null && tra.getTypeId().equals("Balance")){
+                    tpyPayment+=tra.getCredit().doubleValue();
+                }
+                if(tra.getTypeId().equals("Payment")){
+                    tpyPayment-=tra.getCredit().doubleValue();
+                }
             }
         }
 

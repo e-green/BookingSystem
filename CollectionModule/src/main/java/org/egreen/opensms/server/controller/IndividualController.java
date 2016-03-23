@@ -374,7 +374,7 @@ public class IndividualController {
             transactionDAOService.save(transaction);
 
         }
-        if(dueValue < 0){
+        if(dueValue < 0 && generalSummaryReceiptModel.getPayment() > 0.0){
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
@@ -385,11 +385,9 @@ public class IndividualController {
 
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
-            double pd=0.0;
-            pd=generalSummaryReceiptModel.getPd();
-            transaction.setCredit(BigDecimal.valueOf(pd));
+            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPayment()*-1));
             transaction.setTypeId("Payment");
-            transaction.setTime(tomorrowTimeStamp);
+            transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
         }
 
@@ -422,7 +420,6 @@ public class IndividualController {
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
         }
-
 
         String formatedDate = simpleDateFormat.format(generalSummaryReceiptModel.getDate());
         String individualId = generalSummaryReceiptModel.getIndividualId();
@@ -816,9 +813,15 @@ public class IndividualController {
         return newid;
     }
 
+    /**
+     * get individual by individualId
+     *
+     * @param IndividualId
+     * @return
+     */
     @RequestMapping(value = "readById", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public Individual readById(String IndividualId) {
+    public Individual readById(@RequestParam("individualId") String IndividualId) {
         return individualDAOService.readById(IndividualId);
     }
 

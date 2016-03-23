@@ -124,4 +124,8 @@ public class ApprovedLoanDAOService {
     public List<ApprovedLoan> getUnpaidLoansByIndividualId(String individualId) {
         return approvedLoanDAOController.getUnpaidLoansByIndividualId(individualId);
     }
+
+    public List<ApprovedLoan> getAllApprovedLoansByIndividualId(String individualId, Integer limit, Integer offset) {
+        return approvedLoanDAOController.getAllApprovedLoansByIndividualId(individualId,limit,offset);
+    }
 }

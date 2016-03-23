@@ -24,4 +24,6 @@ public interface ApprovedLoanDAOController extends DAOController<ApprovedLoan,St
     ApprovedLoan getApprovedLoanByDateNIndividualId(String formatedDate, String individualId);
 
     List<ApprovedLoan> getUnpaidLoansByIndividualId(String individualId);
+
+    List<ApprovedLoan> getAllApprovedLoansByIndividualId(String individualId, Integer limit, Integer offset);
 }

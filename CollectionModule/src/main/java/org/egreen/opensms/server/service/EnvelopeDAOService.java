@@ -702,10 +702,11 @@ public class EnvelopeDAOService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
         String formatedDate = simpleDateFormat.format(envelopeDetailModel.getDate());
         //Envelope envelope = envelopeDAOController.getEnvelopesByDateNByIndividualId(individualId, formatedDate);
-        ApprovedLoan approvedLoan=approvedLoanDAOService.getApprovedLoanByDateNIndividualId(formatedDate,individualId);
+        List<ApprovedLoan> unpaidLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
         BigDecimal commision=null;
         BigDecimal salary=null;
         BigDecimal lessCommissionSingle=null;
+        BigDecimal dueLoanValue=BigDecimal.ZERO;
         if(envelopeDetailModel.getInvestment() != null){
             if(individual != null ){
                 model.setIndividualId(individual.getIndividualId());
@@ -725,17 +726,19 @@ public class EnvelopeDAOService {
                 if(commision != null ){
                     model.setCommision(commision);
                 }
-                if(approvedLoan != null){
-                    model.setLoanAmount(approvedLoan.getAmount());
-                    model.setLdPayment(approvedLoan.getDueamount());
-                    model.setLoanCharges(approvedLoan.getDeductionPayment());
+
+                for(ApprovedLoan approvedLoan:unpaidLoanList){
+                    if(approvedLoan != null && approvedLoan.getDueamount() != null){
+                        dueLoanValue=dueLoanValue.add(approvedLoan.getDueamount());
+                        model.setLoanCharges(approvedLoan.getDeductionPayment());
+                    }
                 }
+
+                model.setLdPayment(dueLoanValue);
+
                 if(individual.getPcChargers() !=null){
                     model.setPcCharges(individual.getPcChargers());
                 }
-                //lessCommissionSingle value
-                BigDecimal lCS=new BigDecimal(1000.00);
-                model.setLessComissionSingle(lessCommissionSingle);
             }
         }
         return model;

@@ -36,7 +36,6 @@ public class ApprovedLoanController {
         ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
         returnIdModel1.setId(res);
         return returnIdModel1;
-
     }
 
 
@@ -159,5 +158,21 @@ public class ApprovedLoanController {
     public List<ApprovedLoan> getAll() {
         List<ApprovedLoan> unpaidLoans = approvedLoanDAOService.getUnpaidLoans();
         return unpaidLoans;
+    }
+
+    /**
+     * get All Approved Loans By IndividualId
+     *
+     * @param individualId
+     * @param limit
+     * @param offset
+     * @return
+     */
+    @RequestMapping(value = "getAllApprovedLoansByIndividualId", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public List<ApprovedLoan> getAllApprovedLoansByIndividualId(@RequestParam("individualId") String individualId ,
+                                                        @RequestParam("limit") Integer limit,
+                                                        @RequestParam("offset") Integer offset) {
+        return approvedLoanDAOService.getAllApprovedLoansByIndividualId(individualId,limit,offset);
     }
 }

@@ -20,6 +20,7 @@ public class GeneralSummaryReceiptModel {
     private double excess;
     private double nc;
     private double lcs;
+    private double payment;
 
     public String getCenterId() {
         return centerId;
@@ -125,6 +126,14 @@ public class GeneralSummaryReceiptModel {
         this.lcs = lcs;
     }
 
+    public double getPayment() {
+        return payment;
+    }
+
+    public void setPayment(double payment) {
+        this.payment = payment;
+    }
+
     @Override
     public String toString() {
         return "GeneralSummaryReceiptModel{" +
@@ -141,6 +150,7 @@ public class GeneralSummaryReceiptModel {
                 ", excess=" + excess +
                 ", nc=" + nc +
                 ", lcs=" + lcs +
+                ", payment=" + payment +
                 '}';
     }
 }
