@@ -74,6 +74,13 @@ public class AccountDAOService {
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
         return sb.toString();
     }
+
+    /**
+     * get acocunt by center or individual id
+     *
+     * @param memberId
+     * @return
+     */
     public Account getAccountByCenterOIndividualId(String memberId){
         return accountDAOController.getAccountByCenterOIndividualId(memberId);
     }

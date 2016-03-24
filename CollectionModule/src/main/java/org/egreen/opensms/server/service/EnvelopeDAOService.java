@@ -67,11 +67,12 @@ public class EnvelopeDAOService {
         if (s != null) {
             BigDecimal invesment = envelope.getInvesment();
             String individualId = envelope.getIndividualId();
+            String centerId = envelope.getCenter();
 
             Account account = accountDAOController.getAccountByCenterOIndividualId(individualId);
             Individual individual = individualDAOController.read(individualId);
 
-            Center center;
+            Center center=centerDAOController.read(centerId);
             String accountNo = null;
             Transaction transaction = null;
 
@@ -146,13 +147,25 @@ public class EnvelopeDAOService {
                 createTransactinonAccount(individualId, transaction);
                 String newid1 = getStringID(id, hashids, hexaid);
                 transaction.setTransactionId(newid1);
-
-
                 transaction.setTypeId("COM");
 
                 double investmentValue = envelope.getInvesment().doubleValue();
                 BigDecimal commision = calculateCommision(invesment, individual.getCommision());
                 transaction.setCredit(commision);
+                transaction.setTime(envelope.getDate());
+                transactionDAOController.create(transaction);
+            }
+
+            if(center.getCommision() != null && envelope.getInvesment() != null && centerId != null && envelope.getInvesment().doubleValue() != 0){
+                transaction = new Transaction();
+                createTransactinonAccount(centerId, transaction);
+                String newid1 = getStringID(id, hashids, hexaid);
+                transaction.setTransactionId(newid1);
+                transaction.setTypeId("COM");
+
+                double investmentValue = envelope.getInvesment().doubleValue();
+                BigDecimal comm = calculateCommision(invesment, center.getCommision());
+                transaction.setCredit(comm);
                 transaction.setTime(envelope.getDate());
                 transactionDAOController.create(transaction);
             }
@@ -698,6 +711,7 @@ public class EnvelopeDAOService {
     public EnvelopeDetailModel getEnvelopesDetailModel(EnvelopeDetailModel envelopeDetailModel) {
         EnvelopeDetailModel model=new EnvelopeDetailModel();
         String individualId = envelopeDetailModel.getIndividualId();
+        System.out.println("Indiviiiiiiiiiiiidual Id ->"+ individualId);
         Individual individual = individualDAOController.read(individualId);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
         String formatedDate = simpleDateFormat.format(envelopeDetailModel.getDate());
@@ -707,21 +721,22 @@ public class EnvelopeDAOService {
         BigDecimal salary=null;
         BigDecimal lessCommissionSingle=null;
         BigDecimal dueLoanValue=BigDecimal.ZERO;
-        if(envelopeDetailModel.getInvestment() != null){
             if(individual != null ){
                 model.setIndividualId(individual.getIndividualId());
                 model.setDate(envelopeDetailModel.getDate());
-                model.setInvestment(envelopeDetailModel.getInvestment());
-                if(individual.getCommision() != null) {
-                    commision = calculateCommision(envelopeDetailModel.getInvestment(), individual.getCommision());
-                }
-                if(individual.isSalaryPay() == true){
-                    salary=individual.getFixedSalary();
-                    model.setSalary(salary);
-                }
-                if(individual.getFixedSalary() == null && individual.getCommision() == null && individual.isSalaryPay() == false ) {
-                    salary = calculateSalary(envelopeDetailModel.getInvestment());
-                    model.setSalary(salary);
+                if(envelopeDetailModel.getInvestment() != null) {
+                    model.setInvestment(envelopeDetailModel.getInvestment());
+                    if (individual.getCommision() != null) {
+                        commision = calculateCommision(envelopeDetailModel.getInvestment(), individual.getCommision());
+                    }
+                    if (individual.isSalaryPay() == true) {
+                        salary = individual.getFixedSalary();
+                        model.setSalary(salary);
+                    }
+                    if (individual.getFixedSalary() == null && individual.getCommision() == null && individual.isSalaryPay() == false) {
+                        salary = calculateSalary(envelopeDetailModel.getInvestment());
+                        model.setSalary(salary);
+                    }
                 }
                 if(commision != null ){
                     model.setCommision(commision);
@@ -740,7 +755,7 @@ public class EnvelopeDAOService {
                     model.setPcCharges(individual.getPcChargers());
                 }
             }
-        }
+
         return model;
     }
 

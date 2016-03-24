@@ -159,7 +159,14 @@ public class IndividualDAOService {
         return account.getAccountNo();
     }
 
+    /**
+     * get individual by individualId
+     *
+     * @param individualId
+     * @return
+     */
     public Individual readById(String individualId) {
         return individualDAOController.read(individualId);
     }
+
 }

@@ -176,6 +176,8 @@ public class IndividualController {
 
     }
 
+
+
     /**
      * getIndividualsByCenterId
      *
@@ -196,11 +198,11 @@ public class IndividualController {
      *
      * @return
      */
-//    @RequestMapping(value = "getAll", method = RequestMethod.GET, headers = "Accept=application/json")
-//    @ResponseBody
-//    public List<Individual> getAll() {
-//        return individualDAOService.getAll();
-//    }
+    @RequestMapping(value = "getAllIndividualsWithoutPagination", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public List<Individual> getAll() {
+        return individualDAOService.getAll();
+    }
 
     /**
      * Get All Branchers By Pagination
@@ -293,6 +295,7 @@ public class IndividualController {
         Double payValue = 0.0;
         try {
             dueValue = Double.parseDouble(due + "");
+//            System.out.println("Due Valueeeeeeeeeeeee"+ dueValue);
         } catch (Exception e) {
 
         }
@@ -354,6 +357,15 @@ public class IndividualController {
             transactionDAOService.save(transaction);
         }
 
+        if(account.getAmount() != null && account.getAmount().doubleValue() > 0.0){
+            transaction.setTransactionId(getNewId());
+            transaction.setAccountNo(account.getAccountNo());
+            transaction.setDebit(account.getAmount());
+            transaction.setTypeId("PD");
+            transaction.setTime(generalSummaryReceiptModel.getDate());
+            transactionDAOService.save(transaction);
+        }
+
         if (dueValue > 0) {
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
@@ -363,15 +375,8 @@ public class IndividualController {
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
 
-
-            transaction.setTransactionId(getNewId());
-            transaction.setAccountNo(account.getAccountNo());
-            double pd=0.0;
-            pd=generalSummaryReceiptModel.getPd();
-            transaction.setDebit(BigDecimal.valueOf(pd));
-            transaction.setTypeId("PD");
-            transaction.setTime(tomorrowTimeStamp);
-            transactionDAOService.save(transaction);
+            account.setAmount(BigDecimal.valueOf(dueValue));
+            accountDAOService.update(account);
 
         }
         if(dueValue < 0 && generalSummaryReceiptModel.getPayment() > 0.0){
@@ -389,6 +394,9 @@ public class IndividualController {
             transaction.setTypeId("Payment");
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
+
+            account.setAmount(BigDecimal.ZERO);
+            accountDAOService.update(account);
         }
 
         if(generalSummaryReceiptModel.getSalary() > 0.0){
@@ -626,23 +634,29 @@ public class IndividualController {
             }
         }
 
-        Date curDate=generalSummaryReceiptModel.getDate();
-        Date yesterday=new Date(curDate.getTime() - (1000 * 60 * 60 * 24));
-        String yesterdayfD = simpleDateFormat.format(yesterday);
+//        Date curDate=generalSummaryReceiptModel.getDate();
+//        Date yesterday=new Date(curDate.getTime() - (1000 * 60 * 60 * 24));
+//        String yesterdayfD = simpleDateFormat.format(yesterday);
 
         //yesterday transation
-        List<Transaction> trlist = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(yesterdayfD, account.getAccountNo());
-        for (Transaction transaction : trlist) {
-            if (transaction != null) {
-                tra = transaction;
-
-                if (tra.getDebit() != null && tra.getTypeId().equals("Balance")) {
-                    perDue = tra.getDebit().doubleValue();
-                    map.put("pd",perDue);
-                }
+//        List<Transaction> trlist = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(yesterdayfD, account.getAccountNo());
+//        for (Transaction transaction : trlist) {
+//            if (transaction != null) {
+//                tra = transaction;
+//
+//                if (tra.getDebit() != null && tra.getTypeId().equals("Balance")) {
+//                    perDue = tra.getDebit().doubleValue();
+//                    map.put("pd",perDue);
+//                }
+//            }
+//        }
+        if(account != null && account.getAmount() != null){
+            if(account.getAmount().doubleValue() > 0.0){
+                perDue=account.getAmount().doubleValue();
+                map.put("pd",perDue);
             }
         }
-//        map.put("csh",234234234+"");
+
         List<Envelope> envelopesByCenterId = null;
 
         if (generalSummaryReceiptModel.getType() == 0) {
@@ -785,7 +799,6 @@ public class IndividualController {
         for (ApprovedLoan approvedLoan : approvedLoanList) {
             if (approvedLoan != null && approvedLoan.getDueamount() != null) {
                 approveLoanDueAmount = approveLoanDueAmount.add(approvedLoan.getDueamount());
-                //map.put("ln", approvedLoan.getDeductionPayment()+"");
             }
         }
         map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
