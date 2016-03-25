@@ -58,165 +58,155 @@ public class EnvelopeDAOService {
         Hashids hashids = new Hashids(id);
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
         String newid = hexaid + "" + randomString(10);
-        envelope.setEnvelopId(newid);
-        if(envelope.getChitCount() == null){
-            envelope.setChitCount(new BigInteger("0"));
-        }
+        String indId=envelope.getIndividualId();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = simpleDateFormat.format(envelope.getDate());
+        Envelope envelopesByDateNByIndividualId = envelopeDAOController.getEnvelopesByDateNByIndividualId(indId, formattedDate);
+        String s=null;
+        if(envelopesByDateNByIndividualId == null){
+            envelope.setEnvelopId(newid);
 
-        String s = envelopeDAOController.create(envelope);
-        if (s != null) {
-            BigDecimal invesment = envelope.getInvesment();
-            String individualId = envelope.getIndividualId();
-            String centerId = envelope.getCenter();
-
-            Account account = accountDAOController.getAccountByCenterOIndividualId(individualId);
-            Individual individual = individualDAOController.read(individualId);
-
-            Center center=centerDAOController.read(centerId);
-            String accountNo = null;
-            Transaction transaction = null;
-
-            if (envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0) {
-                transaction = new Transaction();
-                createTransactinonAccount(individualId, transaction);
-                String newid1 = getStringID(id, hashids, hexaid);
-                transaction.setTransactionId(newid1);
-
-                transaction.setTypeId("Inv");
-                transaction.setDebit(envelope.getInvesment());
-                transaction.setTime(envelope.getDate());
-                transactionDAOController.create(transaction);
+            if(envelope.getChitCount() == null){
+                envelope.setChitCount(new BigInteger("0"));
             }
 
+            s = envelopeDAOController.create(envelope);
+            if (s != null) {
+                BigDecimal invesment = envelope.getInvesment();
+                String individualId = envelope.getIndividualId();
+                String centerId = envelope.getCenter();
 
-            if (envelope.getCash() != null && envelope.getCash().doubleValue() != 0) {
-                transaction = new Transaction();
-                createTransactinonAccount(individualId, transaction);
-                String newid1 = getStringID(id, hashids, hexaid);
-                transaction.setTransactionId(newid1);
+                Account account = accountDAOController.getAccountByCenterOIndividualId(individualId);
+                Individual individual = individualDAOController.read(individualId);
 
-                transaction.setTypeId("CSH");
-                transaction.setCredit(envelope.getCash());
-                transaction.setTime(envelope.getDate());
-                transactionDAOController.create(transaction);
-            }
+                Center center=centerDAOController.read(centerId);
+                String accountNo = null;
+                Transaction transaction = null;
 
-
-//            if (envelope.getNotCommision() != null && envelope.getNotCommision().doubleValue() != 0) {
-//                transaction = new Transaction();
-//                createTransactinonAccount(individualId, transaction);
-//                //genarate new transactionId for transaction and set it
-//                String newid1 = getStringID(id, hashids, hexaid);
-//                transaction.setTransactionId(newid1);
-//
-//                transaction.setTypeId("NC");
-//                transaction.setDebit(envelope.getNotCommision());
-//                transaction.setTime(envelope.getDate());
-//                transactionDAOController.create(transaction);
-//            }
-
-            if (envelope.getExpences() != null && envelope.getExpences().doubleValue() != 0) {
-                transaction = new Transaction();
-                createTransactinonAccount(individualId, transaction);
-                String newid1 = getStringID(id, hashids, hexaid);
-                transaction.setTransactionId(newid1);
-
-                transaction.setTypeId("EXP");
-                transaction.setCredit(envelope.getExpences());
-                transaction.setTime(envelope.getDate());
-                transactionDAOController.create(transaction);
-            }
-
-
-            if (individual.getPcChargers() != null && individual.getPcChargers().doubleValue() != 0) {
-                transaction = new Transaction();
-                createTransactinonAccount(individualId, transaction);
-                String newid1 = getStringID(id, hashids, hexaid);
-                transaction.setTransactionId(newid1);
-
-
-                transaction.setTypeId("PC");
-                transaction.setDebit(individual.getPcChargers());
-                transaction.setTime(envelope.getDate());
-                transactionDAOController.create(transaction);
-            }
-
-
-            if (individual.getCommision() != null && envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0) {
-                transaction = new Transaction();
-                createTransactinonAccount(individualId, transaction);
-                String newid1 = getStringID(id, hashids, hexaid);
-                transaction.setTransactionId(newid1);
-                transaction.setTypeId("COM");
-
-                double investmentValue = envelope.getInvesment().doubleValue();
-                BigDecimal commision = calculateCommision(invesment, individual.getCommision());
-                transaction.setCredit(commision);
-                transaction.setTime(envelope.getDate());
-                transactionDAOController.create(transaction);
-            }
-
-            if(center.getCommision() != null && envelope.getInvesment() != null && centerId != null && envelope.getInvesment().doubleValue() != 0){
-                transaction = new Transaction();
-                createTransactinonAccount(centerId, transaction);
-                String newid1 = getStringID(id, hashids, hexaid);
-                transaction.setTransactionId(newid1);
-                transaction.setTypeId("COM");
-
-                double investmentValue = envelope.getInvesment().doubleValue();
-                BigDecimal comm = calculateCommision(invesment, center.getCommision());
-                transaction.setCredit(comm);
-                transaction.setTime(envelope.getDate());
-                transactionDAOController.create(transaction);
-            }
-
-            ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
-            if (approvedLoan!=null&&approvedLoan.getDatetime().getYear() == envelope.getDate().getYear()
-                    && approvedLoan.getDatetime().getMonth() == envelope.getDate().getMonth()
-                    && approvedLoan.getDatetime().getDate() == envelope.getDate().getDate()
-                    ) {
-
-                transaction = new Transaction();
-                createTransactinonAccount(individualId, transaction);
-                String newid1 = getStringID(id, hashids, hexaid);
-                transaction.setTransactionId(newid1);
-
-                transaction.setTypeId("LON");
-//                transaction.setCredit(approvedLoan.getAmount());
-                transaction.setCredit(approvedLoan.getDueamount());
-                transaction.setTime(envelope.getDate());
-                transactionDAOController.create(transaction);
-            } else if (approvedLoan!=null&&approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
-
-
-                transaction = new Transaction();
-                createTransactinonAccount(individualId, transaction);
-                String newid1 = getStringID(id, hashids, hexaid);
-                transaction.setTransactionId(newid1);
-
-
-                transaction.setTypeId("LN");
-                BigDecimal dueAmount=null;
-                if(approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null && envelope.getLoanDeduct() != null && envelope.getLoanDeduct() == true){
-                    dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
-                }
-
-                if(envelope.getLoanDeduct() != null && envelope.getLoanDeduct() == true){
-                    transaction.setDebit(approvedLoan.getDeductionPayment());
+                if (envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0) {
+                    transaction = new Transaction();
+                    createTransactinonAccount(individualId, transaction);
+                    String newid1 = getStringID(id, hashids, hexaid);
+                    transaction.setTransactionId(newid1);
+                    transaction.setTypeId("Inv");
+                    transaction.setDebit(envelope.getInvesment());
                     transaction.setTime(envelope.getDate());
                     transactionDAOController.create(transaction);
                 }
 
-                if(approvedLoan.getDueamount() != null && dueAmount != null){
-                    approvedLoan.setDueamount(dueAmount);
-                }
-                approvedLoanDAOService.update(approvedLoan);
 
+                if (envelope.getCash() != null && envelope.getCash().doubleValue() != 0) {
+                    transaction = new Transaction();
+                    createTransactinonAccount(individualId, transaction);
+                    String newid1 = getStringID(id, hashids, hexaid);
+                    transaction.setTransactionId(newid1);
+                    transaction.setTypeId("CSH");
+                    transaction.setCredit(envelope.getCash());
+                    transaction.setTime(envelope.getDate());
+                    transactionDAOController.create(transaction);
+                }
+
+                if (envelope.getExpences() != null && envelope.getExpences().doubleValue() != 0) {
+                    transaction = new Transaction();
+                    createTransactinonAccount(individualId, transaction);
+                    String newid1 = getStringID(id, hashids, hexaid);
+                    transaction.setTransactionId(newid1);
+                    transaction.setTypeId("EXP");
+                    transaction.setCredit(envelope.getExpences());
+                    transaction.setTime(envelope.getDate());
+                    transactionDAOController.create(transaction);
+                }
+
+
+                if (individual.getPcChargers() != null && individual.getPcChargers().doubleValue() != 0) {
+                    transaction = new Transaction();
+                    createTransactinonAccount(individualId, transaction);
+                    String newid1 = getStringID(id, hashids, hexaid);
+                    transaction.setTransactionId(newid1);
+                    transaction.setTypeId("PC");
+                    transaction.setDebit(individual.getPcChargers());
+                    transaction.setTime(envelope.getDate());
+                    transactionDAOController.create(transaction);
+                }
+
+
+                if (individual.getCommision() != null && envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0) {
+                    transaction = new Transaction();
+                    createTransactinonAccount(individualId, transaction);
+                    String newid1 = getStringID(id, hashids, hexaid);
+                    transaction.setTransactionId(newid1);
+                    transaction.setTypeId("COM");
+                    double investmentValue = envelope.getInvesment().doubleValue();
+                    BigDecimal commision = calculateCommision(invesment, individual.getCommision());
+                    transaction.setCredit(commision);
+                    transaction.setTime(envelope.getDate());
+                    transactionDAOController.create(transaction);
+                }
+
+                if(center.getCommision() != null && envelope.getInvesment() != null && centerId != null && envelope.getInvesment().doubleValue() != 0){
+                    transaction = new Transaction();
+                    createTransactinonAccount(centerId, transaction);
+                    String newid1 = getStringID(id, hashids, hexaid);
+                    transaction.setTransactionId(newid1);
+                    transaction.setTypeId("COM");
+                    double investmentValue = envelope.getInvesment().doubleValue();
+                    BigDecimal comm = calculateCommision(invesment, center.getCommision());
+                    transaction.setCredit(comm);
+                    transaction.setTime(envelope.getDate());
+                    transactionDAOController.create(transaction);
+                }
+
+                ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
+                if (approvedLoan!=null&&approvedLoan.getDatetime().getYear() == envelope.getDate().getYear()
+                        && approvedLoan.getDatetime().getMonth() == envelope.getDate().getMonth()
+                        && approvedLoan.getDatetime().getDate() == envelope.getDate().getDate()
+                        ) {
+
+                    transaction = new Transaction();
+                    createTransactinonAccount(individualId, transaction);
+                    String newid1 = getStringID(id, hashids, hexaid);
+                    transaction.setTransactionId(newid1);
+                    transaction.setTypeId("LON");
+                    transaction.setCredit(approvedLoan.getDueamount());
+                    transaction.setTime(envelope.getDate());
+                    transactionDAOController.create(transaction);
+                } else if (approvedLoan!=null&&approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
+
+                    transaction = new Transaction();
+                    createTransactinonAccount(individualId, transaction);
+                    String newid1 = getStringID(id, hashids, hexaid);
+                    transaction.setTransactionId(newid1);
+                    transaction.setTypeId("LN");
+                    BigDecimal dueAmount=null;
+                    if(approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null && envelope.getLoanDeduct() != null && envelope.getLoanDeduct() == true){
+                        dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
+                    }
+
+                    if(envelope.getLoanDeduct() != null && envelope.getLoanDeduct() == true){
+                        transaction.setDebit(approvedLoan.getDeductionPayment());
+                        transaction.setTime(envelope.getDate());
+                        transactionDAOController.create(transaction);
+                    }
+
+                    if(approvedLoan.getDueamount() != null && dueAmount != null){
+                        approvedLoan.setDueamount(dueAmount);
+                    }
+                    approvedLoanDAOService.update(approvedLoan);
+
+                }
             }
         }
+
         return s;
     }
 
+    /**
+     *
+     * @param id
+     * @param hashids
+     * @param hexaid
+     * @return
+     */
     private String getStringID(String id, Hashids hashids, String hexaid) {
         String id1 = new Date().getTime() + "";
         Hashids hashids1 = new Hashids(id);
@@ -224,6 +214,11 @@ public class EnvelopeDAOService {
         return hexaid + "" + randomString(10);
     }
 
+    /**
+     *
+     * @param individualId
+     * @param transaction
+     */
     private void createTransactinonAccount(String individualId, Transaction transaction) {
         String accountNo;
         if (null != individualId && transaction != null) {
@@ -253,7 +248,10 @@ public class EnvelopeDAOService {
         return sb.toString();
     }
 
-
+    /**
+     * Get all envelopes
+     * @return
+     */
     public List<Envelope> getAll() {
         return envelopeDAOController.getAll();
     }
@@ -265,11 +263,74 @@ public class EnvelopeDAOService {
     /**
      * Update Envelope
      *
-     * @param individual
+     * @param envelope
      * @return
      */
-    public String update(Envelope individual) {
-        return envelopeDAOController.update(individual);
+    public String update(Envelope envelope) {
+        String indId=envelope.getIndividualId();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = simpleDateFormat.format(envelope.getDate());
+        Envelope envelopesByDateNByIndividualId = envelopeDAOController.getEnvelopesByDateNByIndividualId(indId, formattedDate);
+        String s=null;
+        if(envelopesByDateNByIndividualId != null){
+
+            if(envelope.getChitCount() == null){
+                envelope.setChitCount(BigInteger.ZERO);
+            }
+            if(envelopesByDateNByIndividualId.getEnvelopId() != null){
+                envelope.setEnvelopId(envelopesByDateNByIndividualId.getEnvelopId());
+            }
+
+            s = envelopeDAOController.update(envelope);
+            if (s != null) {
+                BigDecimal invesment = envelope.getInvesment();
+                String individualId = envelope.getIndividualId();
+                String centerId = envelope.getCenter();
+
+                Account account = accountDAOController.getAccountByCenterOIndividualId(individualId);
+                Account centerAccount = accountDAOController.getAccountByCenterOIndividualId(centerId);
+                Individual individual = individualDAOController.read(individualId);
+                List<Transaction> transactionList = transactionDAOController.getTodayTransactionDetailByDateNAccountNo(formattedDate, account.getAccountNo());
+                List<Transaction> centerTransactionList = transactionDAOController.getTodayTransactionDetailByDateNAccountNo(formattedDate, centerAccount.getAccountNo());
+                Center center=centerDAOController.read(centerId);
+                for(Transaction transaction:transactionList){
+                    if (envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0 && transaction.getTypeId().equals("Inv")) {
+                        transaction.setDebit(envelope.getInvesment());
+                        transactionDAOController.update(transaction);
+                    }
+                    if (envelope.getCash() != null && envelope.getCash().doubleValue() != 0 && transaction.getTypeId().equals("CSH") ) {
+                        transaction.setCredit(envelope.getCash());
+                        transactionDAOController.update(transaction);
+                    }
+                    if (envelope.getExpences() != null && envelope.getExpences().doubleValue() != 0 && transaction.getTypeId().equals("EXP")) {
+                        transaction.setCredit(envelope.getExpences());
+                        transactionDAOController.update(transaction);
+                    }
+                    if (individual.getPcChargers() != null && individual.getPcChargers().doubleValue() != 0 && transaction.getTypeId().equals("PC")) {
+                        transaction.setDebit(individual.getPcChargers());
+                        transactionDAOController.update(transaction);
+                    }
+                    if (individual.getCommision() != null && envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0 && transaction.getTypeId().equals("COM") && transaction.getAccountNo().equals(account.getAccountNo()) ) {
+                        BigDecimal con = calculateCommision(invesment, individual.getCommision());
+                        transaction.setCredit(con);
+                        transactionDAOController.update(transaction);
+                    }
+                }
+                if(centerTransactionList.size() > 0){
+                    for(Transaction transaction:centerTransactionList){
+                        if(center.getCommision() != null && envelope.getInvesment() != null && centerId != null && envelope.getInvesment().doubleValue() != 0 && transaction.getTypeId().equals("COM") && transaction.getAccountNo().equals(centerAccount.getAccountNo())){
+                            BigDecimal comm = calculateCommision(invesment, center.getCommision());
+                            transaction.setCredit(comm);
+                            transactionDAOController.update(transaction);
+                        }
+                    }
+                }
+            }
+
+        }
+
+
+        return s;
     }
 
     /**
@@ -358,17 +419,6 @@ public class EnvelopeDAOService {
         return envelopeDAOController.getEnvelopesByIndividualIdByDate(individualId, limit, offset, date);
     }
 
-//    /**
-//     * Get Envelope by individualId, date & centerId
-//     *
-//     * @param individualId
-//     * @param formatedDate
-//     * @param centerId
-//     * @return
-//     */
-//    public Envelope getEnvelopeByIndividualIdByDateNCenterId(String individualId, String formatedDate, String centerId) {
-//        return envelopeDAOController.getEnvelopeByIndividualIdByDateNCenterId(individualId, formatedDate, centerId);
-//    }
 
     /**
      * Get Envelope by centerId & date
@@ -711,12 +761,12 @@ public class EnvelopeDAOService {
     public EnvelopeDetailModel getEnvelopesDetailModel(EnvelopeDetailModel envelopeDetailModel) {
         EnvelopeDetailModel model=new EnvelopeDetailModel();
         String individualId = envelopeDetailModel.getIndividualId();
-        System.out.println("Indiviiiiiiiiiiiidual Id ->"+ individualId);
         Individual individual = individualDAOController.read(individualId);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
         String formatedDate = simpleDateFormat.format(envelopeDetailModel.getDate());
         //Envelope envelope = envelopeDAOController.getEnvelopesByDateNByIndividualId(individualId, formatedDate);
         List<ApprovedLoan> unpaidLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
+        Account account = accountDAOController.getAccountByCenterOIndividualId(individualId);
         BigDecimal commision=null;
         BigDecimal salary=null;
         BigDecimal lessCommissionSingle=null;
@@ -742,6 +792,9 @@ public class EnvelopeDAOService {
                     model.setCommision(commision);
                 }
 
+                if(account != null && account.getAmount() != null){
+                    model.setDueVale(account.getAmount());
+                }
                 for(ApprovedLoan approvedLoan:unpaidLoanList){
                     if(approvedLoan != null && approvedLoan.getDueamount() != null){
                         dueLoanValue=dueLoanValue.add(approvedLoan.getDueamount());

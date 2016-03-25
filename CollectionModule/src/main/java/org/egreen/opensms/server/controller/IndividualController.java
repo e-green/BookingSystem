@@ -357,7 +357,9 @@ public class IndividualController {
             transactionDAOService.save(transaction);
         }
 
-        if(account.getAmount() != null && account.getAmount().doubleValue() > 0.0){
+        if(account != null && account.getAmount() != null && account.getAmount().doubleValue() > 0.0){
+//            System.out.println("Account amountttttttttttttt ->"+account.getAmount());
+            transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
             transaction.setDebit(account.getAmount());
@@ -764,9 +766,9 @@ public class IndividualController {
         }
 
         tpyPayment += totPayment;
-//        if(perDue > 0.0){
-//            tpyInvestment+=perDue;
-//        }
+        if(perDue > 0.0){
+            tpyInvestment+=perDue;
+        }
 
         if(salary > 0.0){
             tpyPayment+=salary;

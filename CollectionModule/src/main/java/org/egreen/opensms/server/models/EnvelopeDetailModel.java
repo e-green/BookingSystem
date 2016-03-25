@@ -21,6 +21,7 @@ public class EnvelopeDetailModel {
     private BigDecimal commision;
     private BigDecimal salary;
     private BigDecimal lessComissionSingle;
+    private BigDecimal dueVale;
 
     public Timestamp getDate() {
         return date;
@@ -134,6 +135,14 @@ public class EnvelopeDetailModel {
         isLCS = LCS;
     }
 
+    public BigDecimal getDueVale() {
+        return dueVale;
+    }
+
+    public void setDueVale(BigDecimal dueVale) {
+        this.dueVale = dueVale;
+    }
+
     @Override
     public String toString() {
         return "EnvelopeDetailModel{" +
@@ -151,6 +160,7 @@ public class EnvelopeDetailModel {
                 ", commision=" + commision +
                 ", salary=" + salary +
                 ", lessComissionSingle=" + lessComissionSingle +
+                ", dueVale=" + dueVale +
                 '}';
     }
 }
