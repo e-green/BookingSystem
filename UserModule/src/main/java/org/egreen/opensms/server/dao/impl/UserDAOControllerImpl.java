@@ -23,24 +23,27 @@ public class UserDAOControllerImpl extends AbstractDAOController<User,String> im
     @Override
     public User login(String username, String userPassword) {
         Criteria criteria = getSession().createCriteria(entityType);
-
         criteria.add(Restrictions.eq("username", username));
         criteria.add(Restrictions.eq("password", userPassword));
-
-
+        List<User> userList=criteria.list();
         if ( criteria.list().size()>0) {
-
             User o = (User) criteria.list().get(0);
             if (o != null) {
+                for (User user:userList) {
+                    if(user.getUsername().equals(username)){
+                        o=user;
+                    }
+                    if(!user.getUsername().equals(username)){
+                        o=null;
+                    }
+                }
                 return o;
             } else {
                 return null;
             }
-
         }else {
             return null;
         }
-
     }
 
     @Override

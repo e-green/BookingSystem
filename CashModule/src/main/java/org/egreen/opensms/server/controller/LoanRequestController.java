@@ -55,13 +55,11 @@ public class LoanRequestController {
         ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
         returnIdModel1.setId(res);
         return returnIdModel1;
-
     }
 
     /**
      *
      * get All LoanRequests By UserId
-     *
      *
      * @param userId
      * @return

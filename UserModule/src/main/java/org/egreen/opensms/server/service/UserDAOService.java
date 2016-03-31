@@ -73,14 +73,7 @@ public class UserDAOService {
         String userPassword = authenticationController.getEncryptWord(password);
         User user = userDAOController.login(username, userPassword);
         if (user != null) {
-//            if (user.getUsername().equals("user")){
-//                return user;
-//            }
-//            Boolean available = branchPermissionDAOService.checkBranchPermission(user.getUserId(), BranchId);
-//            if (available) {
-                return user;
-           // }
-           // return null;
+            return user;
         } else {
             return null;
         }

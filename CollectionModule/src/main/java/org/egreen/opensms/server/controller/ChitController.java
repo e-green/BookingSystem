@@ -58,7 +58,6 @@ public class ChitController {
         ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
         returnIdModel1.setId(res);
         return returnIdModel1;
-
     }
 
     /**

@@ -58,9 +58,6 @@ public class JasperReportController {
     @Autowired
     private ApprovedLoanDAOService approvedLoanDAOService;
 
-    @Autowired
-    private CenterDAOService centerDAOService;
-
 
     /**
      * getGeneralSummaryReport
@@ -83,10 +80,8 @@ public class JasperReportController {
         Map<String, Object> map = null;
         map = new HashMap<String, Object>();
 
-
         map.put("centerName", centerId);
         map.put("date", date + "");
-
 
         List<Envelope> envelopesByCenterId = envelopeDAOService.getEnvelopesByCenterId(centerId, null, null, date1);
 
@@ -140,9 +135,6 @@ public class JasperReportController {
 
     }
 
-
-
-
     /**
      * * getGeneralSummaryReceipt
      * <p/>
@@ -192,13 +184,11 @@ public class JasperReportController {
         Map<String, Object> map = null;
         map = new HashMap<String, Object>();
 
-
         map.put("date", formatDate + "");
 
         Transaction tra = new Transaction();
         Account account = accountDAOService.getAccountByCenterOIndividualId(individualId);
         Individual individual = individualDAOService.getBranchById(individualId);
-
 
         map.put("pc", "--");
         map.put("ln", "--");
@@ -211,8 +201,6 @@ public class JasperReportController {
         map.put("overPay", "--");
         map.put("exces", "--");
         map.put("exp", "--");
-
-
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formatedDate = simpleDateFormat.format(new Date(date));
@@ -339,14 +327,7 @@ public class JasperReportController {
             map.put("sal",salary+"");
             tpyPayment+=salary;
         }
-//        if(totPayment > 0.0){
-//            map.put("totPay",totPayment+"");
-//            tpyPayment+=totPayment;
-//        }
-//        if(totInvesment > 0.0){
-//            map.put("totInv",totInvesment+"");
-//            tpyInvestment+=totInvesment;
-//        }
+
         if(cash > 0.0){
             map.put("csh",cash+"");
             tpyPayment+=cash;
@@ -426,7 +407,6 @@ public class JasperReportController {
             map.put("dueLable", "");
         }
 
-
         List<ApprovedLoan> approvedLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
         BigDecimal approveLoanDueAmount =BigDecimal.ZERO;
         for (ApprovedLoan approvedLoan:approvedLoanList){
@@ -459,7 +439,5 @@ public class JasperReportController {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-
-
     }
 }
