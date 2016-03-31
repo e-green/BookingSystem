@@ -55,52 +55,6 @@ public class ApprovedLoanController {
 
     }
 
-
-//
-//    /**
-//     * Get All
-//     *
-//     * @return
-//     */
-//    @RequestMapping(value = "getAll", method = RequestMethod.GET, headers = "Accept=application/json")
-//    @ResponseBody
-//    public List<ApprovedLoanModel> getAll() {
-//
-//        List<ApprovedLoanModel> centerModelList = new ArrayList<ApprovedLoanModel>();
-//
-//        List<ApprovedLoan> all = approvedLoanDAOService.getAll();
-//
-//
-//
-//
-//        for (ApprovedLoan center : all) {
-//            ApprovedLoanModel centerModel = new ApprovedLoanModel();
-//            centerModel.setApprovedLoanid(center.getApprovedLoanid());
-//            centerModel.setName(center.getName());
-//            centerModel.setBranchid((center.getBranchid()));
-//            LoanRequest branch = branchDAOService.getBranchById(center.getBranchid());
-//            if (branch != null) {
-//                centerModel.setBranchName(branch.getName());
-//            }
-//            centerModelList.add(centerModel);
-//        }
-//        return centerModelList;
-//    }
-
-//    /**
-//     * Get All ApprovedLoaners By Pagination
-//     *
-//     * @param limit
-//     * @param offset
-//     * @return
-//     */
-//    @RequestMapping(value = "getAllApprovedLoanersByPagination", method = RequestMethod.GET, headers = "Accept=application/json")
-//    @ResponseBody
-//    public List<ApprovedLoan> getAllApprovedLoanByPagination(@RequestParam("quary") String quary, @RequestParam("limit") Integer limit, @RequestParam("offset") Integer offset) {
-//        return approvedLoanDAOService.getAllApprovedLoanByPagination(quary, limit, offset);
-//    }
-
-
     @RequestMapping(value = "sorting", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public void sorting() {
@@ -116,7 +70,7 @@ public class ApprovedLoanController {
     }
 
     /**
-     * getOpenLoanDetailByIndividualId
+     * get Approved Loan Detail By IndividualId
      *
      * @param individualId
      * @return
@@ -125,27 +79,6 @@ public class ApprovedLoanController {
     @ResponseBody
     public ApprovedLoan getOpenLoanDetailByIndividualId(@RequestParam("individualId") String individualId) {
         return approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
-    }
-
-    /**
-     * removeApprovedLoanById
-     * <p/>
-     * //  * @param centerid
-     *
-     * @return
-     */
-//    @RequestMapping(value = "removeApprovedLoanById", method = RequestMethod.POST)
-//    @ResponseBody
-//    public Integer removeApprovedLoanById(@RequestParam("centerid") String centerid) {
-//        Integer res = approvedLoanDAOService.removeApprovedLoanById(centerid);
-//
-//        return res;
-//
-//    }
-    @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
-    @ResponseBody
-    public ApprovedLoan getob() {
-        return new ApprovedLoan();
     }
 
     /**
@@ -174,5 +107,27 @@ public class ApprovedLoanController {
                                                         @RequestParam("limit") Integer limit,
                                                         @RequestParam("offset") Integer offset) {
         return approvedLoanDAOService.getAllApprovedLoansByIndividualId(individualId,limit,offset);
+    }
+
+    /**
+     *get Unpaid Loans By IndividualId
+     *
+     * @param individualId
+     * @return
+     */
+    @RequestMapping(value = "getUnpaidLoansByIndividualId", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public List<ApprovedLoan> getUnpaidLoansByIndividualId(@RequestParam("individualId") String individualId){
+        return approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
+    }
+
+    /**
+     * get approve loan ob
+     * @return
+     */
+    @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public ApprovedLoan getob() {
+        return new ApprovedLoan();
     }
 }

@@ -83,7 +83,7 @@ public class ApprovedLoanDAOControllerImpl extends AbstractDAOController<Approve
 
     @Override
     public List<ApprovedLoan> getAllUnpaidLoans() {
-        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.dueamount > 1.0");
+        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.dueamount > 0.0");
         List<ApprovedLoan> unpaidLoanList = query.list();
         return unpaidLoanList;
     }
@@ -107,7 +107,7 @@ public class ApprovedLoanDAOControllerImpl extends AbstractDAOController<Approve
 
     @Override
     public List<ApprovedLoan> getUnpaidLoansByIndividualId(String individualId) {
-        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.individualId = :individualId AND a.dueamount >=0.0");
+        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.individualId = :individualId AND a.dueamount >0.0");
         query.setString("individualId", individualId);
 
         return query.list();

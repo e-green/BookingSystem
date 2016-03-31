@@ -1,6 +1,7 @@
 package org.egreen.opensms.server.controller;
 
 import org.egreen.opensms.server.entity.Account;
+import org.egreen.opensms.server.models.AccountDetail;
 import org.egreen.opensms.server.models.ReturnIdModel1;
 import org.egreen.opensms.server.service.AccountDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class AccountController {
 
 
     /**
-     * Update Branch
+     * Update Account
      *
      * @param account
      * @return
@@ -64,9 +65,43 @@ public class AccountController {
         return all;
     }
 
+    /**
+     * get account ob
+     *
+     * @return
+     */
     @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public Account getob() {
         return new Account();
     }
+
+    /**
+     * update Account By IndividualId and Amount
+     *
+     * @param accountDetail
+     * @return
+     */
+    @RequestMapping(value = "updateAccountByIndividualIdNAmount", method = RequestMethod.POST)
+    @ResponseBody
+    public ReturnIdModel1 updateAccountByIndividualIdNAmount(@RequestBody AccountDetail accountDetail) {
+        String res = accountDAOService.updateAccountByIndividualIdNAmount(accountDetail);
+        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
+        returnIdModel1.setId(res);
+        return returnIdModel1;
+
+    }
+
+    /**
+     * get account by center or individualId
+     *
+     * @param memberId
+     * @return
+     */
+    @RequestMapping(value = "getAccountByCenterOIndividualId", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public Account getAccountByCenterOIndividualId(@RequestParam("memberId") String memberId) {
+        return accountDAOService.getAccountByCenterOIndividualId(memberId);
+    }
+
 }

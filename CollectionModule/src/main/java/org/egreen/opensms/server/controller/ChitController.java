@@ -60,23 +60,6 @@ public class ChitController {
         return returnIdModel1;
 
     }
-//
-    /**
-     * Get package Id
-     *
-     * @return
-     */
-    @RequestMapping(value = "getId", method = RequestMethod.GET, headers = "Accept=application/json")
-    @ResponseBody
-    public ReturnIdModel1 getId(@RequestParam("twnName") String townName) {
-        String res = chitDAOService.getNextID();
-        String name=townName.substring(0, 3);
-        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
-        returnIdModel1.setId(name);
-        return returnIdModel1;
-
-    }
-
 
     /**
      * Get All
@@ -119,48 +102,28 @@ public class ChitController {
 
     }
 
+    /**
+     *
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "getAllCount", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public Long getAllCount(@RequestParam("id") String id) {
         return chitDAOService.getAllCount(id);
     }
 
-
+    /**
+     * get all chits by envelopeId
+     *
+     * @param envelopeId
+     * @return
+     */
     @RequestMapping(value = "getAllChitsByEnvelopeId", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public List<Chit> getAllChitsByEnvelopeId(@RequestParam("envelopeId") String envelopeId) {
         return chitDAOService.getAllChitsByEnvelopeId(envelopeId);
-    }
-
-    /**
-     * removeBranchById
-     *
-     * @param chitId
-     * @return
-     */
-    @RequestMapping(value = "removeChitById", method = RequestMethod.POST)
-    @ResponseBody
-    public Integer removeBranchById(@RequestParam("chitId") String chitId) {
-        Integer res = chitDAOService.removeChitById(chitId);
-
-        return res;
-
-    }
-
-    @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
-    @ResponseBody
-    public Chit getob() {
-        return new Chit();
-    }
-
-
-    @RequestMapping(value = "getBranchCode", method = RequestMethod.GET, headers = "Accept=application/json")
-    @ResponseBody
-    public String getBranchCode(@RequestParam("locationName") String locationName) {
-
-        String id = chitDAOService.getNextID();
-        String name=locationName.substring(0, 2)+id;
-        return name;
     }
 
     /**
@@ -175,19 +138,51 @@ public class ChitController {
         return chitDAOService.getChitById(chitId);
     }
 
+    /**
+     * removeBranchById
+     *
+     * @param chitId
+     * @return
+     */
+    @RequestMapping(value = "removeChitById", method = RequestMethod.POST)
+    @ResponseBody
+    public Integer removeBranchById(@RequestParam("chitId") String chitId) {
+        Integer res = chitDAOService.removeChitById(chitId);
+        return res;
+    }
+
+    /**
+     * get ChitModel ob
+     *
+     * @return
+     */
     @RequestMapping(value = "ChitModelOB", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public ChitModel getChitModelOB() {
         return new ChitModel();
     }
 
+    /**
+     * get FinishChitModel ob
+     *
+     * @return
+     */
     @RequestMapping(value = "FinishChitModelOB", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public FinishChitModel getFinishChitModelOB() {
         return new FinishChitModel();
     }
 
-
+    /**
+     * get Chit ob
+     *
+     * @return
+     */
+    @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public Chit getob() {
+        return new Chit();
+    }
 
 
 }

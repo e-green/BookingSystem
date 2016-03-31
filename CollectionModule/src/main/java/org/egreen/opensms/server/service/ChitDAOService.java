@@ -233,21 +233,9 @@ public class ChitDAOService {
         return chitDAOController.removeChitById(chitId);
     }
 
-//    public String getId() {
-//        String id = new Date().getTime() + "";
-//        Hashids hashids = new Hashids(id);
-//        String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
-//        String newid = hexaid + "" + randomString(10);
-//        return newid;
-//    }
-
     public Chit getChitById(String chitid) {
 
         return chitDAOController.read(chitid);
-    }
-
-    public String getNextID() {
-        return chitDAOController.getNextId();
     }
 
     public List<Chit> getAllChitById(Integer limit, Integer offset, String id, Integer type, String date) {

@@ -14,8 +14,6 @@ public interface ChitDAOController extends DAOController<Chit,String> {
 
     Integer removeChitById(String branchId);
 
-    String getNextId();
-
     List<Chit> getAllChitById(Integer limit, Integer offset, String id,Integer type,String date);
 
     Long getAllChitCount(String id);

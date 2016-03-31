@@ -2,6 +2,7 @@ package org.egreen.opensms.server.service;
 
 import org.egreen.opensms.server.dao.AccountDAOController;
 import org.egreen.opensms.server.entity.Account;
+import org.egreen.opensms.server.models.AccountDetail;
 import org.egreen.opensms.server.utils.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,4 +85,17 @@ public class AccountDAOService {
     public Account getAccountByCenterOIndividualId(String memberId){
         return accountDAOController.getAccountByCenterOIndividualId(memberId);
     }
+
+    /**
+     * Updating account amout by individualId and amount
+     *
+     * @param accountDetail
+     * @return
+     */
+    public String updateAccountByIndividualIdNAmount(AccountDetail accountDetail) {
+        Account accountByIndividualId = accountDAOController.getAccountByCenterOIndividualId(accountDetail.getIndividualId());
+        accountByIndividualId.setAmount(accountDetail.getAmount());
+        return accountDAOController.update(accountByIndividualId);
+    }
+
 }

@@ -28,7 +28,7 @@ public class ApprovedLoanDAOService {
 
     /**
      *
-     * approvedLoan SignUp
+     * save approved Loan
      *
      * @param approvedLoan
      * @return
@@ -72,6 +72,12 @@ public class ApprovedLoanDAOService {
         return approvedLoanDAOController.getAllBranchersByPagination(limit, offset);
     }
 
+    /**
+     * update approved loan
+     *
+     * @param approvedLoan
+     * @return
+     */
     public String update(ApprovedLoan approvedLoan) {
         return approvedLoanDAOController.update(approvedLoan);
     }
@@ -97,6 +103,12 @@ public class ApprovedLoanDAOService {
         return approvedLoanDAOController.getNextId();
     }
 
+    /**
+     * get Approved Loan Detail By IndividualId
+     *
+     * @param individualId
+     * @return
+     */
     public ApprovedLoan getOpenLoanDetailByIndividualId(String individualId) {
         return approvedLoanDAOController.getOpenLoanDetailByIndividualId(individualId);
     }
@@ -121,10 +133,24 @@ public class ApprovedLoanDAOService {
         return approvedLoanDAOController.getApprovedLoanByDateNIndividualId(formatedDate,individualId);
     }
 
+    /**
+     * get all unpaid loans by individualId
+     *
+     * @param individualId
+     * @return
+     */
     public List<ApprovedLoan> getUnpaidLoansByIndividualId(String individualId) {
         return approvedLoanDAOController.getUnpaidLoansByIndividualId(individualId);
     }
 
+    /**
+     * get all approved loans by individualId
+     *
+     * @param individualId
+     * @param limit
+     * @param offset
+     * @return
+     */
     public List<ApprovedLoan> getAllApprovedLoansByIndividualId(String individualId, Integer limit, Integer offset) {
         return approvedLoanDAOController.getAllApprovedLoansByIndividualId(individualId,limit,offset);
     }

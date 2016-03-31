@@ -11,7 +11,7 @@ public interface IndividualDAOController extends DAOController<Individual,String
 
     List<Individual> getAllBranchersByPagination(Integer limit, Integer offset);
 
-    Integer removeBranchById(String branchId);
+    Integer removeIndividualById(String branchId);
 
     String getNextId();
 

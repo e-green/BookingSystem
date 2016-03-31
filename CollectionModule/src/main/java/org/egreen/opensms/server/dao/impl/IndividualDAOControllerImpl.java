@@ -30,7 +30,7 @@ public class IndividualDAOControllerImpl extends AbstractDAOController<Individua
     }
 
     @Override
-    public Integer removeBranchById(String branchid) {
+    public Integer removeIndividualById(String branchid) {
         Session session = getSession();
         String hql = "delete from Branch where branchid= :branchid";
         int i = session.createQuery(hql).setString("branchid", branchid).executeUpdate();

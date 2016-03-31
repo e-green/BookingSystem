@@ -28,9 +28,6 @@ public class IndividualDAOService {
 
     @Autowired
     private AccountDAOController accountDAOController;
-    
-    private List<Individual> all;
-    private String id;
 
 
     /**
@@ -75,21 +72,44 @@ public class IndividualDAOService {
         return sb.toString();
     }
 
-
+    /**
+     * Get all Individual
+     *
+     * @return
+     */
     public List<Individual> getAll() {
         return individualDAOController.getAll();
     }
 
+    /**
+     * Get all branches by pagination
+     *
+     * @param limit
+     * @param offset
+     * @return
+     */
     public List<Individual> getAllBranchersByPagination(Integer limit, Integer offset) {
         return individualDAOController.getAllBranchersByPagination(limit, offset);
     }
 
+    /**
+     * Update individual
+     *
+     * @param individual
+     * @return
+     */
     public String update(Individual individual) {
         return individualDAOController.update(individual);
     }
 
-    public Integer removeBranchById(String individualId) {
-        return individualDAOController.removeBranchById(individualId) ;
+    /**
+     * remove individual by individualId
+     *
+     * @param individualId
+     * @return
+     */
+    public Integer removeIndividualById(String individualId) {
+        return individualDAOController.removeIndividualById(individualId) ;
     }
 
     public String getId() {
@@ -101,7 +121,6 @@ public class IndividualDAOService {
     }
 
     public Individual getBranchById(String individualid) {
-
         return individualDAOController.read(individualid);
     }
 

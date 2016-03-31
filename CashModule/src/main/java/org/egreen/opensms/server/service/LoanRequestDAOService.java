@@ -24,12 +24,6 @@ public class LoanRequestDAOService {
     @Autowired
     private LoanRequestDAOController loanRequestDAOController;
 
-    @Autowired
-    private ApprovedLoanDAOController approvedLoanDAOController;
-
-    private List<LoanRequest> all;
-    private String id;
-
 
     /**
      * loanRequest SignUp
@@ -61,6 +55,51 @@ public class LoanRequestDAOService {
         return res;
     }
 
+    public List<LoanRequest> getAll() {
+        return loanRequestDAOController.getAll();
+    }
+
+    /**
+     * update LoanRequest
+     *
+     * @param loanRequest
+     * @return
+     */
+    public String update(LoanRequest loanRequest) {
+        return loanRequestDAOController.update(loanRequest);
+    }
+
+    public LoanRequest getloanRequestById(String centerid) {
+        return loanRequestDAOController.read(centerid);
+    }
+
+    /**
+     * get All LoanRequests By UserId
+     *
+     * @param userId
+     * @param limit
+     * @param offset
+     * @return
+     */
+    public List<LoanRequest> getAllLoanRequestsByUserId(String userId,Integer limit,Integer offset) {
+        return loanRequestDAOController.getAllLoanRequestsByUserId(userId, limit, offset);
+    }
+
+    public List<LoanRequest> getAllLoanRequestByPagination(Integer type, Integer limit, Integer offset) {
+        return loanRequestDAOController.getAllLoanRequestByPagination(type, limit, offset);
+    }
+
+    public List<ApprovedLoan> getAllPaidLoansNDueLoansByCenterIdNIndividualId(String centerId, String individualId, Integer limit, Integer offset) {
+        return loanRequestDAOController.getAllPaidLoansNDueLoansByCenterIdNIndividualId(centerId,individualId,limit,offset);
+    }
+
+    public String getId() {
+        String id = new Date().getTime() + "";
+        Hashids hashids = new Hashids(id);
+        String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
+        String newid = hexaid + "" + randomString(2);
+        return newid;
+    }
 
     /**
      * Get Random String
@@ -81,61 +120,4 @@ public class LoanRequestDAOService {
     }
 
 
-    public List<LoanRequest> getAll() {
-        return loanRequestDAOController.getAll();
-    }
-//
-//    public List<LoanRequest> getAllloanRequestByPagination(String quary, Integer limit, Integer offset) {
-//        return loanRequestDAOController.getAllloanRequestersByPagination(quary, limit, offset);
-//    }
-
-    public String update(LoanRequest loanRequest) {
-        return loanRequestDAOController.update(loanRequest);
-    }
-
-//    public Integer removeloanRequestById(String centerid) {
-//        return loanRequestDAOController.removeloanRequestById(centerid);
-//    }
-
-    public String getId() {
-        String id = new Date().getTime() + "";
-        Hashids hashids = new Hashids(id);
-        String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
-        String newid = hexaid + "" + randomString(2);
-        return newid;
-    }
-//
-//    public List<LoanRequest> getAllloanRequestsByBranchId(String branchid) {
-////
-////        return loanRequestDAOController.getAllloanRequestsByBranchId(branchid);
-//    }
-
-//    public String getNextId(String branchID) {
-////        Branch branch = branchDAOController.read(branchID);
-//        String centerCode=null;
-//        long centerCount = loanRequestDAOController.getloanRequestCountByBranch(branchID);
-//        centerCount++;
-//        LoanRequest branch = branchDAOController.read(branchID);
-//        if (branch!=null) {
-//            String city=branch.getName().substring(0, 3);
-//           centerCode = city + "/" + centerCount;
-//        }
-//        return centerCode;
-//    }
-
-    public LoanRequest getloanRequestById(String centerid) {
-        return loanRequestDAOController.read(centerid);
-    }
-
-    public List<LoanRequest> getAllLoanRequestsByUserId(String userId,Integer limit,Integer offset) {
-        return loanRequestDAOController.getAllLoanRequestsByUserId(userId, limit, offset);
-    }
-
-    public List<LoanRequest> getAllLoanRequestByPagination(Integer type, Integer limit, Integer offset) {
-        return loanRequestDAOController.getAllLoanRequestByPagination(type, limit, offset);
-    }
-
-    public List<ApprovedLoan> getAllPaidLoansNDueLoansByCenterIdNIndividualId(String centerId, String individualId, Integer limit, Integer offset) {
-        return loanRequestDAOController.getAllPaidLoansNDueLoansByCenterIdNIndividualId(centerId,individualId,limit,offset);
-    }
 }

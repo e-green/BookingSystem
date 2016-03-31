@@ -41,11 +41,6 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
     }
 
     @Override
-    public String getNextId() {
-        return getAllCount() + "";
-    }
-
-    @Override
     public List<Chit> getAllChitById(Integer limit, Integer offset, String id, Integer type, String date) {
         Query query = null;
         if (type == 0) {

@@ -32,7 +32,7 @@ public class IndividualController {
 
     @Autowired
     private AccountDAOService accountDAOService;
-    //
+
     @Autowired
     private EnvelopeDAOService envelopeDAOService;
 
@@ -93,12 +93,8 @@ public class IndividualController {
                 }
             }
         }
-
         return ResponseMessage.SUCCESS;
-
     }
-//
-//
 
     /**
      * Update Branch
@@ -113,7 +109,6 @@ public class IndividualController {
         ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
         returnIdModel1.setId(res);
         return returnIdModel1;
-
     }
 
     /**
@@ -125,8 +120,7 @@ public class IndividualController {
      */
     @RequestMapping(value = "getAll", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public List<Individual> getAll(@RequestParam("limit") Integer limit,
-                                   @RequestParam("offset") Integer offset) {
+    public List<Individual> getAll(@RequestParam("limit") Integer limit, @RequestParam("offset") Integer offset) {
         List<Individual> all = individualDAOService.getAllByPagination(limit, offset);
         return all;
     }
@@ -144,21 +138,6 @@ public class IndividualController {
         boolean all = individualDAOService.checkIfExist(individualName);
         return all;
     }
-//
-//    /**
-//     * Get package Id
-//     *
-//     * @return
-//     */
-//    @RequestMapping(value = "getId", method = RequestMethod.GET, headers = "Accept=application/json")
-//    @ResponseBody
-//    public ReturnIdModel1 getId(@RequestParam("name") String name) {
-//        String nameNew=name.substring(0, 3);
-//        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
-//        returnIdModel1.setId(nameNew);
-//        return returnIdModel1;
-//
-//    }
 
     /**
      * getIndividualsByCenterIdAndIndividualId
@@ -189,7 +168,6 @@ public class IndividualController {
     public List<Individual> getIndividualsByCenterId(@RequestParam("centerId") String centerId) {
         List<Individual> individualList = individualDAOService.getIndividualsByCenterId(centerId);
         return individualList;
-
     }
 
 
@@ -235,31 +213,17 @@ public class IndividualController {
     }
 
     /**
-     * removeBranchById
+     * remove Individual By individualId
      *
      * @param individualId
      * @return
      */
-    @RequestMapping(value = "removeBranchById", method = RequestMethod.POST)
+    @RequestMapping(value = "removeIndividualById", method = RequestMethod.POST)
     @ResponseBody
     public Integer removeBranchById(@RequestParam("individualId") String individualId) {
-        Integer res = individualDAOService.removeBranchById(individualId);
+        Integer res = individualDAOService.removeIndividualById(individualId);
         return res;
     }
-
-
-    @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
-    @ResponseBody
-    public Individual getob() {
-        return new Individual();
-    }
-
-    @RequestMapping(value = "GeneralSummaryReceiptModelOB", method = RequestMethod.GET, headers = "Accept=application/json")
-    @ResponseBody
-    public GeneralSummaryReceiptModel getGeneralSummaryReceiptModelOB() {
-        return new GeneralSummaryReceiptModel();
-    }
-
 
     /**
      * getBranchCode
@@ -270,7 +234,6 @@ public class IndividualController {
     @RequestMapping(value = "getBranchCode", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public String getBranchCode(@RequestParam("locationName") String locationName) {
-
         String id = individualDAOService.getNextID();
         String name = locationName.substring(0, 2) + id;
         return name;
@@ -282,23 +245,14 @@ public class IndividualController {
     public ResponseMessage closeGenralSummery(@RequestBody GeneralSummaryReceiptModel generalSummaryReceiptModel) {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date curDate=generalSummaryReceiptModel.getDate();
-        Date tomorrow=new Date(curDate.getTime() + (1000 * 60 * 60 * 24));
-        Timestamp tomorrowTimeStamp = new java.sql.Timestamp(tomorrow.getTime());
 
         Transaction tra = new Transaction();
         Map<String, Object> summaryReceipt = getGeneralSummaryReceipt(generalSummaryReceiptModel);
 
-        Object due = summaryReceipt.get("dueBalance");
         Object pay = summaryReceipt.get("totPay");
         Double dueValue = 0.0;
+        dueValue=generalSummaryReceiptModel.getBalance();
         Double payValue = 0.0;
-        try {
-            dueValue = Double.parseDouble(due + "");
-//            System.out.println("Due Valueeeeeeeeeeeee"+ dueValue);
-        } catch (Exception e) {
-
-        }
         try {
             payValue = Double.parseDouble(pay + "");
         } catch (Exception e) {
@@ -306,11 +260,10 @@ public class IndividualController {
         }
         double nc = generalSummaryReceiptModel.getNc();
         double lcs = generalSummaryReceiptModel.getLcs();
-
         double inValue = 0;
         double outValue = 0;
-        Double totInvesment = inValue;
 
+        Double totInvesment = inValue;
         Double totPayment = 0.0;
         Double tpyPayment = outValue;
         Double tpyInvestment = inValue;
@@ -324,8 +277,6 @@ public class IndividualController {
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
             transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPay()));
-            totPayment+=generalSummaryReceiptModel.getPay();
-            dueValue-=totPayment;
             transaction.setTypeId("PAY");
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
@@ -344,21 +295,12 @@ public class IndividualController {
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
             transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPay()));
-            Double changeOfPayValue= 0.0;
-            changeOfPayValue=payValue-generalSummaryReceiptModel.getPay();
-            if(changeOfPayValue > 0.0){
-                dueValue+=changeOfPayValue;
-            }
-            if(changeOfPayValue < 0.0){
-                dueValue-=changeOfPayValue;
-            }
             transaction.setTypeId("PAY");
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
         }
 
         if(account != null && account.getAmount() != null && account.getAmount().doubleValue() > 0.0){
-//            System.out.println("Account amountttttttttttttt ->"+account.getAmount());
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(account.getAccountNo());
@@ -376,7 +318,6 @@ public class IndividualController {
             transaction.setTypeId("Balance");
             transaction.setTime(generalSummaryReceiptModel.getDate());
             transactionDAOService.save(transaction);
-
             account.setAmount(BigDecimal.valueOf(dueValue));
             accountDAOService.update(account);
 
@@ -561,7 +502,12 @@ public class IndividualController {
         return ResponseMessage.SUCCESS;
     }
 
-
+    /**
+     * Get general Summary Receipt Model details to finish Envelope
+     *
+     * @param generalSummaryReceiptModel
+     * @return
+     */
     @RequestMapping(value = "getGeneralSummaryReceiptModel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getGeneralSummaryReceipt(@RequestBody GeneralSummaryReceiptModel generalSummaryReceiptModel) {
@@ -571,7 +517,6 @@ public class IndividualController {
         double inValue = 0;
         double outValue = 0;
         Double totInvesment = inValue;
-        double balance = 0.0;
         double paymentToDeduct = 0.0;
 
         Date date1 = generalSummaryReceiptModel.getDate();
@@ -617,7 +562,6 @@ public class IndividualController {
                     inValue += value;
                 }
 
-
                 String ty = tra.getTypeId().toLowerCase();
                 if (tra.getDebit() != null) {
                     Object put = map.put(ty, tra.getDebit() + "");
@@ -636,22 +580,6 @@ public class IndividualController {
             }
         }
 
-//        Date curDate=generalSummaryReceiptModel.getDate();
-//        Date yesterday=new Date(curDate.getTime() - (1000 * 60 * 60 * 24));
-//        String yesterdayfD = simpleDateFormat.format(yesterday);
-
-        //yesterday transation
-//        List<Transaction> trlist = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(yesterdayfD, account.getAccountNo());
-//        for (Transaction transaction : trlist) {
-//            if (transaction != null) {
-//                tra = transaction;
-//
-//                if (tra.getDebit() != null && tra.getTypeId().equals("Balance")) {
-//                    perDue = tra.getDebit().doubleValue();
-//                    map.put("pd",perDue);
-//                }
-//            }
-//        }
         if(account != null && account.getAmount() != null){
             if(account.getAmount().doubleValue() > 0.0){
                 perDue=account.getAmount().doubleValue();
@@ -698,7 +626,6 @@ public class IndividualController {
             BigDecimal notcommisionPersentageForIndividual = BigDecimal.ZERO;
             BigDecimal lessCommisionSingleValue = BigDecimal.ZERO;
             BigDecimal lessCommisionSinglePersentageForCenter = BigDecimal.ZERO;
-
 
             for (Chit chit : chits) {
                 String ncOLCS = null;
@@ -755,7 +682,6 @@ public class IndividualController {
                 }
             }
 
-
             if (individual1 != null && individual1.getCommision() == null && individual1.getFixedSalary() != null && individual1.getCommision() == null) {
 
                 if (individual1.isSalaryPay() && individual1.getFixedSalary().doubleValue() > 0.0) {
@@ -772,13 +698,6 @@ public class IndividualController {
 
         if(salary > 0.0){
             tpyPayment+=salary;
-        }
-//        if(notCommisionsTot.doubleValue() > 0.0){
-//            tpyInvestment+=notCommisionsTot.doubleValue();
-//        }
-
-        if(lessCommisionSingleTot.doubleValue() > 0.0){
-            tpyInvestment+=lessCommisionSingleTot.doubleValue();
         }
 
         if(paymentToDeduct > 0.0){
@@ -820,6 +739,11 @@ public class IndividualController {
         return null;
     }
 
+    /**
+     *
+     * genarating new id
+     * @return
+     */
     private String getNewId() {
         String id = new Date().getTime() + "";
         Hashids hashids = new Hashids(id);
@@ -858,4 +782,23 @@ public class IndividualController {
         return sb.toString();
     }
 
+    /**
+     * get individual ob
+     * @return
+     */
+    @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public Individual getob() {
+        return new Individual();
+    }
+
+    /**
+     * get GeneralSummaryReceiptModelOB ob
+     * @return
+     */
+    @RequestMapping(value = "GeneralSummaryReceiptModelOB", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public GeneralSummaryReceiptModel getGeneralSummaryReceiptModelOB() {
+        return new GeneralSummaryReceiptModel();
+    }
 }

@@ -58,44 +58,9 @@ public class LoanRequestController {
 
     }
 
-  
-
-//
-//    /**
-//     * Get All
-//     *
-//     * @return
-//     */
-//    @RequestMapping(value = "getAll", method = RequestMethod.GET, headers = "Accept=application/json")
-//    @ResponseBody
-//    public List<LoanRequestModel> getAll() {
-//
-//        List<LoanRequestModel> centerModelList = new ArrayList<LoanRequestModel>();
-//
-//        List<LoanRequest> all = loanRequestDAOService.getAll();
-//
-//
-//
-//
-//        for (LoanRequest center : all) {
-//            LoanRequestModel centerModel = new LoanRequestModel();
-//            centerModel.setLoanRequestid(center.getLoanRequestid());
-//            centerModel.setName(center.getName());
-//            centerModel.setBranchid((center.getBranchid()));
-//            LoanRequest branch = branchDAOService.getBranchById(center.getBranchid());
-//            if (branch != null) {
-//                centerModel.setBranchName(branch.getName());
-//            }
-//            centerModelList.add(centerModel);
-//        }
-//        return centerModelList;
-//    }
-
-
-
     /**
      *
-     * getAllLoanRequestsByUserId
+     * get All LoanRequests By UserId
      *
      *
      * @param userId
@@ -127,23 +92,11 @@ public class LoanRequestController {
         return loanRequestDAOService.getAllPaidLoansNDueLoansByCenterIdNIndividualId(centerId,individualId,limit,offset);
     }
 
-
-
     /**
-     * removeLoanRequestById
+     * get LoanRequest ob
      *
-   //  * @param centerid
      * @return
      */
-//    @RequestMapping(value = "removeLoanRequestById", method = RequestMethod.POST)
-//    @ResponseBody
-//    public Integer removeLoanRequestById(@RequestParam("centerid") String centerid) {
-//        Integer res = loanRequestDAOService.removeLoanRequestById(centerid);
-//
-//        return res;
-//
-//    }
-
     @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public LoanRequest getob() {

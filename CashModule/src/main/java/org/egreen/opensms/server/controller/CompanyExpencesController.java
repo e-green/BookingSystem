@@ -57,8 +57,6 @@ public class CompanyExpencesController {
 
     }
 
-
-//
     /**
      * Get All
      *
@@ -70,19 +68,6 @@ public class CompanyExpencesController {
         List<CompanyExpences> all = companyExpencesDAOService.getAll();
         return all;
     }
-
-//    /**
-//     * Get All CompanyExpencesers By Pagination
-//     *
-//     * @param limit
-//     * @param offset
-//     * @return
-//     */
-//    @RequestMapping(value = "getAllCompanyExpencesersByPagination", method = RequestMethod.GET, headers = "Accept=application/json")
-//    @ResponseBody
-//    public List<CompanyExpences> getAllCompanyExpencesByPagination(@RequestParam("quary") String quary, @RequestParam("limit") Integer limit, @RequestParam("offset") Integer offset) {
-//        return companyExpencesDAOService.getAllCompanyExpencesByPagination(quary, limit, offset);
-//    }
 
 
     @RequestMapping(value = "sorting", method = RequestMethod.GET, headers = "Accept=application/json")
@@ -100,7 +85,7 @@ public class CompanyExpencesController {
     }
 
     /**
-     * getAllCompanyExpencessByBranchId
+     * get All Company Expencess By Center
      *
      * @param center
      * @return
@@ -116,20 +101,10 @@ public class CompanyExpencesController {
     }
 
     /**
-     * removeCompanyExpencesById
-     * <p/>
-     * //  * @param centerid
+     * get CompanyExpences ob
      *
      * @return
      */
-//    @RequestMapping(value = "removeCompanyExpencesById", method = RequestMethod.POST)
-//    @ResponseBody
-//    public Integer removeCompanyExpencesById(@RequestParam("centerid") String centerid) {
-//        Integer res = companyExpencesDAOService.removeCompanyExpencesById(centerid);
-//
-//        return res;
-//
-//    }
     @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public CompanyExpences getob() {
