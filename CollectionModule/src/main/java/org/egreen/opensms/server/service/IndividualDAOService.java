@@ -188,4 +188,5 @@ public class IndividualDAOService {
         return individualDAOController.read(individualId);
     }
 
+
 }

@@ -174,6 +174,7 @@ public class JasperReportController {
         Double cash=0.0;
         Double commision=0.0;
         Double loan=0.0;
+        Double rent=0.0;
 
         Timestamp timestamp = new Timestamp(date);
         Date date1 = new Date(timestamp.getTime());
@@ -201,6 +202,7 @@ public class JasperReportController {
         map.put("overPay", "--");
         map.put("exces", "--");
         map.put("exp", "--");
+        map.put("rent", "--");
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formatedDate = simpleDateFormat.format(new Date(date));
@@ -269,6 +271,10 @@ public class JasperReportController {
                 }
                 if(tra.getTypeId().equals("LON")){
                     loan+=tra.getCredit().doubleValue();
+                }
+
+                if(tra.getTypeId().equals("RENT")){
+                    rent+=tra.getCredit().doubleValue();
                 }
 
                 if(tra.getCredit() != null && tra.getTypeId().equals("Balance")){
@@ -371,6 +377,10 @@ public class JasperReportController {
         if(loan > 0.0){
             map.put("lon",loan+"");
             tpyPayment+=loan;
+        }
+        if(cash > 0.0){
+            map.put("rent",rent+"");
+            tpyPayment+=rent;
         }
 
         map.put("totInv", totInvesment == null ? "--" : totInvesment + "");

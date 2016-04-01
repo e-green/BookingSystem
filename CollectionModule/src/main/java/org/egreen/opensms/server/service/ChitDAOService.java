@@ -43,9 +43,6 @@ public class ChitDAOService {
     @Autowired
     private EnvelopeDAOService envelopeDAOService;
 
-    private List<Chit> all;
-    private String id;
-
 
     /**
      * chit SignUp
@@ -56,56 +53,40 @@ public class ChitDAOService {
     public String save(Chit chit) {
         String newid = idCreation();
         chit.setChitId(newid);
-
-//        chit.setDatetime(new Timestamp(new Date().getTime()));
         chit.setDatetime(chit.getDatetime());
-        //checking weather the chit individualId & date finished or not
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
-//        String formatedDate = simpleDateFormat.format(chit.getDatetime());
-//        List<Chit> chitList = chitDAOController.getAllChithsByFormattedDateNIndividualId(formatedDate, chit.getIndividualId());
         Envelope envelope = envelopeDAOController.read(chit.getEnvelopeId());
         String s = null;
 
-//        boolean ok=false;
-//        Chit ch=null;
-//        for (Chit chit1 : chitList) {
-//            ch=chit1;
-//        }
-//        if(chitList.size() > 0){
-//            if(ch.getFinish() == null ){
-//                ok=true;
-//            }
-//            if(ch.getFinish() == false){
-//                ok=true;
-//            }
-//        }
-//        if(chitList.size() == 0){
-//            ok=true;
-//        }
-//        if(chitList.size() > 0){
-//            if(ch.getFinish() == true){
-//                ok=false;
-//            }
-//        }
-//        if(ok == true){
-//            setLessComSingleVal(chit);
-//            chit.setFinish(false);
-//            chitDAOController.create(chit);
-//            s= "1";
-//        }
-//        if(ok == false){
-//            s="0";
-//        }
-        if(envelope.getFinished() == false){
-            setLessComSingleVal(chit);
+        if(envelope.getFinished()!= null && envelope.getFinished() == false){
+//            setNotComisionOLessComSingleVal(chit);
             chit.setFinish(false);
             chitDAOController.create(chit);
             s= "1";
         }
-        if(envelope.getFinished() == true){
+        if(envelope.getFinished()!= null && envelope.getFinished() == true){
             s="0";
         }
 
+        return s;
+    }
+
+    /**
+     * updating chit
+     *
+     * @param chit
+     * @return
+     */
+    public String update(Chit chit) {
+        Envelope envelope = envelopeDAOController.read(chit.getEnvelopeId());
+        String s=null;
+        if(envelope.getFinished()!= null && envelope.getFinished() == false){
+            chit.setFinish(false);
+            chitDAOController.update(chit);
+            s= "1";
+        }
+        if(envelope.getFinished()!= null && envelope.getFinished() == true){
+            s="0";
+        }
         return s;
     }
 
@@ -136,97 +117,12 @@ public class ChitDAOService {
         return newid;
     }
 
-    /**
-     * New transactions begin less commision single or not commision are adding
-     *
-     * @param chit
-     * @return
-     */
-    private void setLessComSingleVal(Chit chit){
-        BigDecimal lessCommisionSingle = BigDecimal.ZERO;
-        BigDecimal notCommision = BigDecimal.ZERO;
-        Transaction transaction =null;
-        if (chit.getLCS() != null && chit.getLCS() == true) {
-            if (chit.getCenterid() != null) {
-                Center centerById = centerDAOService.getCenterById(chit.getCenterid());
-                if (centerById != null && centerById.getLessComissionSingle() != null && centerById.getLessComissionSingle().doubleValue() > 0.0) {
-                    transaction = new Transaction();
-                    String newid1 = idCreation();
-                    transaction.setTransactionId(newid1);
-                    transaction.setTime(chit.getDatetime());
-                    transaction.setTypeId("LCS");
-                    lessCommisionSingle = envelopeDAOService.calculateLessCommisionSingle(chit.getNcOLCValue(), centerById.getLessComissionSingle());
-                    transaction.setDebit(lessCommisionSingle);
-                    Account account = accountDAOService.getAccountByCenterOIndividualId(chit.getCenterid());
-                    transaction.setAccountNo(account.getAccountNo());
-                    transactionDAOService.save(transaction);
-                }
-
-            }
-            if (chit.getIndividualId() != null) {
-                Individual individualById = individualDAOService.getBranchById(chit.getIndividualId());
-                if (individualById != null && individualById.getLessComissionSingle() != null && individualById.getLessComissionSingle().doubleValue() > 0.0) {
-                    transaction=new Transaction();
-                    String newid1=idCreation();
-                    transaction.setTransactionId(newid1);
-                    transaction.setTime(chit.getDatetime());
-                    transaction.setTypeId("LCS");
-                    lessCommisionSingle = envelopeDAOService.calculateLessCommisionSingle(chit.getNcOLCValue(), individualById.getLessComissionSingle());
-                    transaction.setDebit(lessCommisionSingle);
-                    Account account = accountDAOService.getAccountByCenterOIndividualId(chit.getIndividualId());
-                    transaction.setAccountNo(account.getAccountNo());
-                    transactionDAOService.save(transaction);
-                }
-            }
-        }
-
-        if (chit.getNC() != null && chit.getNC() == true) {
-            if (chit.getCenterid() != null) {
-                Center centerById = centerDAOService.getCenterById(chit.getCenterid());
-                if (centerById != null && centerById.getNotCommisionPersentage() != null && centerById.getNotCommisionPersentage().doubleValue() > 0.0) {
-                    transaction = new Transaction();
-                    String newid1 = idCreation();
-                    transaction.setTransactionId(newid1);
-                    transaction.setTime(chit.getDatetime());
-                    transaction.setTypeId("NC");
-                    notCommision = envelopeDAOService.calculateNotCommision(chit.getNcOLCValue(), centerById.getNotCommisionPersentage());
-                    transaction.setDebit(notCommision);
-                    Account account = accountDAOService.getAccountByCenterOIndividualId(chit.getCenterid());
-                    transaction.setAccountNo(account.getAccountNo());
-                    transactionDAOService.save(transaction);
-                }
-
-            }
-            if (chit.getIndividualId() != null) {
-                Individual individualById = individualDAOService.getBranchById(chit.getIndividualId());
-                if (individualById != null && individualById.getNotCommisionPersentage() != null && individualById.getNotCommisionPersentage().doubleValue() > 0.0) {
-                    transaction=new Transaction();
-                    String newid1=idCreation();
-                    transaction.setTransactionId(newid1);
-                    transaction.setTime(chit.getDatetime());
-                    transaction.setTypeId("NC");
-                    notCommision = envelopeDAOService.calculateNotCommision(chit.getNcOLCValue(), individualById.getNotCommisionPersentage());
-                    transaction.setDebit(notCommision);
-                    Account account = accountDAOService.getAccountByCenterOIndividualId(chit.getIndividualId());
-                    transaction.setAccountNo(account.getAccountNo());
-                    transactionDAOService.save(transaction);
-                }
-            }
-        }
-
-    }
-
-
     public List<Chit> getAll() {
         return chitDAOController.getAll();
     }
 
     public List<Chit> getAllBranchersByPagination(Integer limit, Integer offset) {
         return chitDAOController.getAllBranchersByPagination(limit, offset);
-    }
-
-    public String update(Chit chit) {
-        return chitDAOController.update(chit);
     }
 
     public Integer removeChitById(String chitId) {

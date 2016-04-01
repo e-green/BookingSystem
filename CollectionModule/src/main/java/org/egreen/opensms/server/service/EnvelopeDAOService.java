@@ -740,18 +740,6 @@ public class EnvelopeDAOService {
         return lcsVal;
     }
 
-//    public EnvelopeDetailModel getEnvelopesByDateNByIndividualId(String formatedDate, String individualId) {
-////        EnvelopeDetailModel envelopeDetailModel=new EnvelopeDetailModel();
-////        Envelope envelope=envelopeDAOController.getEnvelopesByDateNByIndividualId(individualId,formatedDate);
-////
-////        if(null!= envelope){
-////            envelopeDetailModel.set
-////        }
-////        calculateCommision()
-//        EnvelopeDetailModel envelopeDetailModel=new EnvelopeDetailModel();
-//        return envelopeDetailModel;
-//    }
-
     /**
      * get envelopeDetailModel view before enter envelope
      *
