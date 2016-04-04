@@ -30,7 +30,10 @@ public class Envelope implements EntityInterface<String> {
     private String center;
     private String individualId;
     private Boolean isLoanDeduct;
+    private Boolean rentDeduct;
     private Boolean finished;
+
+
 
 
     @Id
@@ -154,6 +157,14 @@ public class Envelope implements EntityInterface<String> {
         isLoanDeduct = loanDeduct;
     }
 
+    public Boolean getRentDeduct() {
+        return rentDeduct;
+    }
+
+    public void setRentDeduct(Boolean rentDeduct) {
+        this.rentDeduct = rentDeduct;
+    }
+
     public Boolean getFinished() {
         return finished;
     }
@@ -186,7 +197,9 @@ public class Envelope implements EntityInterface<String> {
                 ", center='" + center + '\'' +
                 ", individualId='" + individualId + '\'' +
                 ", isLoanDeduct=" + isLoanDeduct +
+                ", rentDeduct=" + rentDeduct +
                 ", finished=" + finished +
                 '}';
     }
+
 }

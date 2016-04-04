@@ -21,6 +21,7 @@ public class Individual implements EntityInterface <String> {
     private String center;
     private BigDecimal commision;
     private BigDecimal lessComissionSingle;
+    private BigDecimal rent;
     private boolean isSalaryPay;
     private BigDecimal pcChargers;
     private BigDecimal fixedSalary;
@@ -124,6 +125,14 @@ public class Individual implements EntityInterface <String> {
         this.notCommisionPersentage = notCommisionPersentage;
     }
 
+    public BigDecimal getRent() {
+        return rent;
+    }
+
+    public void setRent(BigDecimal rent) {
+        this.rent = rent;
+    }
+
     @Override
     @Transient
     public String getId() {
@@ -141,6 +150,7 @@ public class Individual implements EntityInterface <String> {
                 ", center='" + center + '\'' +
                 ", commision=" + commision +
                 ", lessComissionSingle=" + lessComissionSingle +
+                ", rent=" + rent +
                 ", isSalaryPay=" + isSalaryPay +
                 ", pcChargers=" + pcChargers +
                 ", fixedSalary=" + fixedSalary +

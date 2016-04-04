@@ -43,10 +43,6 @@ public class EnvelopeDAOService {
 
 
 
-    private List<Envelope> all;
-    private String id;
-
-
     /**
      * envelope save
      *
@@ -139,6 +135,17 @@ public class EnvelopeDAOService {
                     double investmentValue = envelope.getInvesment().doubleValue();
                     BigDecimal commision = calculateCommision(invesment, individual.getCommision());
                     transaction.setCredit(commision);
+                    transaction.setTime(envelope.getDate());
+                    transactionDAOController.create(transaction);
+                }
+
+                if (envelope.getRentDeduct() != null && envelope.getRentDeduct()== true && individual.getRent()!= null) {
+                    transaction = new Transaction();
+                    createTransactinonAccount(individualId, transaction);
+                    String newid1 = getStringID(id, hashids, hexaid);
+                    transaction.setTransactionId(newid1);
+                    transaction.setTypeId("RENT");
+                    transaction.setDebit(individual.getRent());
                     transaction.setTime(envelope.getDate());
                     transactionDAOController.create(transaction);
                 }

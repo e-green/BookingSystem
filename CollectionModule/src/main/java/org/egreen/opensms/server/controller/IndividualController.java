@@ -270,7 +270,9 @@ public class IndividualController {
 
         Transaction transaction = null;
         String indiviId = generalSummaryReceiptModel.getIndividualId();
+        Center center = centerDAOService.getCenterById(generalSummaryReceiptModel.getCenterId());
         Account account = accountDAOService.getAccountByCenterOIndividualId(indiviId);
+        Account centerAccount = accountDAOService.getAccountByCenterOIndividualId(center.getCenterid());
 
         if(generalSummaryReceiptModel.getPay() > 0.0 && payValue == 0.0){
             transaction = new Transaction();
@@ -382,7 +384,6 @@ public class IndividualController {
             envelopeDAOService.update(envelopeById);
         }
 
-        Center center = centerDAOService.getCenterById(generalSummaryReceiptModel.getCenterId());
         Individual individual1 = individualDAOService.getBranchById(generalSummaryReceiptModel.getIndividualId());
         BigDecimal notcommisionPersentageForCenter = BigDecimal.ZERO;
         BigDecimal notcommisionPersentageForIndividual = BigDecimal.ZERO;
@@ -390,64 +391,6 @@ public class IndividualController {
         BigDecimal lessCommisionSinglePersentageForCenter = BigDecimal.ZERO;
         BigDecimal lessCommisionSingleTot = BigDecimal.ZERO;
         BigDecimal lessCommisionSinglePersentageForIndividual = BigDecimal.ZERO;
-//        List<Transaction> todayTransactionDetailByDateNAccountNo = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(formatedDate, account.getAccountNo());
-//        boolean ncAvailable=false;
-//        boolean lcsAvailable=false;
-//        List<Transaction> ncTransactionList= new ArrayList<Transaction>();
-//        List<Transaction> lcsTransactionList= new ArrayList<Transaction>();
-//        for(Transaction transaction1:todayTransactionDetailByDateNAccountNo){
-//            if(transaction1.getTypeId().equals("NC")){
-//                if(nc > 0.0){
-//                    if (center != null && center.getNotCommisionPersentage() != null && center.getNotCommisionPersentage().doubleValue() > 0.0) {
-//                        notcommisionPersentageForCenter = center.getNotCommisionPersentage();
-//                        notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForCenter);
-//                    }
-//                    if (individual1 != null && individual1.getNotCommisionPersentage() != null && individual1.getNotCommisionPersentage().doubleValue() > 0.0) {
-//                        notcommisionPersentageForIndividual = individual1.getNotCommisionPersentage();
-//                        notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForIndividual);
-//                    }
-//                    transaction1.setDebit(notCommisionsTot);
-//                    ncTransactionList.add(transaction1);
-//                    transactionDAOService.update(transaction1);
-//                }
-//                ncAvailable=true;
-//            }
-//            if(transaction1.getTypeId().equals("LCS")){
-//                if(lcs > 0.0){
-//                    if (center != null && center.getLessComissionSingle() != null  && center.getLessComissionSingle().doubleValue() > 0.0) {
-//                        lessCommisionSinglePersentageForCenter = center.getLessComissionSingle();
-//                        lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(BigDecimal.valueOf(lcs), lessCommisionSinglePersentageForCenter);
-//                    }
-//                    if (individual1 != null && individual1.getLessComissionSingle() != null && individual1.getLessComissionSingle().doubleValue() > 0.0) {
-//                        lessCommisionSinglePersentageForIndividual = individual1.getLessComissionSingle();
-//                        lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(BigDecimal.valueOf(lcs), lessCommisionSinglePersentageForIndividual);
-//                    }
-//                    transaction1.setDebit(lessCommisionSingleTot);
-//                    lcsTransactionList.add(transaction1);
-//                    transactionDAOService.update(transaction1);
-//                }
-//                lcsAvailable=true;
-//            }
-//
-//        }
-//        if(ncTransactionList.size() > 1){
-//                int count=0;
-//                for(Transaction transaction1:ncTransactionList){
-//                    if(ncTransactionList.size()-count > 1){
-//                        transactionDAOService.delete(transaction1);
-//                        count++;
-//                    }
-//                }
-//        }
-//        if(lcsTransactionList.size() > 1){
-//            int count=0;
-//            for(Transaction transaction1:lcsTransactionList){
-//                if(lcsTransactionList.size()-count > 1){
-//                    transactionDAOService.delete(transaction1);
-//                    count++;
-//                }
-//            }
-//        }
         /**
          * If there is chits in envelope amounts setting them to totOayment value
          */
@@ -488,7 +431,7 @@ public class IndividualController {
                 notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForCenter);
                 transaction = new Transaction();
                 transaction.setTransactionId(getNewId());
-                transaction.setAccountNo(account.getAccountNo());
+                transaction.setAccountNo(centerAccount.getAccountNo());
                 transaction.setDebit(notCommisionsTot);
                 transaction.setTypeId("NC");
                 transaction.setTime(generalSummaryReceiptModel.getDate());
@@ -518,7 +461,7 @@ public class IndividualController {
                 lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(BigDecimal.valueOf(lcs), lessCommisionSinglePersentageForCenter);
                 transaction = new Transaction();
                 transaction.setTransactionId(getNewId());
-                transaction.setAccountNo(account.getAccountNo());
+                transaction.setAccountNo(centerAccount.getAccountNo());
                 transaction.setDebit(lessCommisionSingleTot);
                 transaction.setTypeId("LCS");
                 transaction.setTime(generalSummaryReceiptModel.getDate());
@@ -709,11 +652,13 @@ public class IndividualController {
                 lessCommisionSinglePersentageForIndividual = individual1.getLessComissionSingle();
                 lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(lessCommisionSingleValue, lessCommisionSinglePersentageForIndividual);
             }
-            if(lessCommisionSingleTot != null && notCommisionsTot.doubleValue() > 0.0){
+            if(lessCommisionSingleTot != null && lessCommisionSingleTot.doubleValue() > 0.0){
                 map.put("lcs", lessCommisionSingleTot + "");
+                tpyInvestment+=lessCommisionSingleTot.doubleValue();
             }
             if (notCommisionsTot != null && notCommisionsTot.doubleValue() > 0.0) {
                 map.put("nc", notCommisionsTot + "");
+                tpyInvestment+=notCommisionsTot.doubleValue();
             }
             if (individual1 != null && individual1.getCommision() == null && individual1.getFixedSalary() == null && individual1.getCommision() == null) {
                 if (individual1.isSalaryPay() == false) {

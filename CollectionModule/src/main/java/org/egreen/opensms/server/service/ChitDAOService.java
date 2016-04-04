@@ -80,7 +80,6 @@ public class ChitDAOService {
         Envelope envelope = envelopeDAOController.read(chit.getEnvelopeId());
         String s=null;
         if(envelope.getFinished()!= null && envelope.getFinished() == false){
-            chit.setFinish(false);
             chitDAOController.update(chit);
             s= "1";
         }

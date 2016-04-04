@@ -245,6 +245,9 @@ public class JasperReportController {
                 if(tra.getTypeId().equals("OverPayment")){
                     overPayment+=tra.getDebit().doubleValue();
                 }
+                if(tra.getTypeId().equals("RENT")){
+                    rent+=tra.getDebit().doubleValue();
+                }
                 if(tra.getTypeId().equals("Excess")){
                     excess+=tra.getCredit().doubleValue();
                 }
@@ -271,10 +274,6 @@ public class JasperReportController {
                 }
                 if(tra.getTypeId().equals("LON")){
                     loan+=tra.getCredit().doubleValue();
-                }
-
-                if(tra.getTypeId().equals("RENT")){
-                    rent+=tra.getCredit().doubleValue();
                 }
 
                 if(tra.getCredit() != null && tra.getTypeId().equals("Balance")){
@@ -316,6 +315,8 @@ public class JasperReportController {
                 }else if(chit.getLCS() != null && chit.getLCS() == true){
                     ncOLCS="LCS";
                 }else if(chit.getNC() == null && chit.getLCS() == null){
+                    ncOLCS="";
+                }else if(chit.getNC() == false && chit.getLCS() == false){
                     ncOLCS="";
                 }
                 model.addRow(new Object[]{chit.getNumber(), chit.getInvesment() == null ? "--" : chit.getInvesment() + "", chit.getAmount() == null ? "--" : chit.getAmount() + "", ncOLCS});
@@ -362,6 +363,10 @@ public class JasperReportController {
             map.put("overPay",overPayment+"");
             tpyInvestment+=overPayment;
         }
+        if(rent > 0.0){
+            map.put("rent",rent+"");
+            tpyInvestment+=rent;
+        }
         if(pcCharges > 0.0){
             map.put("pc",pcCharges+"");
             tpyInvestment+=pcCharges;
@@ -378,10 +383,7 @@ public class JasperReportController {
             map.put("lon",loan+"");
             tpyPayment+=loan;
         }
-        if(cash > 0.0){
-            map.put("rent",rent+"");
-            tpyPayment+=rent;
-        }
+
 
         map.put("totInv", totInvesment == null ? "--" : totInvesment + "");
         map.put("totPay", totPayment == null ? "--" : totPayment + "");
@@ -428,7 +430,7 @@ public class JasperReportController {
 
         ds = new JRTableModelDataSource(model);
         try {
-            InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual3.jrxml");
+            InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual4.jrxml");
             JasperReport jr = JasperCompileManager.compileReport(systemResourceAsStream);
             JasperPrint jp = JasperFillManager.fillReport(jr, map, ds);
             // JasperViewer.viewReport(jp, false);
