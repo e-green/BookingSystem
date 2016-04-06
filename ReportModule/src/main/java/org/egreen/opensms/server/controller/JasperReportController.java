@@ -58,6 +58,9 @@ public class JasperReportController {
     @Autowired
     private ApprovedLoanDAOService approvedLoanDAOService;
 
+    @Autowired
+    private CenterDAOService centerDAOService;
+
 
     /**
      * getGeneralSummaryReport
@@ -72,17 +75,35 @@ public class JasperReportController {
                                   @RequestParam("datetime") Long date
     ) {
 
+        Double totInvesment=0.0;
+        Double totPayment=0.0;
+        Double payment = 0.0;
+        Double investment = 0.0;
+        Double commision=0.0;
+        Double cash=0.0;
+        Double paymentDue=0.0;
+        Double excess=0.0;
+        Double expenses=0.0;
+        Double loanDeductionPayment=0.0;
+        Double tpyPayment=0.0;
+        Double tpyInvestment=0.0;
+        double ncValue=0.0;
+        double lcsValue=0.0;
+
 
         Timestamp timestamp = new Timestamp(date);
         Date date1 = new Date(timestamp.getTime());
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyy-MM-dd");
+        String formatedDate = simpleDateFormat.format(date1);
 
         JRTableModelDataSource ds = null;
         Map<String, Object> map = null;
         map = new HashMap<String, Object>();
 
         map.put("centerName", centerId);
-        map.put("date", date + "");
+        map.put("date", formatedDate + "");
 
+        Center center = centerDAOService.getCenterById(centerId);
         List<Envelope> envelopesByCenterId = envelopeDAOService.getEnvelopesByCenterId(centerId, null, null, date1);
 
         DefaultTableModel model = new DefaultTableModel();
@@ -95,18 +116,123 @@ public class JasperReportController {
         model.addColumn("remanks");
 
 
-        for (Envelope envelope : envelopesByCenterId) {
-
-            List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId());
-            Double payment = null;
-            for (Chit chit : chits) {
-                if (chit.getAmount() != null) {
-                    payment = chit.getAmount().doubleValue();
+        // get individual list by centerId
+        List<Individual> individualsByCenterId = individualDAOService.getIndividualsByCenterId(centerId);
+        int individualCount=0;
+        // each Individual total values calculating
+        for (Individual individual:individualsByCenterId) {
+            individualCount++;
+            Account accountByIndividualId = accountDAOService.getAccountByCenterOIndividualId(individual.getIndividualId());
+            List<Transaction> transactionListByAccountNo = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(formatedDate, accountByIndividualId.getAccountNo());
+            if (!transactionListByAccountNo.isEmpty()) {
+                for (Transaction transaction:transactionListByAccountNo) {
+                    if(transaction != null){
+                        if(transaction.getTypeId().equals("PAY")){
+                            totPayment+=transaction.getCredit().doubleValue();
+                            payment=transaction.getCredit().doubleValue();
+                        }
+                        if (transaction.getTypeId().equals("Inv")) {
+                            totInvesment += transaction.getDebit().doubleValue();
+                            investment = transaction.getDebit().doubleValue();
+                        }
+                        if(transaction.getTypeId().equals("CSH")){
+                            cash+=transaction.getCredit().doubleValue();
+                        }
+                        if(transaction.getTypeId().equals("Excess")){
+                            excess+=transaction.getCredit().doubleValue();
+                        }
+                        if(transaction.getTypeId().equals("EXP")){
+                            expenses+=transaction.getCredit().doubleValue();
+                        }
+                        if(transaction.getDebit() != null && transaction.getTypeId().equals("PD")){
+                            paymentDue+=transaction.getDebit().doubleValue();
+                        }
+                        if(transaction.getTypeId().equals("LN")){
+                            loanDeductionPayment+=transaction.getDebit().doubleValue();
+                        }
+                    }
                 }
+                model.addRow(new Object[]{individualCount+"",  individual.getName()+ "",  investment+"", payment+""});
             }
-            model.addRow(new Object[]{envelope.getEnvelopId(), envelope.getName(), envelope.getInvesment() + "", payment + "", ""});
         }
 
+        Account accountByCenterId = accountDAOService.getAccountByCenterOIndividualId(centerId);
+        List<Transaction> trList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(formatedDate, accountByCenterId.getAccountNo());
+        if (!trList.isEmpty()) {
+            for (Transaction tran:trList) {
+                if(tran != null){
+                    if(tran.getDebit() != null && tran.getTypeId().equals("NC")){
+                        ncValue+=tran.getDebit().doubleValue();
+                    }
+                    if(tran.getDebit() != null && tran.getTypeId().equals("LCS")){
+                        lcsValue+=tran.getDebit().doubleValue();
+                    }
+                    if(tran.getTypeId().equals("COM")){
+                        commision+=tran.getCredit().doubleValue();
+                    }
+                }
+            }
+        }
+
+
+
+
+        map.put("totInv",totInvesment == null ? "--" : totInvesment + "");
+        map.put("totPay", totPayment == null ? "--" : totPayment + "");
+        map.put("nc",ncValue+"");
+        map.put("lcs", lcsValue + "");
+        map.put("com",commision+"");
+        map.put("csh",cash+"");
+        map.put("pc",center.getPcChargers()+"");
+        map.put("exces",excess+"");
+        map.put("exp",expenses+"");
+        map.put("due",paymentDue+"");
+        map.put("ln","--");
+
+        tpyInvestment+=totInvesment;
+        tpyPayment+=totInvesment;
+        System.out.println(paymentDue);
+//        tpyInvestment+=paymentDue;
+        tpyPayment+=cash;
+        tpyPayment+=commision;
+        tpyInvestment+=ncValue;
+//        tpyInvestment+=loanDeductionPayment;
+        tpyInvestment += lcsValue;
+        tpyInvestment+=center.getPcChargers().doubleValue();
+        tpyPayment+=excess;
+        tpyPayment+=expenses;
+
+
+        map.put("tpyPay", tpyPayment == null ? "--" : tpyPayment + "");
+        map.put("tpyInv", tpyInvestment == null ? "--" : tpyInvestment + "");
+
+        Double dueAmount = tpyInvestment - tpyPayment;
+
+        if(dueAmount > 0.0){
+            map.put("due", dueAmount == null ? "--" : dueAmount + "");
+            map.put("dueLable", "Due");
+            map.put("paymentLable", "");
+            map.put("payment", "");
+            map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment+"");
+            map.put("tpyPayDeduct", "");
+        }
+
+        if(dueAmount < 0.0){
+            map.put("payment", dueAmount == null ? "--" : dueAmount*-1 + "");
+            map.put("dueLable", "");
+            map.put("due", "");
+            map.put("paymentLable", "Payment");
+            map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment+"");
+            map.put("tpyInvDeduct", "");
+        }
+        if(dueAmount == 0.0){
+            map.put("due","");
+            map.put("paymentLable", "Balance");
+            map.put("payment", "0.0");
+            map.put("tpyInvDeduct", "");
+            map.put("tpyPayDeduct", "");
+            map.put("dueLable", "");
+        }
 
         ds = new JRTableModelDataSource(model);
         try {

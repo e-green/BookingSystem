@@ -134,6 +134,7 @@ public class EnvelopeDAOService {
                     transaction.setTypeId("COM");
                     double investmentValue = envelope.getInvesment().doubleValue();
                     BigDecimal commision = calculateCommision(invesment, individual.getCommision());
+                    System.out.println("Individual com ->"+commision);
                     transaction.setCredit(commision);
                     transaction.setTime(envelope.getDate());
                     transactionDAOController.create(transaction);
@@ -158,6 +159,7 @@ public class EnvelopeDAOService {
                     transaction.setTypeId("COM");
                     double investmentValue = envelope.getInvesment().doubleValue();
                     BigDecimal comm = calculateCommision(invesment, center.getCommision());
+                    System.out.println("Center com ->"+comm);
                     transaction.setCredit(comm);
                     transaction.setTime(envelope.getDate());
                     transactionDAOController.create(transaction);
