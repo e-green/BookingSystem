@@ -151,20 +151,6 @@ public class EnvelopeDAOService {
                     transactionDAOController.create(transaction);
                 }
 
-                if(center.getCommision() != null && envelope.getInvesment() != null && centerId != null && envelope.getInvesment().doubleValue() != 0){
-                    transaction = new Transaction();
-                    createTransactinonAccount(centerId, transaction);
-                    String newid1 = getStringID(id, hashids, hexaid);
-                    transaction.setTransactionId(newid1);
-                    transaction.setTypeId("COM");
-                    double investmentValue = envelope.getInvesment().doubleValue();
-                    BigDecimal comm = calculateCommision(invesment, center.getCommision());
-                    System.out.println("Center com ->"+comm);
-                    transaction.setCredit(comm);
-                    transaction.setTime(envelope.getDate());
-                    transactionDAOController.create(transaction);
-                }
-
                 ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
                 if (approvedLoan!=null&&approvedLoan.getDatetime().getYear() == envelope.getDate().getYear()
                         && approvedLoan.getDatetime().getMonth() == envelope.getDate().getMonth()
@@ -325,15 +311,15 @@ public class EnvelopeDAOService {
                         transactionDAOController.update(transaction);
                     }
                 }
-                if(centerTransactionList.size() > 0){
-                    for(Transaction transaction:centerTransactionList){
-                        if(center.getCommision() != null && envelope.getInvesment() != null && centerId != null && envelope.getInvesment().doubleValue() != 0 && transaction.getTypeId().equals("COM") && transaction.getAccountNo().equals(centerAccount.getAccountNo())){
-                            BigDecimal comm = calculateCommision(invesment, center.getCommision());
-                            transaction.setCredit(comm);
-                            transactionDAOController.update(transaction);
-                        }
-                    }
-                }
+//                if(centerTransactionList.size() > 0){
+//                    for(Transaction transaction:centerTransactionList){
+//                        if(center.getCommision() != null && envelope.getInvesment() != null && centerId != null && envelope.getInvesment().doubleValue() != 0 && transaction.getTypeId().equals("COM") && transaction.getAccountNo().equals(centerAccount.getAccountNo())){
+//                            BigDecimal comm = calculateCommision(invesment, center.getCommision());
+//                            transaction.setCredit(comm);
+//                            transactionDAOController.update(transaction);
+//                        }
+//                    }
+//                }
             }
 
         }

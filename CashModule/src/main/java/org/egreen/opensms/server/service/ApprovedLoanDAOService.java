@@ -21,9 +21,6 @@ public class ApprovedLoanDAOService {
 
     @Autowired
     private ApprovedLoanDAOController approvedLoanDAOController;
-    
-    private List<ApprovedLoan> all;
-    private String id;
 
 
     /**

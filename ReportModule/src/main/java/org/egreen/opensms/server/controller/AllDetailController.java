@@ -1,5 +1,6 @@
 package org.egreen.opensms.server.controller;
 
+import org.egreen.opensms.server.entity.Center;
 import org.egreen.opensms.server.entity.Individual;
 import org.egreen.opensms.server.entity.LoanRequest;
 import org.egreen.opensms.server.models.AllDetailModel;
@@ -32,6 +33,9 @@ public class AllDetailController {
     private IndividualDAOService individualDAOService;
 
     @Autowired
+    private CenterDAOService centerDAOService;
+
+    @Autowired
     private UserDAOService userDAOService;
 
 
@@ -62,21 +66,50 @@ public class AllDetailController {
         List<LoanRequest> loanRequestList = loanRequestDAOService.getAllLoanRequestByPagination(type, limit, offset);
         List<LoanRequestModel> requestModelList=new ArrayList<LoanRequestModel>();
         for (LoanRequest loanRequest:loanRequestList) {
-            String individualId = loanRequest.getIndividualId();
-            Individual individual=individualDAOService.getBranchById(individualId);
-            LoanRequestModel loanRequestModel=new LoanRequestModel();
-            loanRequestModel.setLoanRequestId(loanRequest.getLoanRequestId());
-            loanRequestModel.setCenterid(loanRequest.getCenterid());
-            if(individual != null){
-                loanRequestModel.setIndividualId(loanRequest.getIndividualId());
+            if(!loanRequest.getIndividualId().equals("0")) {
+                String individualId = loanRequest.getIndividualId();
+                Individual individual = individualDAOService.getBranchById(individualId);
+                LoanRequestModel loanRequestModel = new LoanRequestModel();
+                loanRequestModel.setLoanRequestId(loanRequest.getLoanRequestId());
+                loanRequestModel.setCenterid(loanRequest.getCenterid());
+                if (individual != null) {
+                    loanRequestModel.setIndividualId(loanRequest.getIndividualId());
+                }
+                loanRequestModel.setIndividualName(individual.getName());
+                loanRequestModel.setAmount(loanRequest.getAmount());
+                loanRequestModel.setUser(loanRequest.getUser());
+                loanRequestModel.setRequestDate(loanRequest.getRequestDate());
+                loanRequestModel.setStatus(loanRequest.getStatus());
+                requestModelList.add(loanRequestModel);
             }
-            loanRequestModel.setIndividualName(individual.getName());
-            loanRequestModel.setAmount(loanRequest.getAmount());
-            loanRequestModel.setUser(loanRequest.getUser());
-            loanRequestModel.setRequestDate(loanRequest.getRequestDate());
-            loanRequestModel.setStatus(loanRequest.getStatus());
-            requestModelList.add(loanRequestModel);
+        }
+        return requestModelList;
+    }
 
+    @RequestMapping(value = "getAllLoanRequestersByPaginationForCenters", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public List<LoanRequestModel> getAllLoanRequestersByPaginationForCenters(@RequestParam("type") Integer type,
+                                                                @RequestParam("limit") Integer limit,
+                                                                @RequestParam("offset") Integer offset) {
+        List<LoanRequest> loanRequestList = loanRequestDAOService.getAllLoanRequestByPagination(type, limit, offset);
+        List<LoanRequestModel> requestModelList=new ArrayList<LoanRequestModel>();
+        for (LoanRequest loanRequest:loanRequestList) {
+            if(loanRequest.getIndividualId().equals("0")) {
+                String centerid = loanRequest.getCenterid();
+                Center centerById = centerDAOService.getCenterById(centerid);
+                LoanRequestModel loanRequestModel = new LoanRequestModel();
+                loanRequestModel.setLoanRequestId(loanRequest.getLoanRequestId());
+                loanRequestModel.setCenterid(loanRequest.getCenterid());
+                if (centerById != null) {
+                    loanRequestModel.setCenterid(loanRequest.getCenterid());
+                }
+                loanRequestModel.setIndividualName("");
+                loanRequestModel.setAmount(loanRequest.getAmount());
+                loanRequestModel.setUser(loanRequest.getUser());
+                loanRequestModel.setRequestDate(loanRequest.getRequestDate());
+                loanRequestModel.setStatus(loanRequest.getStatus());
+                requestModelList.add(loanRequestModel);
+            }
         }
         return requestModelList;
     }

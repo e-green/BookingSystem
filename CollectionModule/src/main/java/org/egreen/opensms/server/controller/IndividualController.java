@@ -380,7 +380,24 @@ public class IndividualController {
         List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(generalSummaryReceiptModel.getEnvelopeId());
         Envelope envelopeById = envelopeDAOService.getEnvelopeById(generalSummaryReceiptModel.getEnvelopeId());
         if(envelopeById != null){
+            if(center.getCommision() != null && envelopeById.getInvesment() != null && center.getCenterid() != null && envelopeById.getInvesment().doubleValue() != 0){
+                transaction = new Transaction();
+                createTransactinonAccount(center.getCenterid(), transaction);
+                String id = new Date().getTime() + "";
+                Hashids hashids = new Hashids(id);
+                String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
+                String newid1 = getStringID(id, hashids, hexaid);
+                transaction.setTransactionId(newid1);
+                transaction.setTypeId("COM");
+                double investmentValue = envelopeById.getInvesment().doubleValue();
+                BigDecimal comm = calculateCommision(envelopeById.getInvesment(), center.getCommision());
+                System.out.println("Center com ->"+comm);
+                transaction.setCredit(comm);
+                transaction.setTime(envelopeById.getDate());
+                transactionDAOService.save(transaction);
+            }
             envelopeById.setFinished(true);
+            System.out.println("Finsh time commision ->"+envelopeById.getCommision());
             envelopeDAOService.update(envelopeById);
         }
 
@@ -876,5 +893,48 @@ public class IndividualController {
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
         String newid = hexaid + "" + randomString(10);
         return newid;
+    }
+
+    /**
+     *
+     * @param individualId
+     * @param transaction
+     */
+    private void createTransactinonAccount(String individualId, Transaction transaction) {
+        String accountNo;
+        if (null != individualId && transaction != null) {
+            Account individualAccount = accountDAOService.getAccountByCenterOIndividualId(individualId);
+            accountNo = individualAccount.getAccountNo();
+            transaction.setAccountNo(accountNo);
+
+        }
+    }
+
+    /**
+     *
+     * @param id
+     * @param hashids
+     * @param hexaid
+     * @return
+     */
+    private String getStringID(String id, Hashids hashids, String hexaid) {
+        String id1 = new Date().getTime() + "";
+        Hashids hashids1 = new Hashids(id);
+        String hexaid1 = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
+        return hexaid + "" + randomString(10);
+    }
+
+    /**
+     * calculate commision
+     * @param invesment
+     * @param commisionPresentage
+     * @return
+     */
+    private BigDecimal calculateCommision(BigDecimal invesment, BigDecimal commisionPresentage) {
+        BigDecimal commision=invesment.divide(BigDecimal.valueOf(100)).multiply(commisionPresentage);
+        double doubleValue = commision.doubleValue();
+        long l = Math.round(doubleValue);
+        BigDecimal bigDecimal = BigDecimal.valueOf(l);
+        return bigDecimal;
     }
 }
