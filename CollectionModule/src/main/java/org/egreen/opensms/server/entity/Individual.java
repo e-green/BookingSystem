@@ -26,6 +26,7 @@ public class Individual implements EntityInterface <String> {
     private BigDecimal pcChargers;
     private BigDecimal fixedSalary;
     private BigDecimal notCommisionPersentage;
+    private Integer type;
 
     @Id
     @Column(name = "individualId")
@@ -133,6 +134,14 @@ public class Individual implements EntityInterface <String> {
         this.rent = rent;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     @Transient
     public String getId() {
@@ -155,6 +164,7 @@ public class Individual implements EntityInterface <String> {
                 ", pcChargers=" + pcChargers +
                 ", fixedSalary=" + fixedSalary +
                 ", notCommisionPersentage=" + notCommisionPersentage +
+                ", type=" + type +
                 '}';
     }
 }

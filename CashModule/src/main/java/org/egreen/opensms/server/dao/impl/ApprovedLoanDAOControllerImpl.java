@@ -122,4 +122,17 @@ public class ApprovedLoanDAOControllerImpl extends AbstractDAOController<Approve
         return criteria.list();
 
     }
+
+    @Override
+    public ApprovedLoan getOpenLoanDetailByCenterlId(String centerId) {
+        Criteria criteria = getSession().createCriteria(entityType);
+        criteria.add(Restrictions.eq("center", centerId));
+        criteria.add(Restrictions.eq("individualId", "0"));
+        criteria.add(Restrictions.ne("dueamount", BigDecimal.ZERO));
+
+        if (criteria.list()!=null && criteria.list().size()>0){
+            return (ApprovedLoan)criteria.list().get(0);
+        }
+        return null;
+    }
 }

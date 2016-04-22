@@ -82,6 +82,18 @@ public class ApprovedLoanController {
     }
 
     /**
+     * get Approved Loan Detail By CenterId
+     *
+     * @param centerId
+     * @return
+     */
+    @RequestMapping(value = "getOpenLoanDetailByCenterlId", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public ApprovedLoan getOpenLoanDetailByCenterlId(@RequestParam("centerId") String centerId) {
+        return approvedLoanDAOService.getOpenLoanDetailByCenterlId(centerId);
+    }
+
+    /**
      * get all unpaid loans
      *
      * @return

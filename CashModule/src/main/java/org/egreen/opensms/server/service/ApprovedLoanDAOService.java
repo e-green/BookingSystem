@@ -151,4 +151,14 @@ public class ApprovedLoanDAOService {
     public List<ApprovedLoan> getAllApprovedLoansByIndividualId(String individualId, Integer limit, Integer offset) {
         return approvedLoanDAOController.getAllApprovedLoansByIndividualId(individualId,limit,offset);
     }
+
+    /**
+     * get Approved Loan Detail By IndividualId
+     *
+     * @param centerId
+     * @return
+     */
+    public ApprovedLoan getOpenLoanDetailByCenterlId(String centerId) {
+        return approvedLoanDAOController.getOpenLoanDetailByCenterlId(centerId);
+    }
 }
