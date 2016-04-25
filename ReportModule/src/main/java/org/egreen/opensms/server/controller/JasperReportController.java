@@ -122,7 +122,6 @@ public class JasperReportController {
         model.addColumn("name");
         model.addColumn("investment");
         model.addColumn("payment");
-        model.addColumn("remanks");
 
 
         // get individual list by centerId
@@ -544,11 +543,6 @@ public class JasperReportController {
             model.addRow(new Object[]{individualCount+"",  individual.getName()+ "",  investment+"", ncValue+"", lcsValue+""});
         }
 
-        BigDecimal notCommisionPersentage = center.getNotCommisionPersentage();
-        BigDecimal lessComissionSinglePresentage = center.getLessComissionSingle();
-        BigDecimal nc = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(totNc), notCommisionPersentage);
-        BigDecimal lcs = envelopeDAOService.calculateLessCommisionSingle(BigDecimal.valueOf(totLcs), lessComissionSinglePresentage);
-
 
         Account accountByCenterId = accountDAOService.getAccountByCenterOIndividualId(centerId);
         List<Transaction> trList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(formatedDate, accountByCenterId.getAccountNo());
@@ -598,6 +592,12 @@ public class JasperReportController {
                     }
                     if(tran.getDebit() != null && tran.getTypeId().equals("LON")){
                         isExistLoan=true;
+                    }
+                    if(tran.getDebit() != null && tran.getTypeId().equals("NC")){
+                        ncValue+=tran.getDebit().doubleValue();
+                    }
+                    if(tran.getDebit() != null && tran.getTypeId().equals("LCS")){
+                        lcsValue+=tran.getDebit().doubleValue();
                     }
                 }
             }
@@ -695,7 +695,7 @@ public class JasperReportController {
         if(center.getPcChargers() != null){
             pcCharges=center.getPcChargers().doubleValue();
         }
-        tot=nc.doubleValue()+lcs.doubleValue()+pcCharges+loanDeductionPayment+excess+expenses;
+        tot=ncValue+lcsValue+pcCharges+loanDeductionPayment+excess+expenses;
 
         total=commision-tot;
 
@@ -703,8 +703,8 @@ public class JasperReportController {
         map.put("totPay", totPayment == null ? "--" : totPayment + "");
         map.put("totNc", totNc+"");
         map.put("totLcs", totLcs+"");
-        map.put("nc",nc+"");
-        map.put("lcs", lcs + "");
+        map.put("nc",ncValue+"");
+        map.put("lcs", lcsValue + "");
         map.put("com",commision+"");
         map.put("pc",pcCharges+"");
         map.put("exces",excess+"");
