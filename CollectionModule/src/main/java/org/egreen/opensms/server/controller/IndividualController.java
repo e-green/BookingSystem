@@ -244,8 +244,6 @@ public class IndividualController {
     @ResponseBody
     public ResponseMessage closeGenralSummery(@RequestBody GeneralSummaryReceiptModel generalSummaryReceiptModel) {
 
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
         String stringDate = generalSummaryReceiptModel.getsTime();
 
         Transaction tra = new Transaction();
@@ -534,14 +532,12 @@ public class IndividualController {
         double paymentToDeduct = 0.0;
         String stringDate=generalSummaryReceiptModel.getsTime();
 
-        Date date1 = generalSummaryReceiptModel.getDate();
 
         JRTableModelDataSource ds = null;
         Map<String, Object> map = null;
         map = new HashMap<String, Object>();
 
-        long milliseconds = date1.getTime();
-        map.put("date", milliseconds + "");
+        map.put("date", stringDate + "");
 
 
         Transaction tra = new Transaction();

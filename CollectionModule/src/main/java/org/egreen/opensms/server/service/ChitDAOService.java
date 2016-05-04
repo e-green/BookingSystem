@@ -151,7 +151,7 @@ public class ChitDAOService {
         return chitDAOController.getAllChitsByEnvelopeId(envelopeId);
     }
 
-    public Long getAllChitByIdCount(String id, Integer type, Date date1) {
+    public Long getAllChitByIdCount(String id, Integer type, String date1) {
         return chitDAOController.getAllChitByIdCount(id, type, date1);
     }
 

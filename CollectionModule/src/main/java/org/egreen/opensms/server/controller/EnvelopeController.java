@@ -94,20 +94,6 @@ public class EnvelopeController {
         Envelope envelope=envelopeDAOService.getEnvelopeById(envelopeId);
         return envelope;
     }
-//
-//    /**
-//     * Get package Id
-//     *
-//     * @return
-//     */
-//    @RequestMapping(value = "getId", method = RequestMethod.GET, headers = "Accept=application/json")
-//    @ResponseBody
-//    public ReturnIdModel1 getId(@RequestParam("name") String name) {
-//        String nameNew=name.substring(0, 3);
-//        ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
-//        returnIdModel1.setId(nameNew);
-//        return returnIdModel1;
-//    }
 
     /**
      * getEnvelopesByCenterId
@@ -137,44 +123,23 @@ public class EnvelopeController {
     @RequestMapping(value = "getEnvelopeByCenterIdDate", method = RequestMethod.POST)
     @ResponseBody
     public List<Envelope> getEnvelopesByCenterId(@RequestBody EnvelopeModel envelope) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String formatedDate = simpleDateFormat.format(envelope.getDate());
-        return envelopeDAOService.getEnvelopeByCenterIdDate(envelope.getCenter(), envelope.getLimit(), envelope.getOffset(), formatedDate);
+        return envelopeDAOService.getEnvelopeByCenterIdDate(envelope.getCenter(), envelope.getLimit(), envelope.getOffset(), envelope.getsTime());
 
     }
 
     @RequestMapping(value = "getEnvelopeByCenterIdNIndividualIdDate", method = RequestMethod.POST)
     @ResponseBody
     public FinishEnvelopeModel getEnvelopeByCenterIdNIndividualIdDate(@RequestBody EnvelopeModel envelope) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String formatedDate = simpleDateFormat.format(envelope.getDate());
-        return envelopeDAOService.getEnvelopeByCenterIdNIndividualIdDate(envelope.getCenter(), envelope.getIndividualId(), formatedDate);
+        return envelopeDAOService.getEnvelopeByCenterIdNIndividualIdDate(envelope.getCenter(), envelope.getIndividualId(), envelope.getsTime());
 
     }
 
     @RequestMapping(value = "getEnvelopesByIndividualIdByDate", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
     public List<Envelope> getEnvelopesByIndividualIdByDate(@RequestBody EnvelopeModel envelopeModel) {
-
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String formatedDate = simpleDateFormat.format(envelopeModel.getDate());
-
-
-        List<Envelope> envelopeList = envelopeDAOService.getEnvelopesByIndividualIdByDate(envelopeModel.getIndividualId(), null, null, formatedDate);
+        List<Envelope> envelopeList = envelopeDAOService.getEnvelopesByIndividualIdByDate(envelopeModel.getIndividualId(), null, null, envelopeModel.getsTime());
         return envelopeList;
     }
-
-    /**
-     * Get All
-     *
-     * @return
-     */
-//    @RequestMapping(value = "getAll", method = RequestMethod.GET, headers = "Accept=application/json")
-//    @ResponseBody
-//    public List<Envelope> getAll() {
-//        return envelopeDAOService.getAll();
-//    }
 
     /**
      * Get All Branchers By Pagination
@@ -193,9 +158,7 @@ public class EnvelopeController {
     @RequestMapping(value = "checkEnvelopeIsFinished", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
     public String checkEnvelopeIsFinished(@RequestBody FinishChitModel finishChitModel) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
-        String formatedDate = simpleDateFormat.format(finishChitModel.getTimestamp());
-        return envelopeDAOService.checkEnvelopeIsFinished(finishChitModel.getEnvelopeId(),formatedDate);
+        return envelopeDAOService.checkEnvelopeIsFinished(finishChitModel.getEnvelopeId(),finishChitModel.getsTime());
     }
 
 
@@ -271,11 +234,8 @@ public class EnvelopeController {
     @RequestMapping(value = "getEnvelopesByIndividualIdByDateNCenterId", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
     public Envelope getEnvelopesByIndividualIdByDateNCenterId(@RequestBody Envelope envelope) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
 
-        String formatedDate = simpleDateFormat.format(envelope.getDate());
-
-        return envelopeDAOService.getEnvelopesByIndividualIdByDateNCenterId(envelope.getIndividualId(), formatedDate, envelope.getCenter());
+        return envelopeDAOService.getEnvelopesByIndividualIdByDateNCenterId(envelope.getIndividualId(), envelope.getsTime(), envelope.getCenter());
 
     }
 

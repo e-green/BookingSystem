@@ -9,7 +9,7 @@ import java.util.List;
  * Created by ruwan on 2/11/16.
  */
 public interface TransactionDAOController extends DAOController<Transaction,String> {
-    Transaction getTransactionsByDateNAccountNoNType(Timestamp date, String accountNo, String type);
+    Transaction getTransactionsByDateNAccountNoNType(String date, String accountNo, String type);
 
     List<Transaction> getTodayTransactionDetailByDateNAccountNo(String date, String accountNo);
 }

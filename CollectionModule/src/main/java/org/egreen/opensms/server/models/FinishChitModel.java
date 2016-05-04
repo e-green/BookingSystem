@@ -6,8 +6,9 @@ import java.sql.Timestamp;
  * Created by ruwan on 3/9/16.
  */
 public class FinishChitModel {
-    String envelopeId;
-    Timestamp timestamp;
+    private String envelopeId;
+    private Timestamp timestamp;
+    private String sTime;
 
     public String getEnvelopeId() {
         return envelopeId;
@@ -25,11 +26,20 @@ public class FinishChitModel {
         this.timestamp = timestamp;
     }
 
+    public String getsTime() {
+        return sTime;
+    }
+
+    public void setsTime(String sTime) {
+        this.sTime = sTime;
+    }
+
     @Override
     public String toString() {
         return "FinishChitModel{" +
                 "envelopeId='" + envelopeId + '\'' +
                 ", timestamp=" + timestamp +
+                ", sTime='" + sTime + '\'' +
                 '}';
     }
 }

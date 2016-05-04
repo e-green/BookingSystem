@@ -20,7 +20,7 @@ public interface ChitDAOController extends DAOController<Chit,String> {
 
     List<Chit> getAllChitsByEnvelopeId(String envelopeId);
 
-    Long getAllChitByIdCount(String id, Integer type, Date date1);
+    Long getAllChitByIdCount(String id, Integer type, String date1);
 
     List<Chit> getAllChithsByFormattedDateNIndividualId(String formatedDate, String individualId);
 

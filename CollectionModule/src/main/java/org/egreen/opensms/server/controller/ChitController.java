@@ -83,9 +83,7 @@ public class ChitController {
     @RequestMapping(value = "getAllChitById", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
     public List<Chit> getAllChitById(@RequestBody ChitModel chitModel) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
-        String formatedDate = simpleDateFormat.format(chitModel.getDatetime());
-        return chitDAOService.getAllChitById(chitModel.getLimit(), chitModel.getOffset(),chitModel.getIndividualId(),chitModel.getType(),formatedDate);
+        return chitDAOService.getAllChitById(chitModel.getLimit(), chitModel.getOffset(),chitModel.getIndividualId(),chitModel.getType(),chitModel.getsTime());
     }
 
     @RequestMapping(value = "getAllChitByIdCount", method = RequestMethod.GET, headers = "Accept=application/json")
@@ -93,11 +91,9 @@ public class ChitController {
     public Long getAllChitByIdCount(
                                      @RequestParam("id") String id,
                                      @RequestParam("type") Integer type,
-                                     @RequestParam("datetime") Long date) {
+                                     @RequestParam("datetime") String date) {
 
-        Timestamp timestamp = new Timestamp(date);
-        Date date1 =  new Date(timestamp.getTime());
-        return chitDAOService.getAllChitByIdCount(id,type,date1);
+        return chitDAOService.getAllChitByIdCount(id,type,date);
 
     }
 

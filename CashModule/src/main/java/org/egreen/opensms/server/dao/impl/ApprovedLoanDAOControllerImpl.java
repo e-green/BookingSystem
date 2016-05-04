@@ -90,17 +90,17 @@ public class ApprovedLoanDAOControllerImpl extends AbstractDAOController<Approve
 
     @Override
     public ApprovedLoan getApprovedLoanByDateNIndividualId(String formatedDate, String individualId) {
-        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.individualId = :individualId AND DATE(a.datetime) = :date");
-        query.setString("date", formatedDate);
-        query.setString("individualId", individualId);
+//        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.individualId = :individualId AND DATE(a.datetime) = :date");
+//        query.setString("date", formatedDate);
+//        query.setString("individualId", individualId);
 
         /**
          * please use below code when you try to get with unique string Id(date)
          */
-//        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.individualId = :individualId AND a.sTime = :date");
-//        query.setString("date", formatedDate);
-//        query.setString("individualId", individualId);
-//
+        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.individualId = :individualId AND a.sTime = :date");
+        query.setString("date", formatedDate);
+        query.setString("individualId", individualId);
+
         ApprovedLoan approvedLoan=null;
         List<ApprovedLoan>  approvedLoanList= query.list();
         if(approvedLoanList.size() > 0){

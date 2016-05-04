@@ -458,10 +458,7 @@ public class JasperReportController {
         }
         //if there is no current ExistLoan value for specified date for center adding new value to transaction table and to genaral summary report
         if(isExistLoan == false){
-            if (approvedLoan!=null&&approvedLoan.getDatetime().getYear() == timestamp.getYear()
-                    && approvedLoan.getDatetime().getMonth() == timestamp.getMonth()
-                    && approvedLoan.getDatetime().getDate() == timestamp.getDate()
-                    ) {
+            if (approvedLoan!=null&&approvedLoan.getsTime().equals(date)) {
                 String id = new Date().getTime() + "";
                 Hashids hashids = new Hashids(id);
                 String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
@@ -846,9 +843,7 @@ public class JasperReportController {
         }
         //if there is no current ExistLoan value for specified date for center adding new value to transaction table and to genaral summary report
         if(isExistLoan == false){
-            if (approvedLoan!=null&&approvedLoan.getDatetime().getYear() == timestamp.getYear()
-                    && approvedLoan.getDatetime().getMonth() == timestamp.getMonth()
-                    && approvedLoan.getDatetime().getDate() == timestamp.getDate()
+            if (approvedLoan!=null&& approvedLoan.getsTime().equals(date)
                     ) {
                 String id = new Date().getTime() + "";
                 Hashids hashids = new Hashids(id);
@@ -1250,10 +1245,7 @@ public class JasperReportController {
         }
         //if there is no current ExistLoan value for specified date for center adding new value to transaction table and to genaral summary report
         if(isExistLoan == false){
-            if (approvedLoan!=null&&approvedLoan.getDatetime().getYear() == timestamp.getYear()
-                    && approvedLoan.getDatetime().getMonth() == timestamp.getMonth()
-                    && approvedLoan.getDatetime().getDate() == timestamp.getDate()
-                    ) {
+            if (approvedLoan!=null&&approvedLoan.getsTime().equals(date)) {
                 String id = new Date().getTime() + "";
                 Hashids hashids = new Hashids(id);
                 String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));

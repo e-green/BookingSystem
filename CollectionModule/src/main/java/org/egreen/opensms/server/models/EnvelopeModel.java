@@ -11,6 +11,7 @@ public class EnvelopeModel {
     private Timestamp date;
     private Integer limit;
     private Integer offset;
+    private String sTime;
 
 
     public String getCenter() {
@@ -45,14 +46,12 @@ public class EnvelopeModel {
         this.offset = offset;
     }
 
-    @Override
-    public String toString() {
-        return "EnvelopeModel{" +
-                ", center=" + center +
-                ", date=" + date +
-                ", limit='" + limit + '\'' +
-                ", offset='" + offset + '\'' +
-                '}';
+    public String getsTime() {
+        return sTime;
+    }
+
+    public void setsTime(String sTime) {
+        this.sTime = sTime;
     }
 
     public String getIndividualId() {
@@ -61,5 +60,17 @@ public class EnvelopeModel {
 
     public void setIndividualId(String individualId) {
         this.individualId = individualId;
+    }
+
+    @Override
+    public String toString() {
+        return "EnvelopeModel{" +
+                "center='" + center + '\'' +
+                ", individualId='" + individualId + '\'' +
+                ", date=" + date +
+                ", limit=" + limit +
+                ", offset=" + offset +
+                ", sTime='" + sTime + '\'' +
+                '}';
     }
 }

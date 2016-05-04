@@ -12,6 +12,7 @@ public class ChitModel {
     private Integer type;
     private Integer limit;
     private Integer offset;
+    private String sTime;
 
 
 
@@ -55,6 +56,14 @@ public class ChitModel {
         this.offset = offset;
     }
 
+    public String getsTime() {
+        return sTime;
+    }
+
+    public void setsTime(String sTime) {
+        this.sTime = sTime;
+    }
+
     @Override
     public String toString() {
         return "ChitModel{" +
@@ -63,6 +72,7 @@ public class ChitModel {
                 ", type=" + type +
                 ", limit=" + limit +
                 ", offset=" + offset +
+                ", sTime='" + sTime + '\'' +
                 '}';
     }
 }
