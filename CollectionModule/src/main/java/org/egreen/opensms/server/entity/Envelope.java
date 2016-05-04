@@ -32,6 +32,7 @@ public class Envelope implements EntityInterface<String> {
     private Boolean isLoanDeduct;
     private Boolean rentDeduct;
     private Boolean finished;
+    private String sTime;
 
 
 
@@ -173,6 +174,14 @@ public class Envelope implements EntityInterface<String> {
         this.finished = finished;
     }
 
+    public String getsTime() {
+        return sTime;
+    }
+
+    public void setsTime(String sTime) {
+        this.sTime = sTime;
+    }
+
     @Override
     @Transient
     public String getId() {
@@ -199,7 +208,7 @@ public class Envelope implements EntityInterface<String> {
                 ", isLoanDeduct=" + isLoanDeduct +
                 ", rentDeduct=" + rentDeduct +
                 ", finished=" + finished +
+                ", sTime='" + sTime + '\'' +
                 '}';
     }
-
 }

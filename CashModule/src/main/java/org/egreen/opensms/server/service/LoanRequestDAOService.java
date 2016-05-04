@@ -32,6 +32,7 @@ public class LoanRequestDAOService {
      * @return
      */
     public String save(LoanRequest loanRequest) {
+        System.out.println("S Timeeeeeeeeee :" +loanRequest.getsTime());
 //        boolean canRequest=loanRequestDAOController.checkIsThereAlreadyRequestedLoanHaveSpecifiedCenterIndividual(loanRequest.getCenterid(),loanRequest.getIndividualId());
         String res=null;
 //        if(canRequest == true){

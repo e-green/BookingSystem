@@ -35,7 +35,7 @@ public class ApprovedLoanDAOControllerImpl extends AbstractDAOController<Approve
     @Override
     public Integer removeBranchById(String branchid) {
         Session session = getSession();
-        String hql = "delete from Branch where branchid= :branchid";
+        String hql = "delete from Branch b where b.branchid= :branchid";
         int i = session.createQuery(hql).setString("branchid", branchid).executeUpdate();
         return i;
     }
@@ -94,6 +94,13 @@ public class ApprovedLoanDAOControllerImpl extends AbstractDAOController<Approve
         query.setString("date", formatedDate);
         query.setString("individualId", individualId);
 
+        /**
+         * please use below code when you try to get with unique string Id(date)
+         */
+//        Query query = getSession().createQuery("SELECT a FROM ApprovedLoan a WHERE a.individualId = :individualId AND a.sTime = :date");
+//        query.setString("date", formatedDate);
+//        query.setString("individualId", individualId);
+//
         ApprovedLoan approvedLoan=null;
         List<ApprovedLoan>  approvedLoanList= query.list();
         if(approvedLoanList.size() > 0){

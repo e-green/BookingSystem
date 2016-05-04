@@ -26,6 +26,14 @@ public class TransactionDAOControllerImpl extends  AbstractDAOController<Transac
         query.setString("accountNo", accountNo);
         query.setString("typeId", typeId);
         query.setString("formattedDate", formatedDate);
+        /**
+         * please use below code when you try to get with unique string Id(date)
+         */
+//        Query query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND t.typeId = :typeId AND t.sTime = :formattedDate");
+//        query.setString("accountNo", accountNo);
+//        query.setString("typeId", typeId);
+//        query.setString("formattedDate", formatedDate);
+
         Transaction transaction=new Transaction();
         List<Transaction> transactionList= query.list();
         if(!transactionList.isEmpty()){
@@ -38,10 +46,16 @@ public class TransactionDAOControllerImpl extends  AbstractDAOController<Transac
 
     @Override
     public List<Transaction> getTodayTransactionDetailByDateNAccountNo(String formatedDate, String accountNo) {
-        Query query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND DATE(t.time) = DATE( :formattedDate)");
+//        Query query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND DATE(t.time) = DATE( :formattedDate)");
+//        query.setString("accountNo", accountNo);
+//        query.setString("formattedDate", formatedDate);
+
+        /**
+         * please use below code when you try to get with unique string Id(date)
+         */
+        Query query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND t.sTime = :formattedDate");
         query.setString("accountNo", accountNo);
         query.setString("formattedDate", formatedDate);
-        Transaction transaction=new Transaction();
         List<Transaction> transactionList= query.list();
         return transactionList;
     }

@@ -120,11 +120,10 @@ public class EnvelopeController {
     public List<Envelope> getEnvelopesByCenterId(@RequestParam("centerId") String centerId,
                                                  @RequestParam("limit") Integer limit,
                                                  @RequestParam("offset") Integer offset,
-                                                 @RequestParam("datetime") Long date) {
-        Timestamp timestamp = new Timestamp(date);
-        Date date1 = new Date(timestamp.getTime());
+                                                 @RequestParam("datetime") String date) {
 
-        List<Envelope> envelopeList = envelopeDAOService.getEnvelopesByCenterId(centerId, limit, offset, date1);
+
+        List<Envelope> envelopeList = envelopeDAOService.getEnvelopesByCenterId(centerId, limit, offset, date);
         return envelopeList;
 
     }

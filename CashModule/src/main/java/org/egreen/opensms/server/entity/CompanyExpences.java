@@ -20,6 +20,7 @@ public class CompanyExpences implements EntityInterface<String> {
     private String accountNo;
     private String reason;
     private BigDecimal amount;
+    private String sTime;
 
 
     @Id
@@ -64,6 +65,13 @@ public class CompanyExpences implements EntityInterface<String> {
         this.amount = amount;
     }
 
+    public String getsTime() {
+        return sTime;
+    }
+
+    public void setsTime(String sTime) {
+        this.sTime = sTime;
+    }
 
     @Override
     @Transient
@@ -79,8 +87,7 @@ public class CompanyExpences implements EntityInterface<String> {
                 ", accountNo='" + accountNo + '\'' +
                 ", reason='" + reason + '\'' +
                 ", amount=" + amount +
+                ", sTime='" + sTime + '\'' +
                 '}';
     }
-
-
 }

@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,11 +63,17 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
     public List<Envelope> getEnvelopesByCenterId(String centerId,
                                                  Integer limit,
                                                  Integer offset,
-                                                 Date date) {
+                                                 String date) {
         //SELECT * FROM `envelop` WHERE `center` = 'Alu'AND DATE(`date`) = '2015-12-30'
 
-        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :centerId AND DATE(e.date) = :date");
-        query.setDate("date", date);
+//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :centerId AND DATE(e.date) = :date");
+//        query.setDate("date", date);
+//        query.setString("centerId", centerId);
+        /**
+         * please use below code when you try to get with unique string Id(date)
+         */
+        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :centerId AND e.sTime = :date");
+        query.setString("date", date);
         query.setString("centerId", centerId);
 
         if (limit != null && offset != null) {
@@ -83,6 +90,12 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND DATE(e.date) = :date");
         query.setString("date", date);
         query.setString("individualId", individualId);
+        /**
+         * please use below code when you try to get with unique string Id(date)
+         */
+//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND e.sTime = :date");
+//        query.setString("date", date);
+//        query.setString("individualId", individualId);
 
         if (limit != null && offset != null) {
             query.setMaxResults(limit);
@@ -98,6 +111,13 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         query.setString("date", date);
         query.setString("individualId", individualId);
         query.setString("centerId", centerId);
+        /**
+         * please use below code when you try to get with unique string Id(date)
+         */
+//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND e.sTime =  :date AND e.center = :centerId");
+//        query.setString("date", date);
+//        query.setString("individualId", individualId);
+//        query.setString("centerId", centerId);
 
         List<Envelope> list = query.list();
         Envelope envelope = new Envelope();
@@ -114,6 +134,12 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND DATE(e.date) = DATE( :formatedDate)");
         query.setString("formatedDate", formatedDate);
         query.setString("center", center);
+        /**
+         * please use below code when you try to get with unique string Id(date)
+         */
+//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.sTime = :formatedDate");
+//        query.setString("formatedDate", formatedDate);
+//        query.setString("center", center);
 
         if (limit != null && offset != null) {
             query.setMaxResults(limit);
@@ -129,6 +155,13 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         query.setString("formatedDate", formatedDate);
         query.setString("center", center);
         query.setString("individualId", individualId);
+        /**
+         * please use below code when you try to get with unique string Id(date)
+         */
+//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.individualId = :individualId AND e.sTime = :formatedDate");
+//        query.setString("formatedDate", formatedDate);
+//        query.setString("center", center);
+//        query.setString("individualId", individualId);
         boolean b = false;
         FinishEnvelopeModel finishEnvelopeModel = new FinishEnvelopeModel();
         List<Envelope> envelopeList = query.list();
@@ -153,6 +186,10 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND DATE(e.date) = DATE( :date)");
         query.setString("date", formatedDate);
         query.setString("individualId", individualId);
+
+//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND e.sTime =  :date");
+//        query.setString("date", formatedDate);
+//        query.setString("individualId", individualId);
         Envelope envelope1 = null;
         List<Envelope> envelopeList = query.list();
         for (Envelope envelope : envelopeList) {
@@ -169,6 +206,12 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.envelopId = :envelopeId AND DATE(e.date) = DATE( :formatedDate)");
         query.setString("formatedDate", formatedDate);
         query.setString("envelopeId", envelopeId);
+        /**
+         * please use below code when you try to get with unique string Id(date)
+         */
+//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.envelopId = :envelopeId AND e.sTime = :formatedDate");
+//        query.setString("formatedDate", formatedDate);
+//        query.setString("envelopeId", envelopeId);
 
         String val = "0";
         List<Envelope> list = query.list();

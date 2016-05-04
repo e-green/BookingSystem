@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -57,6 +59,7 @@ public class EnvelopeDAOService {
         String indId=envelope.getIndividualId();
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = simpleDateFormat.format(envelope.getDate());
+        String fd=envelope.getsTime();
         Envelope envelopesByDateNByIndividualId = envelopeDAOController.getEnvelopesByDateNByIndividualId(indId, formattedDate);
         String s=null;
         if(envelopesByDateNByIndividualId == null){
@@ -87,6 +90,7 @@ public class EnvelopeDAOService {
                     transaction.setTypeId("Inv");
                     transaction.setDebit(envelope.getInvesment());
                     transaction.setTime(envelope.getDate());
+                    transaction.setsTime(fd);
                     transactionDAOController.create(transaction);
                 }
 
@@ -99,6 +103,7 @@ public class EnvelopeDAOService {
                     transaction.setTypeId("CSH");
                     transaction.setCredit(envelope.getCash());
                     transaction.setTime(envelope.getDate());
+                    transaction.setsTime(fd);
                     transactionDAOController.create(transaction);
                 }
 
@@ -110,6 +115,7 @@ public class EnvelopeDAOService {
                     transaction.setTypeId("EXP");
                     transaction.setCredit(envelope.getExpences());
                     transaction.setTime(envelope.getDate());
+                    transaction.setsTime(fd);
                     transactionDAOController.create(transaction);
                 }
 
@@ -122,6 +128,7 @@ public class EnvelopeDAOService {
                     transaction.setTypeId("PC");
                     transaction.setDebit(individual.getPcChargers());
                     transaction.setTime(envelope.getDate());
+                    transaction.setsTime(fd);
                     transactionDAOController.create(transaction);
                 }
 
@@ -137,6 +144,7 @@ public class EnvelopeDAOService {
                     System.out.println("Individual com ->"+commision);
                     transaction.setCredit(commision);
                     transaction.setTime(envelope.getDate());
+                    transaction.setsTime(fd);
                     transactionDAOController.create(transaction);
                 }
 
@@ -148,6 +156,7 @@ public class EnvelopeDAOService {
                     transaction.setTypeId("RENT");
                     transaction.setDebit(individual.getRent());
                     transaction.setTime(envelope.getDate());
+                    transaction.setsTime(fd);
                     transactionDAOController.create(transaction);
                 }
 
@@ -164,6 +173,7 @@ public class EnvelopeDAOService {
                     transaction.setTypeId("LON");
                     transaction.setCredit(approvedLoan.getDueamount());
                     transaction.setTime(envelope.getDate());
+                    transaction.setsTime(formattedDate);
                     transactionDAOController.create(transaction);
                 } else if (approvedLoan!=null&&approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
 
@@ -177,9 +187,11 @@ public class EnvelopeDAOService {
                         dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
                     }
 
+
                     if(envelope.getLoanDeduct() != null && envelope.getLoanDeduct() == true){
                         transaction.setDebit(approvedLoan.getDeductionPayment());
                         transaction.setTime(envelope.getDate());
+                        transaction.setsTime(fd);
                         transactionDAOController.create(transaction);
                     }
 
@@ -311,15 +323,6 @@ public class EnvelopeDAOService {
                         transactionDAOController.update(transaction);
                     }
                 }
-//                if(centerTransactionList.size() > 0){
-//                    for(Transaction transaction:centerTransactionList){
-//                        if(center.getCommision() != null && envelope.getInvesment() != null && centerId != null && envelope.getInvesment().doubleValue() != 0 && transaction.getTypeId().equals("COM") && transaction.getAccountNo().equals(centerAccount.getAccountNo())){
-//                            BigDecimal comm = calculateCommision(invesment, center.getCommision());
-//                            transaction.setCredit(comm);
-//                            transactionDAOController.update(transaction);
-//                        }
-//                    }
-//                }
             }
 
         }
@@ -385,7 +388,7 @@ public class EnvelopeDAOService {
      * @param date
      * @return
      */
-    public List<Envelope> getEnvelopesByCenterId(String centerId, Integer limit, Integer offset, Date date) {
+    public List<Envelope> getEnvelopesByCenterId(String centerId, Integer limit, Integer offset, String date) {
 
         return envelopeDAOController.getEnvelopesByCenterId(centerId, limit, offset, date);
     }

@@ -21,6 +21,7 @@ public class Transaction implements EntityInterface <String> {
     private BigDecimal credit;
     private Timestamp time;
     private Timestamp transactionTime;
+    private String sTime;
 
     @Id
     @Column(name = "transaction")
@@ -80,6 +81,14 @@ public class Transaction implements EntityInterface <String> {
         this.transactionTime = transactionTime;
     }
 
+    public String getsTime() {
+        return sTime;
+    }
+
+    public void setsTime(String sTime) {
+        this.sTime = sTime;
+    }
+
     @Override
     @Transient
     public String getId() {
@@ -90,12 +99,13 @@ public class Transaction implements EntityInterface <String> {
     public String toString() {
         return "Transaction{" +
                 "transactionId='" + transactionId + '\'' +
-                "typeId='" + typeId + '\'' +
-                "accountNo='" + accountNo + '\'' +
-                "debit='" + debit + '\'' +
-                "credit='" + credit + '\'' +
-                "time='" + time + '\'' +
-                "transactionTime='" + transactionTime + '\'' +
+                ", typeId='" + typeId + '\'' +
+                ", accountNo='" + accountNo + '\'' +
+                ", debit=" + debit +
+                ", credit=" + credit +
+                ", time=" + time +
+                ", transactionTime=" + transactionTime +
+                ", sTime='" + sTime + '\'' +
                 '}';
     }
 }

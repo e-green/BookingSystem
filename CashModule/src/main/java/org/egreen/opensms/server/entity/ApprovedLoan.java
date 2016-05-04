@@ -23,6 +23,7 @@ public class ApprovedLoan implements EntityInterface<String> {
     private BigDecimal deductionPayment;
     private Timestamp duedate;
     private BigDecimal dueamount;
+    private String sTime;
 
 
     @Id
@@ -91,6 +92,13 @@ public class ApprovedLoan implements EntityInterface<String> {
         this.dueamount = dueamount;
     }
 
+    public String getsTime() {
+        return sTime;
+    }
+
+    public void setsTime(String sTime) {
+        this.sTime = sTime;
+    }
 
     @Override
     @Transient
@@ -109,6 +117,7 @@ public class ApprovedLoan implements EntityInterface<String> {
                 ", deductionPayment=" + deductionPayment +
                 ", duedate=" + duedate +
                 ", dueamount=" + dueamount +
+                ", sTime='" + sTime + '\'' +
                 '}';
     }
 }

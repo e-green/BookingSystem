@@ -22,6 +22,7 @@ public class LoanRequest implements EntityInterface <String> {
     private String      user;
     private Timestamp   requestDate;
     private boolean     status;
+    private String      sTime;
 
 
 
@@ -83,6 +84,14 @@ public class LoanRequest implements EntityInterface <String> {
         this.status = status;
     }
 
+    public String getsTime() {
+        return sTime;
+    }
+
+    public void setsTime(String sTime) {
+        this.sTime = sTime;
+    }
+
     @Override
     @Transient
     public String getId() {
@@ -99,6 +108,7 @@ public class LoanRequest implements EntityInterface <String> {
                 ", user='" + user + '\'' +
                 ", requestDate=" + requestDate +
                 ", status=" + status +
+                ", sTime='" + sTime + '\'' +
                 '}';
     }
 }

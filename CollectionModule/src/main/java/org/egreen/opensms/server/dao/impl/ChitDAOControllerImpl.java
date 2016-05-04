@@ -9,6 +9,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
     @Override
     public Integer removeChitById(String chitId) {
         Session session = getSession();
-        String hql = "delete from Chit where chitId= :chitId";
+        String hql = "delete from Chit c where c.chitId= :chitId";
         int i = session.createQuery(hql).setString("chitId", chitId).executeUpdate();
         return i;
     }
@@ -47,10 +48,22 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
             query = getSession().createQuery("SELECT c FROM Chit c WHERE c.centerid = :id AND DATE(c.datetime) = DATE(:date)  ORDER BY DATE(c.datetime) ASC");
             query.setString("date", date);
             query.setString("id", id);
+            /**
+             * please use below code when you try to get with unique string Id(date)
+             */
+//            query = getSession().createQuery("SELECT c FROM Chit c WHERE c.centerid = :id AND c.sTime = :date  ORDER BY c.sTime ASC");
+//            query.setString("date", date);
+//            query.setString("id", id);
         } else if (type == 1) {
             query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :id AND DATE(c.datetime) = DATE(:date) ORDER BY DATE(c.datetime) ASC ");
             query.setString("date", date);
             query.setString("id", id);
+            /**
+             * please use below code when you try to get with unique string Id(date)
+             */
+//            query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :id AND c.sTime = :date ORDER BY c.sTime ASC ");
+//            query.setString("date", date);
+//            query.setString("id", id);
         }
 
 
@@ -85,10 +98,28 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
             query = getSession().createQuery("SELECT COUNT(c) FROM Chit c WHERE c.centerid = :id AND DATE(c.datetime) = :date");
             query.setDate("date", date);
             query.setString("id", id);
+            /**
+             * please use below code when you try to get with unique string Id(date)
+             */
+//            query = getSession().createQuery("SELECT COUNT(c) FROM Chit c WHERE c.centerid = :id AND c.sTime = :date");
+//            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+//            String formatedDate = simpleDateFormat.format(date);
+//            query.setString("date", formatedDate);
+//            query.setString("id", id);
         } else if (type == 1) {
             query = getSession().createQuery("SELECT COUNT(c) FROM Chit c WHERE c.individualId = :id AND DATE(c.datetime) = :date");
+
             query.setDate("date", date);
             query.setString("id", id);
+            /**
+             * please use below code when you try to get with unique string Id(date)
+             */
+//            query = getSession().createQuery("SELECT COUNT(c) FROM Chit c WHERE c.individualId = :id AND c.sTime = :date");
+//            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+//            String formatedDate = simpleDateFormat.format(date);
+//            query.setDate("date", formatedDate);
+//            query.setString("id", id);
+
         }
         return (Long) query.uniqueResult();
 
@@ -99,6 +130,13 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
         Query query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :individualId AND DATE(c.datetime) = DATE( :formatedDate)");
         query.setString("formatedDate", formatedDate);
         query.setString("individualId", individualId);
+
+        /**
+         * please use below code when you try to get with unique string Id(date)
+         */
+//        Query query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :individualId AND c.sTime = :formatedDate");
+//        query.setString("formatedDate", formatedDate);
+//        query.setString("individualId", individualId);
 
         return query.list();
     }

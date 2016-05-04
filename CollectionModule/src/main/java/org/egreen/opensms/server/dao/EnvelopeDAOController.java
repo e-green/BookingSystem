@@ -19,7 +19,7 @@ public interface EnvelopeDAOController extends DAOController<Envelope,String> {
 
     boolean checkIfExist(String centerName);
 
-    List<Envelope> getEnvelopesByCenterId(String centerId, Integer limit, Integer offset, Date date);
+    List<Envelope> getEnvelopesByCenterId(String centerId, Integer limit, Integer offset, String date);
 
     List<Envelope> getEnvelopesByIndividualIdByDate(String individualId, Integer limit, Integer offset, String date);
 

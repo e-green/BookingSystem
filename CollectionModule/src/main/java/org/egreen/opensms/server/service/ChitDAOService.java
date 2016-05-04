@@ -53,7 +53,10 @@ public class ChitDAOService {
     public String save(Chit chit) {
         String newid = idCreation();
         chit.setChitId(newid);
-        chit.setDatetime(chit.getDatetime());
+//        chit.setDatetime(chit.getDatetime());
+//        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+//        String formattedDate = simpleDateFormat.format(chit.getDatetime());
+        System.out.println("chit s time :"+chit.getsTime());
         Envelope envelope = envelopeDAOController.read(chit.getEnvelopeId());
         String s = null;
 

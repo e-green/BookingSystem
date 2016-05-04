@@ -23,6 +23,7 @@ public class GeneralSummaryReceiptModel {
     private double payment;
     private double modelNc;
     private double modelLcs;
+    private String sTime;
 
     public String getCenterId() {
         return centerId;
@@ -152,6 +153,14 @@ public class GeneralSummaryReceiptModel {
         this.modelLcs = modelLcs;
     }
 
+    public String getsTime() {
+        return sTime;
+    }
+
+    public void setsTime(String sTime) {
+        this.sTime = sTime;
+    }
+
     @Override
     public String toString() {
         return "GeneralSummaryReceiptModel{" +
@@ -171,6 +180,7 @@ public class GeneralSummaryReceiptModel {
                 ", payment=" + payment +
                 ", modelNc=" + modelNc +
                 ", modelLcs=" + modelLcs +
+                ", sTime='" + sTime + '\'' +
                 '}';
     }
 }

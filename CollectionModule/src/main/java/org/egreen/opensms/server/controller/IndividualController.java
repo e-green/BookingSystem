@@ -244,7 +244,9 @@ public class IndividualController {
     @ResponseBody
     public ResponseMessage closeGenralSummery(@RequestBody GeneralSummaryReceiptModel generalSummaryReceiptModel) {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String stringDate = generalSummaryReceiptModel.getsTime();
 
         Transaction tra = new Transaction();
         Map<String, Object> summaryReceipt = getGeneralSummaryReceipt(generalSummaryReceiptModel);
@@ -281,6 +283,7 @@ public class IndividualController {
             transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPay()));
             transaction.setTypeId("PAY");
             transaction.setTime(generalSummaryReceiptModel.getDate());
+            transaction.setsTime(stringDate);
             transactionDAOService.save(transaction);
         }
         if(payValue > 0.0 && generalSummaryReceiptModel.getPay() == 0.0){
@@ -290,6 +293,7 @@ public class IndividualController {
             transaction.setCredit(BigDecimal.valueOf(payValue));
             transaction.setTypeId("PAY");
             transaction.setTime(generalSummaryReceiptModel.getDate());
+            transaction.setsTime(stringDate);
             transactionDAOService.save(transaction);
         }
         if(payValue > 0.0 && generalSummaryReceiptModel.getPay() > 0.0){
@@ -299,6 +303,7 @@ public class IndividualController {
             transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPay()));
             transaction.setTypeId("PAY");
             transaction.setTime(generalSummaryReceiptModel.getDate());
+            transaction.setsTime(stringDate);
             transactionDAOService.save(transaction);
         }
 
@@ -309,6 +314,7 @@ public class IndividualController {
             transaction.setDebit(account.getAmount());
             transaction.setTypeId("PD");
             transaction.setTime(generalSummaryReceiptModel.getDate());
+            transaction.setsTime(stringDate);
             transactionDAOService.save(transaction);
         }
 
@@ -319,6 +325,7 @@ public class IndividualController {
             transaction.setDebit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
             transaction.setTypeId("Balance");
             transaction.setTime(generalSummaryReceiptModel.getDate());
+            transaction.setsTime(stringDate);
             transactionDAOService.save(transaction);
             account.setAmount(BigDecimal.valueOf(dueValue));
             accountDAOService.update(account);
@@ -331,6 +338,7 @@ public class IndividualController {
             transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
             transaction.setTypeId("Balance");
             transaction.setTime(generalSummaryReceiptModel.getDate());
+            transaction.setsTime(stringDate);
             transactionDAOService.save(transaction);
 
             transaction.setTransactionId(getNewId());
@@ -338,6 +346,7 @@ public class IndividualController {
             transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPayment()*-1));
             transaction.setTypeId("Payment");
             transaction.setTime(generalSummaryReceiptModel.getDate());
+            transaction.setsTime(stringDate);
             transactionDAOService.save(transaction);
 
             account.setAmount(BigDecimal.ZERO);
@@ -351,6 +360,7 @@ public class IndividualController {
             transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getSalary()));
             transaction.setTypeId("Salary");
             transaction.setTime(generalSummaryReceiptModel.getDate());
+            transaction.setsTime(stringDate);
             transactionDAOService.save(transaction);
         }
 
@@ -361,6 +371,7 @@ public class IndividualController {
             transaction.setDebit(BigDecimal.valueOf(generalSummaryReceiptModel.getOverPayment()));
             transaction.setTypeId("OverPayment");
             transaction.setTime(generalSummaryReceiptModel.getDate());
+            transaction.setsTime(stringDate);
             transactionDAOService.save(transaction);
         }
 
@@ -371,12 +382,13 @@ public class IndividualController {
             transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getExcess()));
             transaction.setTypeId("Excess");
             transaction.setTime(generalSummaryReceiptModel.getDate());
+            transaction.setsTime(stringDate);
             transactionDAOService.save(transaction);
         }
 
-        String formatedDate = simpleDateFormat.format(generalSummaryReceiptModel.getDate());
+//        String formatedDate = simpleDateFormat.format(generalSummaryReceiptModel.getDate());
         String individualId = generalSummaryReceiptModel.getIndividualId();
-        List<Chit> chitList = chitDAOService.getAllChithsByFormattedDateNIndividualId(formatedDate, individualId);
+        List<Chit> chitList = chitDAOService.getAllChithsByFormattedDateNIndividualId(stringDate, individualId);
         List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(generalSummaryReceiptModel.getEnvelopeId());
         Envelope envelopeById = envelopeDAOService.getEnvelopeById(generalSummaryReceiptModel.getEnvelopeId());
         if(envelopeById != null){
@@ -394,6 +406,7 @@ public class IndividualController {
                 System.out.println("Center com ->"+comm);
                 transaction.setCredit(comm);
                 transaction.setTime(envelopeById.getDate());
+                transaction.setsTime(stringDate);
                 transactionDAOService.save(transaction);
             }
             envelopeById.setFinished(true);
@@ -452,6 +465,7 @@ public class IndividualController {
                 transaction.setDebit(notCommisionsTot);
                 transaction.setTypeId("NC");
                 transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
                 transactionDAOService.save(transaction);
             }
             if (individual1 != null && individual1.getNotCommisionPersentage() != null && individual1.getNotCommisionPersentage().doubleValue() > 0.0) {
@@ -463,6 +477,7 @@ public class IndividualController {
                 transaction.setDebit(notCommisionsTot);
                 transaction.setTypeId("NC");
                 transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
                 transactionDAOService.save(transaction);
             }
 
@@ -482,6 +497,7 @@ public class IndividualController {
                 transaction.setDebit(lessCommisionSingleTot);
                 transaction.setTypeId("LCS");
                 transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
                 transactionDAOService.save(transaction);
             }
             if (individual1 != null && individual1.getLessComissionSingle() != null && individual1.getLessComissionSingle().doubleValue() > 0.0) {
@@ -493,6 +509,7 @@ public class IndividualController {
                 transaction.setDebit(lessCommisionSingleTot);
                 transaction.setTypeId("LCS");
                 transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
                 transactionDAOService.save(transaction);
             }
 
@@ -510,13 +527,12 @@ public class IndividualController {
     @RequestMapping(value = "getGeneralSummaryReceiptModel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getGeneralSummaryReceipt(@RequestBody GeneralSummaryReceiptModel generalSummaryReceiptModel) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String formatedDate = simpleDateFormat.format(generalSummaryReceiptModel.getDate());
 
         double inValue = 0;
         double outValue = 0;
         Double totInvesment = inValue;
         double paymentToDeduct = 0.0;
+        String stringDate=generalSummaryReceiptModel.getsTime();
 
         Date date1 = generalSummaryReceiptModel.getDate();
 
@@ -547,7 +563,7 @@ public class IndividualController {
 
         Double dueAmount=0.0;
         Double perDue=0.0;
-        List<Transaction> transactionList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(formatedDate, account.getAccountNo());
+        List<Transaction> transactionList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(stringDate, account.getAccountNo());
         for (Transaction transaction : transactionList) {
             if (transaction != null) {
                 tra = transaction;
@@ -591,11 +607,10 @@ public class IndividualController {
 
         if (generalSummaryReceiptModel.getType() == 0) {
             map.put("Individual", generalSummaryReceiptModel.getCenterId() == null ? "--" : generalSummaryReceiptModel.getCenterId());
-            envelopesByCenterId = envelopeDAOService.getEnvelopesByCenterId(generalSummaryReceiptModel.getCenterId(), null, null, date1);
+            envelopesByCenterId = envelopeDAOService.getEnvelopesByCenterId(generalSummaryReceiptModel.getCenterId(), null, null, stringDate);
         } else if (generalSummaryReceiptModel.getType() == 1 && individual != null) {
-            String fD = simpleDateFormat.format(date1);
             map.put("Individual", individual.getName());
-            envelopesByCenterId = envelopeDAOService.getEnvelopesByIndividualIdByDate(generalSummaryReceiptModel.getIndividualId(), null, null, fD);
+            envelopesByCenterId = envelopeDAOService.getEnvelopesByIndividualIdByDate(generalSummaryReceiptModel.getIndividualId(), null, null, stringDate);
         }
 
         DefaultTableModel model = new DefaultTableModel();
@@ -824,6 +839,7 @@ public class IndividualController {
                     String newid1 = idCreation();
                     transaction.setTransactionId(newid1);
                     transaction.setTime(chit.getDatetime());
+                    transaction.setsTime(chit.getsTime());
                     transaction.setTypeId("LCS");
                     lessCommisionSingle = envelopeDAOService.calculateLessCommisionSingle(chit.getNcOLCValue(), centerById.getLessComissionSingle());
                     transaction.setDebit(lessCommisionSingle);
@@ -839,6 +855,7 @@ public class IndividualController {
                     String newid1=idCreation();
                     transaction.setTransactionId(newid1);
                     transaction.setTime(chit.getDatetime());
+                    transaction.setsTime(chit.getsTime());
                     transaction.setTypeId("LCS");
                     lessCommisionSingle = envelopeDAOService.calculateLessCommisionSingle(chit.getNcOLCValue(), individualById.getLessComissionSingle());
                     transaction.setDebit(lessCommisionSingle);
@@ -856,6 +873,7 @@ public class IndividualController {
                     String newid1 = idCreation();
                     transaction.setTransactionId(newid1);
                     transaction.setTime(chit.getDatetime());
+                    transaction.setsTime(chit.getsTime());
                     transaction.setTypeId("NC");
                     notCommision = envelopeDAOService.calculateNotCommision(chit.getNcOLCValue(), centerById.getNotCommisionPersentage());
                     transaction.setDebit(notCommision);
@@ -871,6 +889,7 @@ public class IndividualController {
                     String newid1=idCreation();
                     transaction.setTransactionId(newid1);
                     transaction.setTime(chit.getDatetime());
+                    transaction.setsTime(chit.getsTime());
                     transaction.setTypeId("NC");
                     notCommision = envelopeDAOService.calculateNotCommision(chit.getNcOLCValue(), individualById.getNotCommisionPersentage());
                     transaction.setDebit(notCommision);
@@ -879,7 +898,6 @@ public class IndividualController {
                 }
             }
         }
-
     }
 
     /**
