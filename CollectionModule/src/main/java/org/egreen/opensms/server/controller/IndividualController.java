@@ -389,6 +389,7 @@ public class IndividualController {
         List<Chit> chitList = chitDAOService.getAllChithsByFormattedDateNIndividualId(stringDate, individualId);
         List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(generalSummaryReceiptModel.getEnvelopeId());
         Envelope envelopeById = envelopeDAOService.getEnvelopeById(generalSummaryReceiptModel.getEnvelopeId());
+
         if(envelopeById != null){
             if(center.getCommision() != null && envelopeById.getInvesment() != null && center.getCenterid() != null && envelopeById.getInvesment().doubleValue() != 0){
                 transaction = new Transaction();
@@ -408,6 +409,7 @@ public class IndividualController {
                 transactionDAOService.save(transaction);
             }
             envelopeById.setFinished(true);
+            System.out.println("Finish time envelope finish or not : "+envelopeById.getFinished());
             System.out.println("Finsh time commision ->"+envelopeById.getCommision());
             envelopeDAOService.update(envelopeById);
         }

@@ -60,15 +60,8 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
     }
 
     @Override
-    public List<Envelope> getEnvelopesByCenterId(String centerId,
-                                                 Integer limit,
-                                                 Integer offset,
-                                                 String date) {
-        //SELECT * FROM `envelop` WHERE `center` = 'Alu'AND DATE(`date`) = '2015-12-30'
+    public List<Envelope> getEnvelopesByCenterId(String centerId,Integer limit, Integer offset,String date) {
 
-//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :centerId AND DATE(e.date) = :date");
-//        query.setDate("date", date);
-//        query.setString("centerId", centerId);
         /**
          * please use below code when you try to get with unique string Id(date)
          */
@@ -104,10 +97,6 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
 
     @Override
     public Envelope getEnvelopesByIndividualIdByDateNCenterId(String individualId, String date, String centerId) {
-//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND DATE(e.date) = DATE( :date) AND e.center = :centerId");
-//        query.setString("date", date);
-//        query.setString("individualId", individualId);
-//        query.setString("centerId", centerId);
         /**
          * please use below code when you try to get with unique string Id(date)
          */
@@ -128,9 +117,6 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
 
     @Override
     public List<Envelope> getEnvelopeByCenterIdDate(String center, Integer limit, Integer offset, String formatedDate) {
-//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND DATE(e.date) = DATE( :formatedDate)");
-//        query.setString("formatedDate", formatedDate);
-//        query.setString("center", center);
         /**
          * please use below code when you try to get with unique string Id(date)
          */
@@ -148,10 +134,6 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
 
     @Override
     public FinishEnvelopeModel getEnvelopeByCenterIdNIndividualIdDate(String center, String individualId, String formatedDate) {
-//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.individualId = :individualId AND DATE(e.date) = DATE( :formatedDate)");
-//        query.setString("formatedDate", formatedDate);
-//        query.setString("center", center);
-//        query.setString("individualId", individualId);
         /**
          * please use below code when you try to get with unique string Id(date)
          */
@@ -180,9 +162,6 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
 
     @Override
     public Envelope getEnvelopesByDateNByIndividualId(String individualId, String formatedDate) {
-//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND DATE(e.date) = DATE( :date)");
-//        query.setString("date", formatedDate);
-//        query.setString("individualId", individualId);
 
         Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND e.sTime =  :date");
         query.setString("date", formatedDate);
@@ -200,9 +179,6 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
 
     @Override
     public String checkEnvelopeIsFinished(String envelopeId, String formatedDate) {
-//        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.envelopId = :envelopeId AND DATE(e.date) = DATE( :formatedDate)");
-//        query.setString("formatedDate", formatedDate);
-//        query.setString("envelopeId", envelopeId);
         /**
          * please use below code when you try to get with unique string Id(date)
          */

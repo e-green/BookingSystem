@@ -173,7 +173,7 @@ public class EnvelopeDAOService {
                     transaction.setTypeId("LON");
                     transaction.setCredit(approvedLoan.getDueamount());
                     transaction.setTime(envelope.getDate());
-                    transaction.setsTime(formattedDate);
+                    transaction.setsTime(fd);
                     transactionDAOController.create(transaction);
                 } else if (approvedLoan!=null&&approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
 
@@ -275,9 +275,7 @@ public class EnvelopeDAOService {
      */
     public String update(Envelope envelope) {
         String indId=envelope.getIndividualId();
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = simpleDateFormat.format(envelope.getDate());
-        Envelope envelopesByDateNByIndividualId = envelopeDAOController.getEnvelopesByDateNByIndividualId(indId, formattedDate);
+        Envelope envelopesByDateNByIndividualId = envelopeDAOController.getEnvelopesByDateNByIndividualId(indId, envelope.getsTime());
         String s=null;
         if(envelopesByDateNByIndividualId != null){
 
@@ -297,8 +295,8 @@ public class EnvelopeDAOService {
                 Account account = accountDAOController.getAccountByCenterOIndividualId(individualId);
                 Account centerAccount = accountDAOController.getAccountByCenterOIndividualId(centerId);
                 Individual individual = individualDAOController.read(individualId);
-                List<Transaction> transactionList = transactionDAOController.getTodayTransactionDetailByDateNAccountNo(formattedDate, account.getAccountNo());
-                List<Transaction> centerTransactionList = transactionDAOController.getTodayTransactionDetailByDateNAccountNo(formattedDate, centerAccount.getAccountNo());
+                List<Transaction> transactionList = transactionDAOController.getTodayTransactionDetailByDateNAccountNo(envelope.getsTime(), account.getAccountNo());
+                List<Transaction> centerTransactionList = transactionDAOController.getTodayTransactionDetailByDateNAccountNo(envelope.getsTime(), centerAccount.getAccountNo());
                 Center center=centerDAOController.read(centerId);
                 for(Transaction transaction:transactionList){
                     if (envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0 && transaction.getTypeId().equals("Inv")) {

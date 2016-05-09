@@ -719,6 +719,9 @@ public class JasperReportController {
                 }
                 model.addRow(new Object[]{individualCount+"",  individual.getName()+ "",  investment+"", ncVal+"", lcsVal+""});
                 System.out.println("No:"+individualCount+" | Individual Name:"+individual.getName()+" | Investment :"+investment);
+                investment=0.0;
+                ncVal=0.0;
+                lcsVal=0.0;
             }
 
         }
@@ -1122,6 +1125,10 @@ public class JasperReportController {
                     }
                 }
                 model.addRow(new Object[]{individualCount+"",  individual.getName()+ "",  investment+"", payValue+"",cashValue+"",ncVal+""});
+                investment=0.0;
+                payValue=0.0;
+                cashValue=0.0;
+                ncVal=0.0;
             }
         }
 
@@ -1568,7 +1575,6 @@ public class JasperReportController {
             map.put("Individual", centerId == null ? "--" : centerId);
             envelopesByCenterId = envelopeDAOService.getEnvelopesByCenterId(centerId, null, null, date);
         } else if (type == 1 && individual != null) {
-//            String fD = simpleDateFormat.format(date1);
             map.put("Individual", individual.getName());
             envelopesByCenterId = envelopeDAOService.getEnvelopesByIndividualIdByDate(individualId, null, null, date);
         }

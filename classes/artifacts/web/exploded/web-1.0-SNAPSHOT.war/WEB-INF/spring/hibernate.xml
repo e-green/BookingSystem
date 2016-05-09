@@ -19,13 +19,19 @@
         <property name="password" value="mysql"/>
     </bean>
 
-    <bean id="testingServer" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <bean id="testingServerUp" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost/testingbooking"/>
+        <property name="username" value="testingbooking"/>
+        <property name="password" value="testingbooking"/>
+    </bean>
+
+    <bean id="actualServer" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost/booking"/>
         <property name="username" value="booking"/>
         <property name="password" value="booking"/>
     </bean>
-
 
     <!-- TODO 9: Define a bean named 'sessionFactory' that configures a test SessionFactory -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
