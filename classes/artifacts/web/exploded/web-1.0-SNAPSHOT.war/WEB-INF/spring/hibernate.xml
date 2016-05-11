@@ -35,7 +35,7 @@
 
     <!-- TODO 9: Define a bean named 'sessionFactory' that configures a test SessionFactory -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="developingServer"/>
+        <property name="dataSource" ref="testingServerUp"/>
         <property name="packagesToScan">
             <value>
                 org.egreen.opensms.server.entity
@@ -47,7 +47,6 @@
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.transaction.auto_close_session">false</prop>
-
             </props>
         </property>
 
@@ -58,19 +57,5 @@
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-
-
-    <!--<mvc:annotation-driven>-->
-        <!--<mvc:message-converters>-->
-            <!--&lt;!&ndash; Use the HibernateAware mapper instead of the default &ndash;&gt;-->
-            <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
-                <!--<property name="objectMapper">-->
-                    <!--<bean class="org.egreen.opensms.server.config.HibernateAwareObjectMapper"/>-->
-                <!--</property>-->
-            <!--</bean>-->
-        <!--</mvc:message-converters>-->
-    <!--</mvc:annotation-driven>-->
-
-
 
 </beans>

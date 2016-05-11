@@ -57,4 +57,12 @@ public class Tempdata implements EntityInterface<String> {
     public String getId() {
         return getKey();
     }
+
+    @Override
+    public String toString() {
+        return "Tempdata{" +
+                "key='" + key + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

@@ -10,4 +10,6 @@ public interface PermissionDAOController extends DAOController<Permission,String
 
 
     Integer removePermission(String permissionId);
+
+    boolean getPermissionIsAvailable(String adminId, String permission);
 }

@@ -57,10 +57,10 @@ public class EnvelopeDAOService {
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
         String newid = hexaid + "" + randomString(10);
         String indId=envelope.getIndividualId();
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = simpleDateFormat.format(envelope.getDate());
+//        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+//        String formattedDate = simpleDateFormat.format(envelope.getDate());
         String fd=envelope.getsTime();
-        Envelope envelopesByDateNByIndividualId = envelopeDAOController.getEnvelopesByDateNByIndividualId(indId, formattedDate);
+        Envelope envelopesByDateNByIndividualId = envelopeDAOController.getEnvelopesByDateNByIndividualId(indId, fd);
         String s=null;
         if(envelopesByDateNByIndividualId == null){
             envelope.setEnvelopId(newid);

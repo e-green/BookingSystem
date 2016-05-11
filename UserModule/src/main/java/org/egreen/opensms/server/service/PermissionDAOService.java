@@ -79,4 +79,8 @@ public class PermissionDAOService {
 
         return permissionDAOController.getAll();
     }
+
+    public boolean getPermissionIsAvailable(String adminId, String permission) {
+        return permissionDAOController.getPermissionIsAvailable(adminId,permission);
+    }
 }

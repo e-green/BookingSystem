@@ -74,6 +74,12 @@ public class PermissionController {
         return permissionDAOService.getPermissionByClientId(permissionId);
     }
 
+    @RequestMapping(value = "getPermissionIsAvailable", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public boolean getPermissionIsAvailable(@RequestParam("adminId")String adminId,@RequestParam("permission")String permission) {
+        return permissionDAOService.getPermissionIsAvailable(adminId,permission);
+    }
+
     @RequestMapping(value = "getAll", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public List<Permission> getAll() {

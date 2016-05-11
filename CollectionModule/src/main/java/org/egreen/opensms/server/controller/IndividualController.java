@@ -407,10 +407,9 @@ public class IndividualController {
                 transaction.setTime(envelopeById.getDate());
                 transaction.setsTime(stringDate);
                 transactionDAOService.save(transaction);
+                System.out.println("commision  -----------------------:"+comm);
             }
             envelopeById.setFinished(true);
-            System.out.println("Finish time envelope finish or not : "+envelopeById.getFinished());
-            System.out.println("Finsh time commision ->"+envelopeById.getCommision());
             envelopeDAOService.update(envelopeById);
         }
 
