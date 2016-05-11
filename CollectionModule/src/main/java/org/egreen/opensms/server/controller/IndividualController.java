@@ -170,6 +170,18 @@ public class IndividualController {
         return individualList;
     }
 
+    /**
+     * getIndividuals Count by CenterId
+     *
+     * @param centerId
+     * @return
+     */
+    @RequestMapping(value = "getIndividualsCountCenterId", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public int getIndividualsCountCenterId(@RequestParam("centerId") String centerId) {
+        return individualDAOService.getIndividualCountByCenterId(centerId);
+    }
+
 
     /**
      * Get All

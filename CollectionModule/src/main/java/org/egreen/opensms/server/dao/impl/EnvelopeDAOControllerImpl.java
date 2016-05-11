@@ -204,4 +204,15 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         return val;
     }
 
+    @Override
+    public int getEnvelopeCountByCenterIdDate(String center, String formatedDate) {
+        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.sTime = :formatedDate AND e.finished = :finished");
+        query.setString("formatedDate", formatedDate);
+        query.setString("center", center);
+        query.setBoolean("finished",true);
+
+        List<Envelope> list = query.list();
+        return list.size();
+    }
+
 }

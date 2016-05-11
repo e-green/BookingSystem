@@ -429,6 +429,18 @@ public class EnvelopeDAOService {
         return envelopeDAOController.getEnvelopeByCenterIdDate(center, limit, offset, formatedDate);
     }
 
+
+    /**
+     * get Envelope Count By CenterId & Date
+     *
+     * @param center
+     * @param formatedDate
+     * @return
+     */
+    public int  getEnvelopeCountByCenterIdDate(String center, String formatedDate) {
+        return envelopeDAOController.getEnvelopeCountByCenterIdDate(center,formatedDate);
+    }
+
     /**
      * Get Envelope by centerId , individualId & date
      *

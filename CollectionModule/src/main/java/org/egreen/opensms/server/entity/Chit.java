@@ -29,6 +29,7 @@ public class Chit implements EntityInterface <String> {
     private Boolean finish;
     private BigDecimal ncOLCValue;
     private String sTime;
+    private Boolean wT;
 
 
     @Id
@@ -153,6 +154,10 @@ public class Chit implements EntityInterface <String> {
         this.sTime = sTime;
     }
 
+    public Boolean getwT() { return wT; }
+
+    public void setwT(Boolean wT) { this.wT = wT; }
+
     @Override
     @Transient
     public String getId() {
@@ -178,6 +183,7 @@ public class Chit implements EntityInterface <String> {
                 ", finish=" + finish +
                 ", ncOLCValue=" + ncOLCValue +
                 ", sTime='" + sTime + '\'' +
+                ", wT=" + wT +
                 '}';
     }
 }

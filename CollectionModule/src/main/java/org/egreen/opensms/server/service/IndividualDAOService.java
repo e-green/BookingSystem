@@ -137,6 +137,12 @@ public class IndividualDAOService {
         return individualDAOController.checkIfExist(centerName);
     }
 
+    /**
+     * get Individuals By CenterId
+     *
+     * @param centerId
+     * @return
+     */
     public List<Individual> getIndividualsByCenterId(String centerId) {
         List<Individual> individualList = individualDAOController.getAllByPropertyByStringValue(centerId, "center");
         List<Individual> list=new ArrayList<Individual>();
@@ -148,6 +154,17 @@ public class IndividualDAOService {
             list.add(individual);
         }
         return list;
+    }
+
+    /**
+     * get individual count by center id
+     *
+     * @param centerId
+     * @return
+     */
+    public int getIndividualCountByCenterId(String centerId) {
+        List<Individual> individualList = individualDAOController.getAllByPropertyByStringValue(centerId, "center");
+        return individualList.size();
     }
 
     public Individual getIndividualsByCenterIdAndIndividualId(String centerId, String individualId) {

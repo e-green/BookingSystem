@@ -254,6 +254,19 @@ public class EnvelopeController {
         return envelopeDAOService.getEnvelopesDetailModel(envelopeDetailModel);
     }
 
+    /**
+     *get Envelope Count By CenterId & Date
+     *
+     * @param envelope
+     * @return
+     */
+    @RequestMapping(value = "getEnvelopeCountByCenterIdDate", method = RequestMethod.POST)
+    @ResponseBody
+    public int getEnvelopeCountByCenterIdDate(@RequestBody EnvelopeModel envelope) {
+        return envelopeDAOService.getEnvelopeCountByCenterIdDate(envelope.getCenter(),envelope.getsTime());
+
+    }
+
     @RequestMapping(value = "EnvelopesDetailModelOB", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public EnvelopeDetailModel getEnvelopeDetailModelOB() {
