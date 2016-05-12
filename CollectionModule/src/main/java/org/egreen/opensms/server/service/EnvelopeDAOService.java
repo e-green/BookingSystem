@@ -819,4 +819,8 @@ public class EnvelopeDAOService {
     public String checkEnvelopeIsFinished(String envelopeId, String formatedDate) {
         return envelopeDAOController.checkEnvelopeIsFinished(envelopeId,formatedDate);
     }
+
+    public boolean getAllEnvelopesAreFinishedByCenterIdDate(String centerId, String sTime) {
+        return envelopeDAOController.getAllEnvelopesAreFinishedByCenterIdDate(centerId,sTime);
+    }
 }

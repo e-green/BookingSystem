@@ -40,7 +40,6 @@ public class EnvelopeController {
         return returnIdModel1;
 
     }
-//
 
     /**
      * Update Branch
@@ -87,7 +86,12 @@ public class EnvelopeController {
         return all;
     }
 
-
+    /**
+     * get Envelope By envelopeId
+     *
+     * @param envelopeId
+     * @return
+     */
     @RequestMapping(value = "getEnvelopeById", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public Envelope getEnvelopeById(@RequestParam("envelopeId") String envelopeId) {
@@ -127,6 +131,12 @@ public class EnvelopeController {
 
     }
 
+    /**
+     * get Envelope By centerId & individualId & sTime
+     *
+     * @param envelope
+     * @return
+     */
     @RequestMapping(value = "getEnvelopeByCenterIdNIndividualIdDate", method = RequestMethod.POST)
     @ResponseBody
     public FinishEnvelopeModel getEnvelopeByCenterIdNIndividualIdDate(@RequestBody EnvelopeModel envelope) {
@@ -134,6 +144,12 @@ public class EnvelopeController {
 
     }
 
+    /**
+     * get Envelopes By individualId & sTime
+     *
+     * @param envelopeModel
+     * @return
+     */
     @RequestMapping(value = "getEnvelopesByIndividualIdByDate", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
     public List<Envelope> getEnvelopesByIndividualIdByDate(@RequestBody EnvelopeModel envelopeModel) {
@@ -155,6 +171,12 @@ public class EnvelopeController {
         return envelopeDAOService.getAllBranchersByPagination(limit, offset);
     }
 
+    /**
+     * check Envelope is Finished
+     *
+     * @param finishChitModel
+     * @return
+     */
     @RequestMapping(value = "checkEnvelopeIsFinished", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
     public String checkEnvelopeIsFinished(@RequestBody FinishChitModel finishChitModel) {
@@ -192,11 +214,7 @@ public class EnvelopeController {
     }
 
 
-    @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
-    @ResponseBody
-    public Envelope getob() {
-        return new Envelope();
-    }
+
 
     /**
      * ob
@@ -248,6 +266,12 @@ public class EnvelopeController {
         return  null;
     }
 
+    /**
+     * get EnvelopesDetailModel
+     *
+     * @param envelopeDetailModel
+     * @return
+     */
     @RequestMapping(value = "getEnvelopesDetailModel", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
     public EnvelopeDetailModel getEnvelopesDetailModel(@RequestBody EnvelopeDetailModel envelopeDetailModel) {
@@ -267,12 +291,40 @@ public class EnvelopeController {
 
     }
 
+    /**
+     * checking All Envelopes are Finished By CenterId & Date
+     *
+     * @param centerId
+     * @param sTime
+     * @return
+     */
+    @RequestMapping(value = "getAllEnvelopesAreFinishedByCenterIdDate", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean getAllEnvelopesAreFinishedByCenterIdDate(@RequestParam("centerId") String centerId,@RequestParam("sTime") String sTime) {
+        return envelopeDAOService.getAllEnvelopesAreFinishedByCenterIdDate(centerId,sTime);
+
+    }
+
+    /**
+     * get EnvelopeDetailModel ob
+     *
+     * @return
+     */
     @RequestMapping(value = "EnvelopesDetailModelOB", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public EnvelopeDetailModel getEnvelopeDetailModelOB() {
         return new EnvelopeDetailModel();
     }
 
-
+    /**
+     * get Envelope ob
+     *
+     * @return
+     */
+    @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public Envelope getob() {
+        return new Envelope();
+    }
 
 }

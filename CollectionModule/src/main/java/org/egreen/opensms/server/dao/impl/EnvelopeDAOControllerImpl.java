@@ -215,4 +215,26 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         return list.size();
     }
 
+    @Override
+    public boolean getAllEnvelopesAreFinishedByCenterIdDate(String centerId, String sTime) {
+        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.sTime = :formatedDate");
+        query.setString("formatedDate", sTime);
+        query.setString("center", centerId);
+        List<Envelope> list = query.list();
+        boolean notFinishOneDetected=false;
+        boolean returnBool=false;
+        for (Envelope envelope:list) {
+            Boolean finished = envelope.getFinished();
+            if(finished==false){
+                notFinishOneDetected=true;
+            }
+        }
+        if(notFinishOneDetected==true){
+            returnBool=false;
+        }else if(notFinishOneDetected==false){
+            returnBool=true;
+        }
+        return returnBool;
+    }
+
 }

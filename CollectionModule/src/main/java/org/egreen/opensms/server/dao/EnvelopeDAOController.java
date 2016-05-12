@@ -34,4 +34,6 @@ public interface EnvelopeDAOController extends DAOController<Envelope,String> {
     String checkEnvelopeIsFinished(String envelopeId, String formatedDate);
 
     int getEnvelopeCountByCenterIdDate(String center, String formatedDate);
+
+    boolean getAllEnvelopesAreFinishedByCenterIdDate(String centerId, String sTime);
 }

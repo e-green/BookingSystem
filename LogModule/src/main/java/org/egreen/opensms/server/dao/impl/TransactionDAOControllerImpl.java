@@ -20,12 +20,6 @@ public class TransactionDAOControllerImpl extends  AbstractDAOController<Transac
 
     @Override
     public Transaction getTransactionsByDateNAccountNoNType(String date, String accountNo, String typeId) {
-//        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-//        String formatedDate = simpleDateFormat.format(date);
-//        Query query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND t.typeId = :typeId AND DATE(t.time) = DATE( :formattedDate)");
-//        query.setString("accountNo", accountNo);
-//        query.setString("typeId", typeId);
-//        query.setString("formattedDate", formatedDate);
         /**
          * please use below code when you try to get with unique string Id(date)
          */
@@ -46,10 +40,6 @@ public class TransactionDAOControllerImpl extends  AbstractDAOController<Transac
 
     @Override
     public List<Transaction> getTodayTransactionDetailByDateNAccountNo(String formatedDate, String accountNo) {
-//        Query query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND DATE(t.time) = DATE( :formattedDate)");
-//        query.setString("accountNo", accountNo);
-//        query.setString("formattedDate", formatedDate);
-
         /**
          * please use below code when you try to get with unique string Id(date)
          */
@@ -59,4 +49,6 @@ public class TransactionDAOControllerImpl extends  AbstractDAOController<Transac
         List<Transaction> transactionList= query.list();
         return transactionList;
     }
+
+
 }
