@@ -223,6 +223,9 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         List<Envelope> list = query.list();
         boolean notFinishOneDetected=false;
         boolean returnBool=false;
+        if(list.size()==0){
+            notFinishOneDetected=true;
+        }
         for (Envelope envelope:list) {
             Boolean finished = envelope.getFinished();
             if(finished==false){
@@ -231,7 +234,8 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         }
         if(notFinishOneDetected==true){
             returnBool=false;
-        }else if(notFinishOneDetected==false){
+        }
+        if(notFinishOneDetected==false){
             returnBool=true;
         }
         return returnBool;
