@@ -162,6 +162,9 @@ public class JasperReportController {
                     if(tran.getDebit() != null && tran.getTypeId().equals("LN")){
                         isExistLoanDeductionPayment=true;
                     }
+                    if(tran.getCredit() != null && tran.getTypeId().equals("LON")){
+                        isExistLoan=true;
+                    }
                 }
             }
         }
@@ -181,6 +184,15 @@ public class JasperReportController {
             }
         }
 
+        if(isExistLoan == false){
+            if (approvedLoan!=null&&approvedLoan.getsTime().equals(stringTime)) {
+                BigDecimal dueAmount=null;
+                if(approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null){
+                    loan = approvedLoan.getDueamount().doubleValue();
+                }
+            }
+        }
+
         if(center.getPcChargers() != null){
             pcCharges=center.getPcChargers().doubleValue();
         }
@@ -191,7 +203,9 @@ public class JasperReportController {
         tpyPayment+=cash;
         tpyPayment+=commision;
         tpyInvestment+=ncValue;
+
         tpyInvestment+=loanDeductionPayment;
+
         tpyInvestment+=loanDeductValue;
         tpyInvestment += lcsValue;
         tpyInvestment+=pcCharges;
@@ -220,6 +234,7 @@ public class JasperReportController {
         reportModel.setTpyInv(tpyInvestment);
         reportModel.setTpyPay(tpyPayment);
         reportModel.setDueAmount(dueAmount);
+
 
         return reportModel;
 

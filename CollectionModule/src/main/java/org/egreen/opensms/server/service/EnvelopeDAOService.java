@@ -161,10 +161,7 @@ public class EnvelopeDAOService {
                 }
 
                 ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
-                if (approvedLoan!=null&&approvedLoan.getDatetime().getYear() == envelope.getDate().getYear()
-                        && approvedLoan.getDatetime().getMonth() == envelope.getDate().getMonth()
-                        && approvedLoan.getDatetime().getDate() == envelope.getDate().getDate()
-                        ) {
+                if (approvedLoan!=null&&approvedLoan.getsTime().equals(envelope.getsTime()) ) {
 
                     transaction = new Transaction();
                     createTransactinonAccount(individualId, transaction);

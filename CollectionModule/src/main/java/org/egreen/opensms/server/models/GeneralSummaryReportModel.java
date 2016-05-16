@@ -174,7 +174,7 @@ public class GeneralSummaryReportModel {
         return ln;
     }
 
-    public void setLn(double lon) {
+    public void setLn(double ln) {
         this.ln = ln;
     }
 
