@@ -3,6 +3,7 @@ package org.egreen.opensms.server.service;
 import org.egreen.opensms.server.entity.Account;
 import org.egreen.opensms.server.entity.Individual;
 import org.egreen.opensms.server.entity.Transaction;
+import org.egreen.opensms.server.models.ChitCountListModel;
 import org.egreen.opensms.server.models.SpecifyDateInOutModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class DailyReportService {
 
     @Autowired
     private  AccountDAOService accountDAOService;
+
+    @Autowired
+    private ChitDAOService chitDAOService;
 
     /**
      * get Input & Output transaction summary By Specified Date For Individuals
@@ -135,5 +139,16 @@ public class DailyReportService {
         specifyDateInOutModel.setOutValue(new BigDecimal(outValue));
         return specifyDateInOutModel;
 
+    }
+
+    /**
+     * get Chit Count List Of Individual For Spesific Date Range
+     *
+     * @param sTime
+     * @param endSTime
+     * @return
+     */
+    public List<ChitCountListModel> getChitCountListOfIndividualForSpesificDateRange(String individualId,String sTime, String endSTime) {
+        return chitDAOService.getChitCountListOfIndividualForSpesificDateRange(individualId,sTime,endSTime);
     }
 }

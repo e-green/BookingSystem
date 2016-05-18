@@ -2,6 +2,7 @@ package org.egreen.opensms.server.dao.impl;
 
 import org.egreen.opensms.server.dao.ChitDAOController;
 import org.egreen.opensms.server.entity.Chit;
+import org.egreen.opensms.server.models.ChitCountListModel;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -10,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,9 +47,6 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
     public List<Chit> getAllChitById(Integer limit, Integer offset, String id, Integer type, String date) {
         Query query = null;
         if (type == 0) {
-//            query = getSession().createQuery("SELECT c FROM Chit c WHERE c.centerid = :id AND DATE(c.datetime) = DATE(:date)  ORDER BY DATE(c.datetime) ASC");
-//            query.setString("date", date);
-//            query.setString("id", id);
             /**
              * please use below code when you try to get with unique string Id(date)
              */
@@ -55,9 +54,6 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
             query.setString("date", date);
             query.setString("id", id);
         } else if (type == 1) {
-//            query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :id AND DATE(c.datetime) = DATE(:date) ORDER BY DATE(c.datetime) ASC ");
-//            query.setString("date", date);
-//            query.setString("id", id);
             /**
              * please use below code when you try to get with unique string Id(date)
              */
@@ -95,9 +91,6 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
     public Long getAllChitByIdCount(String id, Integer type, String date) {
         Query query = null;
         if (type == 0) {
-//            query = getSession().createQuery("SELECT COUNT(c) FROM Chit c WHERE c.centerid = :id AND DATE(c.datetime) = :date");
-//            query.setDate("date", date);
-//            query.setString("id", id);
             /**
              * please use below code when you try to get with unique string Id(date)
              */
@@ -105,10 +98,6 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
             query.setString("date", date);
             query.setString("id", id);
         } else if (type == 1) {
-//            query = getSession().createQuery("SELECT COUNT(c) FROM Chit c WHERE c.individualId = :id AND DATE(c.datetime) = :date");
-//
-//            query.setDate("date", date);
-//            query.setString("id", id);
             /**
              * please use below code when you try to get with unique string Id(date)
              */
@@ -123,10 +112,6 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
 
     @Override
     public List<Chit> getAllChithsByFormattedDateNIndividualId(String formatedDate, String individualId) {
-//        Query query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :individualId AND DATE(c.datetime) = DATE( :formatedDate)");
-//        query.setString("formatedDate", formatedDate);
-//        query.setString("individualId", individualId);
-
         /**
          * please use below code when you try to get with unique string Id(date)
          */
@@ -136,5 +121,46 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
 
         return query.list();
     }
-    
+
+    @Override
+    public List<ChitCountListModel> getChitCountListOfIndividualForSpesificDateRange(String individualId,String sTime, String endSTime) {
+        String[] split = sTime.split("-");
+        String year = split[0];
+        String month = split[1];
+        String day = split[2];
+        int startYear = Integer.parseInt(year);
+        int startMonth = Integer.parseInt(month);
+        int startDay = Integer.parseInt(day);
+
+        String[] splitEnd = endSTime.split("-");
+        String yearEnd = splitEnd[0];
+        String monthEnd = splitEnd[1];
+        String dayEnd = splitEnd[2];
+        int endYear = Integer.parseInt(yearEnd);
+        int endMonth = Integer.parseInt(monthEnd);
+        int endDay = Integer.parseInt(dayEnd);
+
+        int dateDifference = endDay - startDay+1;
+        List<ChitCountListModel> chitCountListModelList=new ArrayList<ChitCountListModel>();
+        int incrementDate=startDay;
+        for (int i = 0; i < dateDifference; i++) {
+            String s=null;
+            if(i==0){
+                s = startYear + "-" + startMonth + "-" + startDay;
+            }
+            if(i > 0 ){
+                s = startYear + "-" + startMonth + "-" + ++incrementDate;
+            }
+
+            Query query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :individualId AND c.sTime = :formatedDate");
+            query.setString("individualId", individualId);
+            query.setString("formatedDate", s);
+            List<Chit> list = query.list();
+            ChitCountListModel chitCountListModel=new ChitCountListModel();
+            chitCountListModel.setChitCount(list.size());
+            chitCountListModelList.add(chitCountListModel);
+        }
+        return chitCountListModelList;
+    }
+
 }

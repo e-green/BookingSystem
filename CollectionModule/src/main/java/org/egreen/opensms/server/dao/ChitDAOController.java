@@ -1,6 +1,7 @@
 package org.egreen.opensms.server.dao;
 
 import org.egreen.opensms.server.entity.Chit;
+import org.egreen.opensms.server.models.ChitCountListModel;
 
 import java.util.Date;
 import java.util.List;
@@ -24,4 +25,5 @@ public interface ChitDAOController extends DAOController<Chit,String> {
 
     List<Chit> getAllChithsByFormattedDateNIndividualId(String formatedDate, String individualId);
 
+    List<ChitCountListModel> getChitCountListOfIndividualForSpesificDateRange(String individualId,String sTime, String endSTime);
 }

@@ -57,8 +57,7 @@ public class EnvelopeDAOService {
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
         String newid = hexaid + "" + randomString(10);
         String indId=envelope.getIndividualId();
-//        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-//        String formattedDate = simpleDateFormat.format(envelope.getDate());
+
         String fd=envelope.getsTime();
         Envelope envelopesByDateNByIndividualId = envelopeDAOController.getEnvelopesByDateNByIndividualId(indId, fd);
         String s=null;
@@ -141,7 +140,6 @@ public class EnvelopeDAOService {
                     transaction.setTypeId("COM");
                     double investmentValue = envelope.getInvesment().doubleValue();
                     BigDecimal commision = calculateCommision(invesment, individual.getCommision());
-                    System.out.println("Individual com ->"+commision);
                     transaction.setCredit(commision);
                     transaction.setTime(envelope.getDate());
                     transaction.setsTime(fd);

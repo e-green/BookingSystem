@@ -733,7 +733,6 @@ public class JasperReportController {
                     }
                 }
                 model.addRow(new Object[]{individualCount+"",  individual.getName()+ "",  investment+"", ncVal+"", lcsVal+""});
-                System.out.println("No:"+individualCount+" | Individual Name:"+individual.getName()+" | Investment :"+investment);
                 investment=0.0;
                 ncVal=0.0;
                 lcsVal=0.0;

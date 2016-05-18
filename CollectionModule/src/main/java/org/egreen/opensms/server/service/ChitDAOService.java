@@ -4,6 +4,7 @@ import org.egreen.opensms.server.dao.ChitDAOController;
 import org.egreen.opensms.server.dao.EnvelopeDAOController;
 import org.egreen.opensms.server.dao.TransactionDAOController;
 import org.egreen.opensms.server.entity.*;
+import org.egreen.opensms.server.models.ChitCountListModel;
 import org.egreen.opensms.server.utils.Hashids;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,6 @@ public class ChitDAOService {
 //        chit.setDatetime(chit.getDatetime());
 //        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
 //        String formattedDate = simpleDateFormat.format(chit.getDatetime());
-        System.out.println("chit s time :"+chit.getsTime());
         Envelope envelope = envelopeDAOController.read(chit.getEnvelopeId());
         String s = null;
 
@@ -159,4 +159,7 @@ public class ChitDAOService {
         return chitDAOController.getAllChithsByFormattedDateNIndividualId(formatedDate, individualId);
     }
 
+    public List<ChitCountListModel> getChitCountListOfIndividualForSpesificDateRange(String individualId,String sTime, String endSTime) {
+        return chitDAOController.getChitCountListOfIndividualForSpesificDateRange(individualId,sTime,endSTime);
+    }
 }
