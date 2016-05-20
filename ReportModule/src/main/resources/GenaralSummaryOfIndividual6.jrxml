@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="java" pageWidth="216" pageHeight="432" whenNoDataType="AllSectionsNoDetail" columnWidth="176" leftMargin="20" rightMargin="20" topMargin="3" bottomMargin="20">
-	<property name="ireport.zoom" value="2.8531167061100065"/>
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="160"/>
+	<property name="ireport.y" value="12"/>
 	<parameter name="Individual" class="java.lang.String"/>
 	<parameter name="no" class="java.lang.String"/>
 	<parameter name="fc" class="java.lang.String"/>
@@ -35,11 +35,12 @@
 	<field name="Inv" class="java.lang.String"/>
 	<field name="Pay" class="java.lang.String"/>
 	<field name="ncOfTable" class="java.lang.String"/>
+	<field name="wT" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="28" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="117" height="20"/>
 				<box leftPadding="2"/>
@@ -61,37 +62,7 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="10" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="38" height="10"/>
-				<box leftPadding="2">
-					<pen lineColor="#000000"/>
-					<topPen lineColor="#000000"/>
-					<leftPen lineColor="#000000"/>
-					<bottomPen lineColor="#000000"/>
-					<rightPen lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Serif" size="9" isUnderline="true"/>
-				</textElement>
-				<text><![CDATA[No.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="104" y="0" width="72" height="10"/>
-				<box rightPadding="3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Serif" size="9" isUnderline="true"/>
-				</textElement>
-				<text><![CDATA[Pay]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="38" y="0" width="50" height="10"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Serif" size="9" isUnderline="true"/>
-				</textElement>
-				<text><![CDATA[Inv]]></text>
-			</staticText>
-		</band>
+		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
 		<band height="13" splitType="Stretch">
@@ -104,7 +75,7 @@
 				<textFieldExpression><![CDATA[$F{Pay}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="38" y="0" width="50" height="13"/>
+				<reportElement x="50" y="0" width="38" height="13"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
@@ -118,7 +89,7 @@
 				<textFieldExpression><![CDATA[$F{ncOfTable}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="38" height="13"/>
+				<reportElement x="0" y="0" width="26" height="13"/>
 				<box leftPadding="2">
 					<pen lineColor="#000000"/>
 					<topPen lineColor="#000000"/>
@@ -130,6 +101,13 @@
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="26" y="0" width="24" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{wT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

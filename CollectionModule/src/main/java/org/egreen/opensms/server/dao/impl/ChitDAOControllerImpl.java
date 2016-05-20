@@ -149,7 +149,7 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
                 s = startYear + "-" + startMonth + "-" + startDay;
             }
             if(i > 0 ){
-                s = startYear + "-" + startMonth + "-" + ++incrementDate;
+                s = startYear + "-" + startMonth + "-" + ++startDay;
             }
 
             Query query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :individualId AND c.sTime = :formatedDate");

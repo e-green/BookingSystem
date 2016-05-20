@@ -59,6 +59,9 @@ public class JasperReportController {
     @Autowired
     private CenterDAOService centerDAOService;
 
+    @Autowired
+    private CenterSummeryCheckService centerSummeryCheckService;
+
 
     /**
      * Get General Summary Report Model
@@ -626,6 +629,14 @@ public class JasperReportController {
         } catch (Exception ex) {
             System.out.println(ex);
         }
+
+        if(centerId!= null && date!=null){
+            CenterSummeryCheck centerSummeryCheck=new CenterSummeryCheck();
+            centerSummeryCheck.setCenterId(centerId);
+            centerSummeryCheck.setsDate(date);
+            centerSummeryCheck.setSummaryFinish(true);
+            centerSummeryCheckService.save(centerSummeryCheck);
+        }
     }
 
     /**
@@ -1018,6 +1029,14 @@ public class JasperReportController {
             }
         } catch (Exception ex) {
             System.out.println(ex);
+        }
+
+        if(centerId!= null && date!=null){
+            CenterSummeryCheck centerSummeryCheck=new CenterSummeryCheck();
+            centerSummeryCheck.setCenterId(centerId);
+            centerSummeryCheck.setsDate(date);
+            centerSummeryCheck.setSummaryFinish(true);
+            centerSummeryCheckService.save(centerSummeryCheck);
         }
     }
 
@@ -1428,6 +1447,14 @@ public class JasperReportController {
         } catch (Exception ex) {
             System.out.println(ex);
         }
+
+        if(centerId!= null && date!=null){
+            CenterSummeryCheck centerSummeryCheck=new CenterSummeryCheck();
+            centerSummeryCheck.setCenterId(centerId);
+            centerSummeryCheck.setsDate(date);
+            centerSummeryCheck.setSummaryFinish(true);
+            centerSummeryCheckService.save(centerSummeryCheck);
+        }
     }
 
 
@@ -1503,9 +1530,6 @@ public class JasperReportController {
         map.put("exp", "--");
         map.put("rent", "--");
 
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        String formatedDate = simpleDateFormat.format(new Date(date));
-
         List<Transaction> transactionList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(date, account.getAccountNo());
         for (Transaction transaction : transactionList) {
             if (transaction != null) {
@@ -1574,7 +1598,6 @@ public class JasperReportController {
                 if(tra.getTypeId().equals("LON")){
                     loan+=tra.getCredit().doubleValue();
                 }
-
                 if(tra.getCredit() != null && tra.getTypeId().equals("Balance")){
                     tpyPayment+=tra.getCredit().doubleValue();
                 }
@@ -1597,10 +1620,10 @@ public class JasperReportController {
         JTable table = new JTable(model);
 
         model.addColumn("no");
+        model.addColumn("wT");
         model.addColumn("Inv");
         model.addColumn("Pay");
         model.addColumn("ncOfTable");
-
 
 
         for (Envelope envelope : envelopesByCenterId) {
@@ -1608,6 +1631,7 @@ public class JasperReportController {
 
             for (Chit chit : chits) {
                 String ncOLCS=null;
+                String wT=null;
                 if(chit.getNC() != null && chit.getNC() == true){
                     ncOLCS="NC";
                 }else if(chit.getLCS() != null && chit.getLCS() == true){
@@ -1617,7 +1641,13 @@ public class JasperReportController {
                 }else if(chit.getNC() == false && chit.getLCS() == false){
                     ncOLCS="";
                 }
-                model.addRow(new Object[]{chit.getNumber(), chit.getInvesment() == null ? "--" : chit.getInvesment() + "", chit.getAmount() == null ? "--" : chit.getAmount() + "", ncOLCS});
+                if(chit.getwT() != null && chit.getwT() == true){
+                    wT="WT";
+                }else if(chit.getwT() == false){
+                    wT="";
+                }
+
+                model.addRow(new Object[]{chit.getNumber(),wT,chit.getInvesment() == null ? "--" : chit.getInvesment() + "", chit.getAmount() == null ? "--" : chit.getAmount() + "", ncOLCS});
             }
         }
 
@@ -1632,7 +1662,6 @@ public class JasperReportController {
             map.put("sal",salary+"");
             tpyPayment+=salary;
         }
-
         if(cash > 0.0){
             map.put("csh",cash+"");
             tpyPayment+=cash;
@@ -1699,7 +1728,6 @@ public class JasperReportController {
             map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment+"");
             map.put("tpyPayDeduct", "");
         }
-
         if(dueAmount < 0.0){
             map.put("payment", dueAmount == null ? "--" : dueAmount*-1 + "");
             map.put("dueLable", "");
@@ -1728,7 +1756,7 @@ public class JasperReportController {
 
         ds = new JRTableModelDataSource(model);
         try {
-            InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual5.jrxml");
+            InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual6.jrxml");
             JasperReport jr = JasperCompileManager.compileReport(systemResourceAsStream);
             JasperPrint jp = JasperFillManager.fillReport(jr, map, ds);
             // JasperViewer.viewReport(jp, false);

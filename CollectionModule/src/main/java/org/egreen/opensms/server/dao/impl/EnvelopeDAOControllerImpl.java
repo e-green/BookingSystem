@@ -193,10 +193,10 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         }
         if (list.size() > 0) {
             for (Envelope envelope : list) {
-                if (envelope.getFinished() == true) {
+                if ( envelope.getFinished() == true) {
                     val = "1";
                 }
-                if (envelope.getFinished() == false) {
+                if ( envelope.getFinished() == false) {
                     val = "2";
                 }
             }
