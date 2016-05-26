@@ -60,11 +60,21 @@ public class ApprovedLoanDAOService {
         return sb.toString();
     }
 
-
+    /**
+     * get all approveLoans
+     * @return
+     */
     public List<ApprovedLoan> getAll() {
         return approvedLoanDAOController.getAll();
     }
 
+    /**
+     * get All approved loans By Pagination
+     *
+     * @param limit
+     * @param offset
+     * @return
+     */
     public List<ApprovedLoan> getAllBranchersByPagination(Integer limit, Integer offset) {
         return approvedLoanDAOController.getAllBranchersByPagination(limit, offset);
     }
@@ -91,6 +101,12 @@ public class ApprovedLoanDAOService {
         return newid;
     }
 
+    /**
+     * get approve loan by approveloanId
+     *
+     * @param approvedLoanid
+     * @return
+     */
     public ApprovedLoan getBranchById(String approvedLoanid) {
 
         return approvedLoanDAOController.read(approvedLoanid);

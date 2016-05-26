@@ -17,6 +17,12 @@ public class CenterSummeryCheckController {
     @Autowired
     private CenterSummeryCheckService centerSummeryCheckService;
 
+    /**
+     * save center summary check
+     *
+     * @param centerSummeryCheck
+     * @return
+     */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
     public ReturnIdModel1 save(@RequestBody CenterSummeryCheck centerSummeryCheck) {
@@ -27,12 +33,24 @@ public class CenterSummeryCheckController {
 
     }
 
+    /**
+     * is center summery finish or not
+     *
+     * @param centerId
+     * @param sTime
+     * @return
+     */
     @RequestMapping(value = "getCenterSummeryCheck", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public boolean getCenterSummeryCheck(@RequestParam("centerId") String centerId,@RequestParam("sTime") String sTime) {
         return centerSummeryCheckService.getCenterSummeryCheck(centerId,sTime);
     }
 
+    /**
+     * get CenterSummeryCheck ob
+     *
+     * @return
+     */
     @RequestMapping(value = "ob", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public CenterSummeryCheck getOb() {

@@ -29,21 +29,6 @@ public class ChitDAOService {
     @Autowired
     private EnvelopeDAOController envelopeDAOController;
 
-    @Autowired
-    private TransactionDAOService transactionDAOService;
-
-    @Autowired
-    private AccountDAOService accountDAOService;
-
-    @Autowired
-    private CenterDAOService centerDAOService;
-
-    @Autowired
-    private IndividualDAOService individualDAOService;
-
-    @Autowired
-    private EnvelopeDAOService envelopeDAOService;
-
 
     /**
      * chit SignUp
@@ -54,14 +39,10 @@ public class ChitDAOService {
     public String save(Chit chit) {
         String newid = idCreation();
         chit.setChitId(newid);
-//        chit.setDatetime(chit.getDatetime());
-//        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-//        String formattedDate = simpleDateFormat.format(chit.getDatetime());
         Envelope envelope = envelopeDAOController.read(chit.getEnvelopeId());
         String s = null;
 
         if(envelope.getFinished()!= null && envelope.getFinished() == false){
-//            setNotComisionOLessComSingleVal(chit);
             chit.setFinish(false);
             chitDAOController.create(chit);
             s= "1";
@@ -119,6 +100,11 @@ public class ChitDAOService {
         return newid;
     }
 
+    /**
+     * get all chits
+     *
+     * @return
+     */
     public List<Chit> getAll() {
         return chitDAOController.getAll();
     }
@@ -127,38 +113,95 @@ public class ChitDAOService {
         return chitDAOController.getAllBranchersByPagination(limit, offset);
     }
 
+    /**
+     * remove chit by chitId
+     *
+     * @param chitId
+     * @return
+     */
     public Integer removeChitById(String chitId) {
         return chitDAOController.removeChitById(chitId);
     }
 
+    /**
+     * Get Chit by chitId
+     *
+     * @param chitid
+     * @return
+     */
     public Chit getChitById(String chitid) {
 
         return chitDAOController.read(chitid);
     }
 
+    /**
+     * get All Chits By memberId(individualId or centerId) & string Time (sTime) with limits
+     *
+     * @param limit
+     * @param offset
+     * @param id
+     * @param type
+     * @param date
+     * @return
+     */
     public List<Chit> getAllChitById(Integer limit, Integer offset, String id, Integer type, String date) {
 
         return chitDAOController.getAllChitById(limit, offset, id, type, date);
     }
 
+    /**
+     * get all chits by cennterId
+     *
+     * @param id
+     * @return
+     */
     public Long getAllCount(String id) {
 
         return chitDAOController.getAllChitCount(id);
     }
 
+    /**
+     * get all chits by envelopeId
+     *
+     * @param envelopeId
+     * @return
+     */
     public List<Chit> getAllChitsByEnvelopeId(String envelopeId) {
 
         return chitDAOController.getAllChitsByEnvelopeId(envelopeId);
     }
 
+    /**
+     * get All Chits By Id, type & string date(sTime)
+     *
+     * @param id
+     * @param type
+     * @param date1
+     * @return
+     */
     public Long getAllChitByIdCount(String id, Integer type, String date1) {
         return chitDAOController.getAllChitByIdCount(id, type, date1);
     }
 
+    /**
+     * get All Chiths By string Date(sTime) and IndividualId
+     *
+     * @param formatedDate
+     * @param individualId
+     * @return
+     */
     public List<Chit> getAllChithsByFormattedDateNIndividualId(String formatedDate, String individualId) {
         return chitDAOController.getAllChithsByFormattedDateNIndividualId(formatedDate, individualId);
     }
 
+    /**
+     * get Chit CountList Of Individual For Spesific Date Range
+     *
+     * @param individualId
+     * @param sTime
+     * @param endSTime
+     * @return
+     */
     public List<ChitCountListModel> getChitCountListOfIndividualForSpesificDateRange(String individualId,String sTime, String endSTime) {
         return chitDAOController.getChitCountListOfIndividualForSpesificDateRange(individualId,sTime,endSTime);
     }

@@ -43,8 +43,8 @@ public class ChitController {
         return returnIdModel1;
 
     }
-//
-//
+
+
     /**
      * Update Branch
      *
@@ -72,6 +72,7 @@ public class ChitController {
     }
 
     /**
+     * get All Chits By memberId(individualId or centerId) & string Time (sTime) with limits
      *
      * 0= centerId
      * 1= IndividualId
@@ -86,6 +87,14 @@ public class ChitController {
         return chitDAOService.getAllChitById(chitModel.getLimit(), chitModel.getOffset(),chitModel.getIndividualId(),chitModel.getType(),chitModel.getsTime());
     }
 
+    /**
+     * get All Chits By Id, type & string date(sTime)
+     *
+     * @param id
+     * @param type
+     * @param date
+     * @return
+     */
     @RequestMapping(value = "getAllChitByIdCount", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public Long getAllChitByIdCount(
@@ -98,7 +107,7 @@ public class ChitController {
     }
 
     /**
-     *
+     * get all chits by cennterId
      *
      * @param id
      * @return

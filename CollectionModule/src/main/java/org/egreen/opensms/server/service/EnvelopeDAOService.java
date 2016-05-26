@@ -258,6 +258,13 @@ public class EnvelopeDAOService {
         return envelopeDAOController.getAll();
     }
 
+    /**
+     * get All Envelopes with pagination
+     *
+     * @param limit
+     * @param offset
+     * @return
+     */
     public List<Envelope> getAllBranchersByPagination(Integer limit, Integer offset) {
         return envelopeDAOController.getAllBranchersByPagination(limit, offset);
     }
@@ -358,7 +365,7 @@ public class EnvelopeDAOService {
     }
 
     /**
-     * Get Envelope list
+     * get All envelopes by pagination
      *
      * @param limit
      * @param offset
@@ -437,7 +444,7 @@ public class EnvelopeDAOService {
     }
 
     /**
-     * Get Envelope by centerId , individualId & date
+     * get Envelope By centerId & individualId & sTime
      *
      * @param center
      * @param individualId
@@ -529,7 +536,6 @@ public class EnvelopeDAOService {
             String newid1 = getStringID(id, hashids, hexaid);
             transaction.setTransactionId(newid1);
 
-
             transaction.setTypeId("COM");
             BigDecimal commision=calculateCommision(envelope.getInvesment(),transactionModel.getCommisionPresentage());
             transaction.setCredit(commision);
@@ -569,8 +575,6 @@ public class EnvelopeDAOService {
             transaction.setTransactionId(newid1);
 
             transaction.setTypeId("LCS");
-//            BigDecimal lessCommisionSingle = calculateLessCommisionSingle();
-//            transaction.setDebit(lessCommisionSingle);
             transaction.setTime(envelope.getDate());
             transactionDAOController.create(transaction);
         }
@@ -753,14 +757,10 @@ public class EnvelopeDAOService {
         EnvelopeDetailModel model=new EnvelopeDetailModel();
         String individualId = envelopeDetailModel.getIndividualId();
         Individual individual = individualDAOController.read(individualId);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
-        String formatedDate = simpleDateFormat.format(envelopeDetailModel.getDate());
-        //Envelope envelope = envelopeDAOController.getEnvelopesByDateNByIndividualId(individualId, formatedDate);
         List<ApprovedLoan> unpaidLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
         Account account = accountDAOController.getAccountByCenterOIndividualId(individualId);
         BigDecimal commision=null;
         BigDecimal salary=null;
-        BigDecimal lessCommissionSingle=null;
         BigDecimal dueLoanValue=BigDecimal.ZERO;
             if(individual != null ){
                 model.setIndividualId(individual.getIndividualId());
@@ -803,18 +803,46 @@ public class EnvelopeDAOService {
         return model;
     }
 
+    /**
+     *  get Envelope By individual id ,date and centerId
+     *
+     * @param individualId
+     * @param formatedDate
+     * @param center
+     * @return
+     */
     public Envelope getEnvelopesByIndividualIdByDateNCenterId(String individualId, String formatedDate, String center) {
         return envelopeDAOController.getEnvelopesByIndividualIdByDateNCenterId(individualId,formatedDate,center);
     }
 
+    /**
+     * get Envelope By envelopeId
+     *
+     * @param envelopeId
+     * @return
+     */
     public Envelope getEnvelopeById(String envelopeId) {
         return envelopeDAOController.read(envelopeId);
     }
 
+    /**
+     * check Envelope is Finished
+     *
+     * @param envelopeId
+     * @param formatedDate
+     * @return
+     */
     public String checkEnvelopeIsFinished(String envelopeId, String formatedDate) {
         return envelopeDAOController.checkEnvelopeIsFinished(envelopeId,formatedDate);
     }
 
+    /**
+     * get All Envelopes Are Finished By CenterId & Date
+     *
+     * @param centerId
+     * @param sTime
+     * @return
+     */
     public boolean getAllEnvelopesAreFinishedByCenterIdDate(String centerId, String sTime) {
         return envelopeDAOController.getAllEnvelopesAreFinishedByCenterIdDate(centerId,sTime);
     }

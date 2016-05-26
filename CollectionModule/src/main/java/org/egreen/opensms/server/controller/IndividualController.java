@@ -127,7 +127,7 @@ public class IndividualController {
 
 
     /**
-     * checkIfExist
+     * check If Exist individual in specified center
      *
      * @param individualName
      * @return
@@ -140,7 +140,7 @@ public class IndividualController {
     }
 
     /**
-     * getIndividualsByCenterIdAndIndividualId
+     * get Individuals By CenterId AndI ndividualId
      *
      * @param centerId
      * @param individualId
@@ -158,7 +158,7 @@ public class IndividualController {
 
 
     /**
-     * getIndividualsByCenterId
+     * get Individuals By CenterId
      *
      * @param centerId
      * @return
@@ -171,7 +171,7 @@ public class IndividualController {
     }
 
     /**
-     * getIndividuals Count by CenterId
+     * get Individuals Count by CenterId
      *
      * @param centerId
      * @return
@@ -184,7 +184,7 @@ public class IndividualController {
 
 
     /**
-     * Get All
+     * Get All individuals with out pagination
      *
      * @return
      */
@@ -195,7 +195,7 @@ public class IndividualController {
     }
 
     /**
-     * Get All Branchers By Pagination
+     * Get All Individuals By Pagination
      *
      * @param limit
      * @param offset
@@ -209,7 +209,7 @@ public class IndividualController {
     }
 
     /***
-     * getAllBranches
+     * get All Individuals with pagination
      *
      * @param limit
      * @param offset
@@ -238,7 +238,7 @@ public class IndividualController {
     }
 
     /**
-     * getBranchCode
+     * get BranchCode
      *
      * @param locationName
      * @return
@@ -251,7 +251,12 @@ public class IndividualController {
         return name;
     }
 
-
+    /**
+     * close Genral Summery
+     *
+     * @param generalSummaryReceiptModel
+     * @return
+     */
     @RequestMapping(value = "closeGenralSummery", method = RequestMethod.POST)
     @ResponseBody
     public ResponseMessage closeGenralSummery(@RequestBody GeneralSummaryReceiptModel generalSummaryReceiptModel) {
@@ -396,7 +401,6 @@ public class IndividualController {
             transactionDAOService.save(transaction);
         }
 
-//        String formatedDate = simpleDateFormat.format(generalSummaryReceiptModel.getDate());
         String individualId = generalSummaryReceiptModel.getIndividualId();
         List<Chit> chitList = chitDAOService.getAllChithsByFormattedDateNIndividualId(stringDate, individualId);
         List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(generalSummaryReceiptModel.getEnvelopeId());
@@ -414,12 +418,10 @@ public class IndividualController {
                 transaction.setTypeId("COM");
                 double investmentValue = envelopeById.getInvesment().doubleValue();
                 BigDecimal comm = calculateCommision(envelopeById.getInvesment(), center.getCommision());
-                System.out.println("Center com ->"+comm);
                 transaction.setCredit(comm);
                 transaction.setTime(envelopeById.getDate());
                 transaction.setsTime(stringDate);
                 transactionDAOService.save(transaction);
-                System.out.println("commision  -----------------------:"+comm);
             }
             envelopeById.setFinished(true);
             envelopeDAOService.update(envelopeById);

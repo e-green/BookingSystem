@@ -19,6 +19,12 @@ public class CenterSummeryCheckService {
     @Autowired
     private CenterSummeryCheckDAOController centerSummeryCheckDAOController;
 
+    /**
+     * save center summary check
+     *
+     * @param centerSummeryCheck
+     * @return
+     */
     public String save(CenterSummeryCheck centerSummeryCheck) {
         String id = new Date().getTime() + "";
         Hashids hashids = new Hashids(id);
@@ -28,6 +34,13 @@ public class CenterSummeryCheckService {
         return centerSummeryCheckDAOController.create(centerSummeryCheck);
     }
 
+    /**
+     * is center summery finish or not
+     *
+     * @param centerId
+     * @param sTime
+     * @return
+     */
     public boolean getCenterSummeryCheck(String centerId, String sTime) {
         return centerSummeryCheckDAOController.getCenterSummeryCheck(centerId,sTime);
     }

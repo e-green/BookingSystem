@@ -32,7 +32,7 @@ public class IndividualDAOService {
 
     /**
      *
-     * individual SignUp
+     * create individual
      *
      * @param individual
      * @return
@@ -73,7 +73,7 @@ public class IndividualDAOService {
     }
 
     /**
-     * Get all Individual
+     * Get All individuals with out pagination
      *
      * @return
      */
@@ -133,6 +133,12 @@ public class IndividualDAOService {
         return individualDAOController.getAll(offset,limit,"name");
     }
 
+    /**
+     * check If Exist individual in specified center
+     *
+     * @param centerName
+     * @return
+     */
     public boolean checkIfExist(String centerName) {
         return individualDAOController.checkIfExist(centerName);
     }
@@ -157,7 +163,7 @@ public class IndividualDAOService {
     }
 
     /**
-     * get individual count by center id
+     * get Individuals Count by CenterId
      *
      * @param centerId
      * @return
@@ -167,6 +173,13 @@ public class IndividualDAOService {
         return individualList.size();
     }
 
+    /**
+     * get Individuals By CenterId AndI ndividualId
+     *
+     * @param centerId
+     * @param individualId
+     * @return
+     */
     public Individual getIndividualsByCenterIdAndIndividualId(String centerId, String individualId) {
         return individualDAOController.getIndividualsByCenterIdAndIndividualId(centerId,individualId);
     }

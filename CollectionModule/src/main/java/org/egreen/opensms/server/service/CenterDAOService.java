@@ -72,19 +72,43 @@ public class CenterDAOService {
         return sb.toString();
     }
 
-
+    /**
+     * get all centers
+     *
+     * @return
+     */
     public List<Center> getAll() {
         return centerDAOController.getAll();
     }
 
+    /**
+     * get centers by pagination
+     *
+     * @param quary
+     * @param limit
+     * @param offset
+     * @return
+     */
     public List<Center> getAllCenterByPagination(String quary, Integer limit, Integer offset) {
         return centerDAOController.getAllCenterersByPagination(quary, limit, offset);
     }
 
+    /**
+     * update center
+     *
+     * @param Center
+     * @return
+     */
     public String update(Center Center) {
         return centerDAOController.update(Center);
     }
 
+    /**
+     * deleting center(don't use if not necessary)
+     *
+     * @param centerid
+     * @return
+     */
     public Integer removeCenterById(String centerid) {
         return centerDAOController.removeCenterById(centerid);
     }
@@ -97,13 +121,18 @@ public class CenterDAOService {
         return newid;
     }
 
+    /**
+     * get All Centers
+     *
+     * @param branchid
+     * @return
+     */
     public List<Center> getAllCentersByBranchId(String branchid) {
 
         return centerDAOController.getAllCentersByBranchId(branchid);
     }
 
     public String getNextId(String branchID) {
-//        Branch branch = individualDAOController.read(branchID);
         String centerCode = null;
         long centerCount = centerDAOController.getCenterCountByBranch(branchID);
         centerCount++;
@@ -115,25 +144,54 @@ public class CenterDAOService {
         return centerCode;
     }
 
+    /**
+     * get center by centerId
+     *
+     * @param centerid
+     * @return
+     */
     public Center getCenterById(String centerid) {
         return centerDAOController.read(centerid);
     }
 
-
+    /**
+     * get All centers By Pagination
+     *
+     * @param limit
+     * @param offset
+     * @return
+     */
     public List<Center> getAllByPagination(Integer limit, Integer offset) {
         return centerDAOController.getAll(offset, limit, "name");
     }
 
+    /**
+     * check If Exist center by centerName
+     *
+     * @param centerName
+     * @return
+     */
     public boolean checkIfExist(String centerName) {
         return centerDAOController.checkIfExist(centerName);
     }
 
+    /**
+     * get Center or Individual Account No By Center Name Or Individual Name
+     * @param memberName
+     * @return
+     */
     public String getCenterOIndividualAccountNoByCenterNameOIndividualName(String memberName) {
         Center center=centerDAOController.getCenterByName(memberName);
         Account account=accountDAOController.getAccountByCenterOIndividualId(center.getCenterid());
         return account.getAccountNo();
     }
 
+    /**
+     * get Center Or Individual Account No By CenterId
+     *
+     * @param memberId
+     * @return
+     */
     public String getCenterOIndividualAccountNoByCenterId(String memberId) {
         Center center=centerDAOController.read(memberId);
         Account account=accountDAOController.getAccountByCenterOIndividualId(center.getCenterid());

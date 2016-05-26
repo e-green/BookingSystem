@@ -58,7 +58,7 @@ public class EnvelopeController {
     }
 
     /**
-     * getAll
+     * get All envelopes by pagination
      *
      * @param limit
      * @param offset
@@ -74,7 +74,7 @@ public class EnvelopeController {
 
 
     /**
-     * checkIfExist
+     * check If Exist envelope to the center
      *
      * @param envelopeName
      * @return
@@ -100,7 +100,7 @@ public class EnvelopeController {
     }
 
     /**
-     * getEnvelopesByCenterId
+     * get Envelopes By CenterId, string date(sTime) with pagination
      *
      * @param centerId
      * @return
@@ -158,7 +158,7 @@ public class EnvelopeController {
     }
 
     /**
-     * Get All Branchers By Pagination
+     * Get All Envelopes By Pagination
      *
      * @param limit
      * @param offset
@@ -185,7 +185,7 @@ public class EnvelopeController {
 
 
     /***
-     * getAllBranches
+     * get All Envelopes with pagination
      *
      * @param limit
      * @param offset
@@ -229,7 +229,7 @@ public class EnvelopeController {
 
 
     /**
-     * getBranchCode
+     * get Branch Code
      *
      * @param locationName
      * @return
@@ -244,7 +244,7 @@ public class EnvelopeController {
     }
 
     /**
-     * getEnvelope By individual id ,date and centerId
+     * get Envelope By individual id ,date and centerId
      *
      * @param envelope
      * @return
@@ -257,17 +257,8 @@ public class EnvelopeController {
 
     }
 
-    @RequestMapping(value = "getEnvelopesByDateNByIndividualId", method = RequestMethod.POST, headers = "Accept=application/json")
-    @ResponseBody
-    public EnvelopeDetailModel getEnvelopesByIndividualIdByDateNCenterId(@RequestBody EnvelopeDetailModel envelopeDetailModel) {
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM--dd");
-//        String formatedDate = simpleDateFormat.format(envelopeDetailModel.getDate());
-//        return envelopeDAOService.getEnvelopesByDateNByIndividualId(formatedDate,envelopeDetailModel.getIndividualId());
-        return  null;
-    }
-
     /**
-     * get EnvelopesDetailModel
+     * get envelopeDetailModel view before enter envelope
      *
      * @param envelopeDetailModel
      * @return
@@ -306,7 +297,7 @@ public class EnvelopeController {
     }
 
     /**
-     * get EnvelopeDetailModel ob
+     * get EnvelopeDetailModel
      *
      * @return
      */
