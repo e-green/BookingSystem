@@ -711,7 +711,6 @@ public class IndividualController {
             }
 
             if (individual1 != null && individual1.getCommision() == null && individual1.getFixedSalary() != null && individual1.getCommision() == null) {
-
                 if (individual1.isSalaryPay() && individual1.getFixedSalary().doubleValue() > 0.0) {
                     salary = individual1.getFixedSalary().doubleValue();
                     map.put("sal", salary + "");
@@ -751,7 +750,6 @@ public class IndividualController {
             }
         }
         map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
-
 
         return map;
     }
@@ -857,7 +855,6 @@ public class IndividualController {
                     transaction.setAccountNo(centerAccount.getAccountNo());
                     transactionDAOService.save(transaction);
                 }
-
             }
             if (chit.getIndividualId() != null) {
                 Individual individualById = individualDAOService.getBranchById(chit.getIndividualId());
@@ -875,7 +872,6 @@ public class IndividualController {
                 }
             }
         }
-
         if (chit.getNC() != null && chit.getNC() == true) {
             if (chit.getCenterid() != null) {
                 Center centerById = centerDAOService.getCenterById(chit.getCenterid());
@@ -935,7 +931,6 @@ public class IndividualController {
             Account individualAccount = accountDAOService.getAccountByCenterOIndividualId(individualId);
             accountNo = individualAccount.getAccountNo();
             transaction.setAccountNo(accountNo);
-
         }
     }
 
@@ -966,4 +961,5 @@ public class IndividualController {
         BigDecimal bigDecimal = BigDecimal.valueOf(l);
         return bigDecimal;
     }
+
 }
