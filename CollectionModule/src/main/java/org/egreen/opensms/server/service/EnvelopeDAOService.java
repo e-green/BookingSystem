@@ -52,35 +52,40 @@ public class EnvelopeDAOService {
      * @return
      */
     public String save(Envelope envelope) {
+        //creating id
         String id = new Date().getTime() + "";
         Hashids hashids = new Hashids(id);
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
         String newid = hexaid + "" + randomString(10);
         String indId=envelope.getIndividualId();
 
+        //get string time(sTime)
         String fd=envelope.getsTime();
+        //get envelope by individual & string date
         Envelope envelopesByDateNByIndividualId = envelopeDAOController.getEnvelopesByDateNByIndividualId(indId, fd);
         String s=null;
         if(envelopesByDateNByIndividualId == null){
+            //setting envelopeId
             envelope.setEnvelopId(newid);
-
+            //if chit count is null set new value 0
             if(envelope.getChitCount() == null){
                 envelope.setChitCount(new BigInteger("0"));
             }
-
+            //creating envelope without finish(finished boolean is false)
             s = envelopeDAOController.create(envelope);
+            //if id not null you have save the envelope then begin transaction table value insert
             if (s != null) {
                 BigDecimal invesment = envelope.getInvesment();
                 String individualId = envelope.getIndividualId();
                 String centerId = envelope.getCenter();
 
-                Account account = accountDAOController.getAccountByCenterOIndividualId(individualId);
                 Individual individual = individualDAOController.read(individualId);
-
                 Center center=centerDAOController.read(centerId);
+
                 String accountNo = null;
                 Transaction transaction = null;
                 ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
+
                 //when different type call
                 if(center.getType() == 1){
                     if (envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0) {
