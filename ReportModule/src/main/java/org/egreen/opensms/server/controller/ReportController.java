@@ -77,6 +77,7 @@ public class ReportController {
      * @return
      */
     @RequestMapping(value = "getGeneralSummaryReceiptModel", method = RequestMethod.GET)
+    @ResponseBody
     public IndividualReportModel getGeneralSummaryReceipt(HttpSession session, HttpServletResponse response,
                                                           @RequestParam("centerId") String centerId,
                                                           @RequestParam("individualId") String individualId,
@@ -222,18 +223,8 @@ public class ReportController {
             envelopesByCenterId = envelopeDAOService.getEnvelopesByIndividualIdByDate(individualId, null, null, date);
         }
 
-        DefaultTableModel model = new DefaultTableModel();
-        JTable table = new JTable(model);
-
         List<ReportChitModel> reportChitModels= new ArrayList<ReportChitModel>();
         ReportChitModel reportChitModel=null;
-
-        model.addColumn("no");
-        model.addColumn("wT");
-        model.addColumn("Inv");
-        model.addColumn("Pay");
-        model.addColumn("ncOfTable");
-
 
         for (Envelope envelope : envelopesByCenterId) {
             List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId());
@@ -268,6 +259,8 @@ public class ReportController {
                 reportChitModels.add(reportChitModel);
             }
         }
+
+        individualReportModel.setReportChitModelList(reportChitModels);
 
         Double perDue=0.0;
 
