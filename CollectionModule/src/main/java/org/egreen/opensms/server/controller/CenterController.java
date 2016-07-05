@@ -38,6 +38,7 @@ public class CenterController {
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
     public ReturnIdModel1 save(@RequestBody Center center) {
+
         String centerId = centerDAOService.save(center);
         String res=null;
         if(null!= centerId){

@@ -2,16 +2,34 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CashModule/CashModule.iml" filepath="$PROJECT_DIR$/CashModule/CashModule.iml" />
-      <module fileurl="file://$PROJECT_DIR$/CollectionModule/CollectionModule.iml" filepath="$PROJECT_DIR$/CollectionModule/CollectionModule.iml" />
-      <module fileurl="file://$PROJECT_DIR$/LogModule/LogModule.iml" filepath="$PROJECT_DIR$/LogModule/LogModule.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ReportModule/ReportModule.iml" filepath="$PROJECT_DIR$/ReportModule/ReportModule.iml" />
-      <module fileurl="file://$PROJECT_DIR$/UserModule/UserModule.iml" filepath="$PROJECT_DIR$/UserModule/UserModule.iml" />
-      <module fileurl="file://$PROJECT_DIR$/basicweb/basicweb.iml" filepath="$PROJECT_DIR$/basicweb/basicweb.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dbcontroller/dbcontroller.iml" filepath="$PROJECT_DIR$/dbcontroller/dbcontroller.iml" />
-      <module fileurl="file://$PROJECT_DIR$/main/main.iml" filepath="$PROJECT_DIR$/main/main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/server.iml" filepath="$PROJECT_DIR$/server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/web/web.iml" filepath="$PROJECT_DIR$/web/web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CashModule/CashModule.iml" filepath="$PROJECT_DIR$/.idea/modules/CashModule/CashModule.iml" group="CashModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CashModule/CashModule_main.iml" filepath="$PROJECT_DIR$/.idea/modules/CashModule/CashModule_main.iml" group="CashModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CashModule/CashModule_test.iml" filepath="$PROJECT_DIR$/.idea/modules/CashModule/CashModule_test.iml" group="CashModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CollectionModule/CollectionModule.iml" filepath="$PROJECT_DIR$/.idea/modules/CollectionModule/CollectionModule.iml" group="CollectionModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CollectionModule/CollectionModule_main.iml" filepath="$PROJECT_DIR$/.idea/modules/CollectionModule/CollectionModule_main.iml" group="CollectionModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CollectionModule/CollectionModule_test.iml" filepath="$PROJECT_DIR$/.idea/modules/CollectionModule/CollectionModule_test.iml" group="CollectionModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LogModule/LogModule.iml" filepath="$PROJECT_DIR$/.idea/modules/LogModule/LogModule.iml" group="LogModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LogModule/LogModule_main.iml" filepath="$PROJECT_DIR$/.idea/modules/LogModule/LogModule_main.iml" group="LogModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LogModule/LogModule_test.iml" filepath="$PROJECT_DIR$/.idea/modules/LogModule/LogModule_test.iml" group="LogModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ReportModule/ReportModule.iml" filepath="$PROJECT_DIR$/.idea/modules/ReportModule/ReportModule.iml" group="ReportModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ReportModule/ReportModule_main.iml" filepath="$PROJECT_DIR$/.idea/modules/ReportModule/ReportModule_main.iml" group="ReportModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ReportModule/ReportModule_test.iml" filepath="$PROJECT_DIR$/.idea/modules/ReportModule/ReportModule_test.iml" group="ReportModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/UserModule/UserModule.iml" filepath="$PROJECT_DIR$/.idea/modules/UserModule/UserModule.iml" group="UserModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/UserModule/UserModule_main.iml" filepath="$PROJECT_DIR$/.idea/modules/UserModule/UserModule_main.iml" group="UserModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/UserModule/UserModule_test.iml" filepath="$PROJECT_DIR$/.idea/modules/UserModule/UserModule_test.iml" group="UserModule" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/basicweb/basicweb.iml" filepath="$PROJECT_DIR$/.idea/modules/basicweb/basicweb.iml" group="basicweb" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/basicweb/basicweb_main.iml" filepath="$PROJECT_DIR$/.idea/modules/basicweb/basicweb_main.iml" group="basicweb" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/basicweb/basicweb_test.iml" filepath="$PROJECT_DIR$/.idea/modules/basicweb/basicweb_test.iml" group="basicweb" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dbcontroller/dbcontroller.iml" filepath="$PROJECT_DIR$/.idea/modules/dbcontroller/dbcontroller.iml" group="dbcontroller" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dbcontroller/dbcontroller_main.iml" filepath="$PROJECT_DIR$/.idea/modules/dbcontroller/dbcontroller_main.iml" group="dbcontroller" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dbcontroller/dbcontroller_test.iml" filepath="$PROJECT_DIR$/.idea/modules/dbcontroller/dbcontroller_test.iml" group="dbcontroller" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/main/main.iml" filepath="$PROJECT_DIR$/.idea/modules/main/main.iml" group="main" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/main/main_main.iml" filepath="$PROJECT_DIR$/.idea/modules/main/main_main.iml" group="main" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/main/main_test.iml" filepath="$PROJECT_DIR$/.idea/modules/main/main_test.iml" group="main" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server.iml" filepath="$PROJECT_DIR$/.idea/modules/server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/web/web.iml" filepath="$PROJECT_DIR$/.idea/modules/web/web.iml" group="web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/web/web_main.iml" filepath="$PROJECT_DIR$/.idea/modules/web/web_main.iml" group="web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/web/web_test.iml" filepath="$PROJECT_DIR$/.idea/modules/web/web_test.iml" group="web" />
     </modules>
   </component>
 </project>

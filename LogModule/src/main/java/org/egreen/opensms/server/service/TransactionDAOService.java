@@ -67,4 +67,7 @@ public class TransactionDAOService {
         return transactionDAOController.delete(transaction);
     }
 
+    public List<Transaction> getTransaActionByDateRange(String accountNo, String firstDate, String secondDate) {
+        return transactionDAOController.getTransaActionByDateRange(accountNo,firstDate,secondDate);
+    }
 }

@@ -50,5 +50,15 @@ public class TransactionDAOControllerImpl extends  AbstractDAOController<Transac
         return transactionList;
     }
 
+    @Override
+    public List<Transaction> getTransaActionByDateRange(String accountNo, String firstDate, String secondDate) {
+        Query query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND t.sTime BETWEEN :firstDate AND :secondDate");
+        query.setString("accountNo", accountNo);
+        query.setString("firstDate", firstDate);
+        query.setString("secondDate", secondDate);
+        List<Transaction> transactionList= query.list();
+        return transactionList;
+    }
+
 
 }

@@ -52,38 +52,44 @@ public class EnvelopeDAOService {
      * @return
      */
     public String save(Envelope envelope) {
+        //creating id
         String id = new Date().getTime() + "";
         Hashids hashids = new Hashids(id);
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
         String newid = hexaid + "" + randomString(10);
         String indId=envelope.getIndividualId();
 
+        //get string time(sTime)
         String fd=envelope.getsTime();
+        //get envelope by individual & string date
         Envelope envelopesByDateNByIndividualId = envelopeDAOController.getEnvelopesByDateNByIndividualId(indId, fd);
         String s=null;
         if(envelopesByDateNByIndividualId == null){
+            //setting envelopeId
             envelope.setEnvelopId(newid);
-
+            //if chit count is null set new value 0
             if(envelope.getChitCount() == null){
                 envelope.setChitCount(new BigInteger("0"));
             }
-
+            //creating envelope without finish(finished boolean is false)
             s = envelopeDAOController.create(envelope);
+            //if id not null you have save the envelope then begin transaction table value insert
             if (s != null) {
                 BigDecimal invesment = envelope.getInvesment();
                 String individualId = envelope.getIndividualId();
                 String centerId = envelope.getCenter();
 
-                Account account = accountDAOController.getAccountByCenterOIndividualId(individualId);
                 Individual individual = individualDAOController.read(individualId);
 
                 Center center=centerDAOController.read(centerId);
+
                 String accountNo = null;
                 Transaction transaction = null;
                 ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
+
                 //when different type call
                 if(center.getType() == 1){
-                    if (envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0) {
+                    if (envelope.getInvesment() != null ) {
                         transaction = new Transaction();
                         createTransactinonAccount(individualId, transaction);
                         String newid1 = getStringID(id, hashids, hexaid);
@@ -106,7 +112,7 @@ public class EnvelopeDAOService {
                         transaction.setTime(envelope.getDate());
                         transaction.setsTime(fd);
                         transactionDAOController.create(transaction);
-                    } else if (approvedLoan!=null&&approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
+                    } else if (approvedLoan!=null&&approvedLoan.getDueamount() != null ) {
 
                         transaction = new Transaction();
                         createTransactinonAccount(individualId, transaction);
@@ -132,7 +138,9 @@ public class EnvelopeDAOService {
                         approvedLoanDAOService.update(approvedLoan);
                     }
                 } else {
-                    if (envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0) {
+
+
+                    if (envelope.getInvesment() != null ) {
                         transaction = new Transaction();
                         createTransactinonAccount(individualId, transaction);
                         String newid1 = getStringID(id, hashids, hexaid);
@@ -145,7 +153,7 @@ public class EnvelopeDAOService {
                     }
 
 
-                    if (envelope.getCash() != null && envelope.getCash().doubleValue() != 0) {
+                    if (envelope.getCash() != null ) {
                         transaction = new Transaction();
                         createTransactinonAccount(individualId, transaction);
                         String newid1 = getStringID(id, hashids, hexaid);
@@ -157,7 +165,8 @@ public class EnvelopeDAOService {
                         transactionDAOController.create(transaction);
                     }
 
-                    if (envelope.getExpences() != null && envelope.getExpences().doubleValue() != 0) {
+
+                    if (envelope.getExpences() != null ) {
                         transaction = new Transaction();
                         createTransactinonAccount(individualId, transaction);
                         String newid1 = getStringID(id, hashids, hexaid);
@@ -170,7 +179,7 @@ public class EnvelopeDAOService {
                     }
 
 
-                    if (individual.getPcChargers() != null && individual.getPcChargers().doubleValue() != 0) {
+                    if (individual.getPcChargers() != null ) {
                         transaction = new Transaction();
                         createTransactinonAccount(individualId, transaction);
                         String newid1 = getStringID(id, hashids, hexaid);
@@ -183,7 +192,7 @@ public class EnvelopeDAOService {
                     }
 
 
-                    if (individual.getCommision() != null && envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0) {
+                    if (individual.getCommision() != null && envelope.getInvesment() != null) {
                         transaction = new Transaction();
                         createTransactinonAccount(individualId, transaction);
                         String newid1 = getStringID(id, hashids, hexaid);
@@ -218,7 +227,7 @@ public class EnvelopeDAOService {
                         transaction.setTime(envelope.getDate());
                         transaction.setsTime(fd);
                         transactionDAOController.create(transaction);
-                    } else if (approvedLoan!=null&&approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
+                    } else if (approvedLoan!=null&&approvedLoan.getDueamount() != null ) {
                         transaction = new Transaction();
                         createTransactinonAccount(individualId, transaction);
                         String newid1 = getStringID(id, hashids, hexaid);
@@ -345,19 +354,20 @@ public class EnvelopeDAOService {
                 List<Transaction> centerTransactionList = transactionDAOController.getTodayTransactionDetailByDateNAccountNo(envelope.getsTime(), centerAccount.getAccountNo());
                 Center center=centerDAOController.read(centerId);
                 for(Transaction transaction:transactionList){
-                    if (envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0 && transaction.getTypeId().equals("Inv")) {
+
+                    if (envelope.getInvesment() != null && transaction.getTypeId().equals("Inv")) {
                         transaction.setDebit(envelope.getInvesment());
                         transactionDAOController.update(transaction);
                     }
-                    if (envelope.getCash() != null && envelope.getCash().doubleValue() != 0 && transaction.getTypeId().equals("CSH") ) {
+                    if (envelope.getCash() != null  && transaction.getTypeId().equals("CSH") ) {
                         transaction.setCredit(envelope.getCash());
                         transactionDAOController.update(transaction);
                     }
-                    if (envelope.getExpences() != null && envelope.getExpences().doubleValue() != 0 && transaction.getTypeId().equals("EXP")) {
+                    if (envelope.getExpences() != null  && transaction.getTypeId().equals("EXP")) {
                         transaction.setCredit(envelope.getExpences());
                         transactionDAOController.update(transaction);
                     }
-                    if (individual.getPcChargers() != null && individual.getPcChargers().doubleValue() != 0 && transaction.getTypeId().equals("PC")) {
+                    if (individual.getPcChargers() != null && transaction.getTypeId().equals("PC")) {
                         transaction.setDebit(individual.getPcChargers());
                         transactionDAOController.update(transaction);
                     }
@@ -889,5 +899,9 @@ public class EnvelopeDAOService {
      */
     public boolean getAllEnvelopesAreFinishedByCenterIdDate(String centerId, String sTime) {
         return envelopeDAOController.getAllEnvelopesAreFinishedByCenterIdDate(centerId,sTime);
+    }
+
+    public List<Envelope> getEnvelopeByDateRange(String centerId, String individualId, String firstDate, String secondDate) {
+        return envelopeDAOController.getEnvelopeByDateRange( centerId,  individualId,  firstDate,  secondDate) ;
     }
 }

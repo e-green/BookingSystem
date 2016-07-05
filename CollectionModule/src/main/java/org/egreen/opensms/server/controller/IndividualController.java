@@ -140,7 +140,7 @@ public class IndividualController {
     }
 
     /**
-     * get Individuals By CenterId AndI ndividualId
+     * get Individuals By CenterId And IndividualId
      *
      * @param centerId
      * @param individualId
@@ -261,274 +261,280 @@ public class IndividualController {
     @ResponseBody
     public ResponseMessage closeGenralSummery(@RequestBody GeneralSummaryReceiptModel generalSummaryReceiptModel) {
 
-        String stringDate = generalSummaryReceiptModel.getsTime();
+        System.out.println("Env : "+generalSummaryReceiptModel.getEnvelopeId());
+        Envelope envelope = envelopeDAOService.getEnvelopeById(generalSummaryReceiptModel.getEnvelopeId());
+        if(envelope!=null && envelope.getFinished() == false) {
+            String stringDate = generalSummaryReceiptModel.getsTime();
 
-        Transaction tra = new Transaction();
-        Map<String, Object> summaryReceipt = getGeneralSummaryReceipt(generalSummaryReceiptModel);
+            Transaction tra = new Transaction();
+            Map<String, Object> summaryReceipt = getGeneralSummaryReceipt(generalSummaryReceiptModel);
 
-        Object pay = summaryReceipt.get("totPay");
-        Double dueValue = 0.0;
-        dueValue=generalSummaryReceiptModel.getBalance();
-        Double payValue = 0.0;
-        try {
-            payValue = Double.parseDouble(pay + "");
-        } catch (Exception e) {
+            Object pay = summaryReceipt.get("totPay");
+            Double dueValue = 0.0;
+            dueValue = generalSummaryReceiptModel.getBalance();
+            Double payValue = 0.0;
+            try {
+                payValue = Double.parseDouble(pay + "");
+            } catch (Exception e) {
 
-        }
-        double nc = generalSummaryReceiptModel.getNc();
-        double lcs = generalSummaryReceiptModel.getLcs();
-        double inValue = 0;
-        double outValue = 0;
+            }
+            double nc = generalSummaryReceiptModel.getNc();
+            double lcs = generalSummaryReceiptModel.getLcs();
+            double inValue = 0;
+            double outValue = 0;
 
-        Double totInvesment = inValue;
-        Double totPayment = 0.0;
-        Double tpyPayment = outValue;
-        Double tpyInvestment = inValue;
+            Double totInvesment = inValue;
+            Double totPayment = 0.0;
+            Double tpyPayment = outValue;
+            Double tpyInvestment = inValue;
 
-        Transaction transaction = null;
-        String indiviId = generalSummaryReceiptModel.getIndividualId();
-        Center center = centerDAOService.getCenterById(generalSummaryReceiptModel.getCenterId());
-        Account account = accountDAOService.getAccountByCenterOIndividualId(indiviId);
-        Account centerAccount = accountDAOService.getAccountByCenterOIndividualId(center.getCenterid());
+            Transaction transaction = null;
+            String indiviId = generalSummaryReceiptModel.getIndividualId();
+            Center center = centerDAOService.getCenterById(generalSummaryReceiptModel.getCenterId());
+            Account account = accountDAOService.getAccountByCenterOIndividualId(indiviId);
+            Account centerAccount = accountDAOService.getAccountByCenterOIndividualId(center.getCenterid());
 
-        if(generalSummaryReceiptModel.getPay() > 0.0 && payValue == 0.0){
-            transaction = new Transaction();
-            transaction.setTransactionId(getNewId());
-            transaction.setAccountNo(account.getAccountNo());
-            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPay()));
-            transaction.setTypeId("PAY");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
-            transaction.setsTime(stringDate);
-            transactionDAOService.save(transaction);
-        }
-        if(payValue > 0.0 && generalSummaryReceiptModel.getPay() == 0.0){
-            transaction = new Transaction();
-            transaction.setTransactionId(getNewId());
-            transaction.setAccountNo(account.getAccountNo());
-            transaction.setCredit(BigDecimal.valueOf(payValue));
-            transaction.setTypeId("PAY");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
-            transaction.setsTime(stringDate);
-            transactionDAOService.save(transaction);
-        }
-        if(payValue > 0.0 && generalSummaryReceiptModel.getPay() > 0.0){
-            transaction = new Transaction();
-            transaction.setTransactionId(getNewId());
-            transaction.setAccountNo(account.getAccountNo());
-            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPay()));
-            transaction.setTypeId("PAY");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
-            transaction.setsTime(stringDate);
-            transactionDAOService.save(transaction);
-        }
-
-        if(account != null && account.getAmount() != null && account.getAmount().doubleValue() > 0.0){
-            transaction = new Transaction();
-            transaction.setTransactionId(getNewId());
-            transaction.setAccountNo(account.getAccountNo());
-            transaction.setDebit(account.getAmount());
-            transaction.setTypeId("PD");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
-            transaction.setsTime(stringDate);
-            transactionDAOService.save(transaction);
-        }
-
-        if (dueValue > 0) {
-            transaction = new Transaction();
-            transaction.setTransactionId(getNewId());
-            transaction.setAccountNo(account.getAccountNo());
-            transaction.setDebit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
-            transaction.setTypeId("Balance");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
-            transaction.setsTime(stringDate);
-            transactionDAOService.save(transaction);
-            account.setAmount(BigDecimal.valueOf(dueValue));
-            accountDAOService.update(account);
-
-        }
-        if(dueValue < 0 && generalSummaryReceiptModel.getPayment() > 0.0){
-            transaction = new Transaction();
-            transaction.setTransactionId(getNewId());
-            transaction.setAccountNo(account.getAccountNo());
-            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
-            transaction.setTypeId("Balance");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
-            transaction.setsTime(stringDate);
-            transactionDAOService.save(transaction);
-
-            transaction.setTransactionId(getNewId());
-            transaction.setAccountNo(account.getAccountNo());
-            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPayment()*-1));
-            transaction.setTypeId("Payment");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
-            transaction.setsTime(stringDate);
-            transactionDAOService.save(transaction);
-
-            account.setAmount(BigDecimal.ZERO);
-            accountDAOService.update(account);
-        }
-
-        if(generalSummaryReceiptModel.getSalary() > 0.0){
-            transaction = new Transaction();
-            transaction.setTransactionId(getNewId());
-            transaction.setAccountNo(account.getAccountNo());
-            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getSalary()));
-            transaction.setTypeId("Salary");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
-            transaction.setsTime(stringDate);
-            transactionDAOService.save(transaction);
-        }
-
-        if(generalSummaryReceiptModel.getOverPayment() > 0.0){
-            transaction = new Transaction();
-            transaction.setTransactionId(getNewId());
-            transaction.setAccountNo(account.getAccountNo());
-            transaction.setDebit(BigDecimal.valueOf(generalSummaryReceiptModel.getOverPayment()));
-            transaction.setTypeId("OverPayment");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
-            transaction.setsTime(stringDate);
-            transactionDAOService.save(transaction);
-        }
-
-        if(generalSummaryReceiptModel.getExcess() > 0.0){
-            transaction = new Transaction();
-            transaction.setTransactionId(getNewId());
-            transaction.setAccountNo(account.getAccountNo());
-            transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getExcess()));
-            transaction.setTypeId("Excess");
-            transaction.setTime(generalSummaryReceiptModel.getDate());
-            transaction.setsTime(stringDate);
-            transactionDAOService.save(transaction);
-        }
-
-        String individualId = generalSummaryReceiptModel.getIndividualId();
-        List<Chit> chitList = chitDAOService.getAllChithsByFormattedDateNIndividualId(stringDate, individualId);
-        List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(generalSummaryReceiptModel.getEnvelopeId());
-        Envelope envelopeById = envelopeDAOService.getEnvelopeById(generalSummaryReceiptModel.getEnvelopeId());
-
-        if(envelopeById != null){
-            if(center.getCommision() != null && envelopeById.getInvesment() != null && center.getCenterid() != null && envelopeById.getInvesment().doubleValue() != 0){
+            if (generalSummaryReceiptModel.getPay() > 0.0 && payValue == 0.0) {
                 transaction = new Transaction();
-                createTransactinonAccount(center.getCenterid(), transaction);
-                String id = new Date().getTime() + "";
-                Hashids hashids = new Hashids(id);
-                String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
-                String newid1 = getStringID(id, hashids, hexaid);
-                transaction.setTransactionId(newid1);
-                transaction.setTypeId("COM");
-                double investmentValue = envelopeById.getInvesment().doubleValue();
-                BigDecimal comm = calculateCommision(envelopeById.getInvesment(), center.getCommision());
-                transaction.setCredit(comm);
-                transaction.setTime(envelopeById.getDate());
+                transaction.setTransactionId(getNewId());
+                transaction.setAccountNo(account.getAccountNo());
+                transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPay()));
+                transaction.setTypeId("PAY");
+                transaction.setTime(generalSummaryReceiptModel.getDate());
                 transaction.setsTime(stringDate);
                 transactionDAOService.save(transaction);
             }
-            envelopeById.setFinished(true);
-            envelopeDAOService.update(envelopeById);
-        }
-
-        Individual individual1 = individualDAOService.getBranchById(generalSummaryReceiptModel.getIndividualId());
-        BigDecimal notcommisionPersentageForCenter = BigDecimal.ZERO;
-        BigDecimal notcommisionPersentageForIndividual = BigDecimal.ZERO;
-        BigDecimal notCommisionsTot = BigDecimal.ZERO;
-        BigDecimal lessCommisionSinglePersentageForCenter = BigDecimal.ZERO;
-        BigDecimal lessCommisionSingleTot = BigDecimal.ZERO;
-        BigDecimal lessCommisionSinglePersentageForIndividual = BigDecimal.ZERO;
-        /**
-         * If there is chits in envelope amounts setting them to totOayment value
-         */
-        if (chitList.size() > 0) {
-            for (Chit chit : chitList) {
-                if (chit.getAmount() != null) {
-                    totPayment += chit.getAmount().doubleValue();
-                }
+            if (payValue > 0.0 && generalSummaryReceiptModel.getPay() == 0.0) {
+                transaction = new Transaction();
+                transaction.setTransactionId(getNewId());
+                transaction.setAccountNo(account.getAccountNo());
+                transaction.setCredit(BigDecimal.valueOf(payValue));
+                transaction.setTypeId("PAY");
+                transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
+                transactionDAOService.save(transaction);
             }
-        }
+            if (payValue > 0.0 && generalSummaryReceiptModel.getPay() > 0.0) {
+                transaction = new Transaction();
+                transaction.setTransactionId(getNewId());
+                transaction.setAccountNo(account.getAccountNo());
+                transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPay()));
+                transaction.setTypeId("PAY");
+                transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
+                transactionDAOService.save(transaction);
+            }
+            if (account != null && account.getAmount() != null && account.getAmount().doubleValue() > 0.0) {
 
-        /**
-         * If not added manually finish time any NC value or lcs value and also there is current nc or lcs vale
-         * for the envelope
-         * calculate nc or lcs vale and add it to transaction table to individual & to center
-         */
-        if(nc == 0.0 && lcs== 0.0 && generalSummaryReceiptModel.getModelLcs() > 0.0 | generalSummaryReceiptModel.getModelNc() > 0.0){
+                transaction = new Transaction();
+                transaction.setTransactionId(getNewId());
+                transaction.setAccountNo(account.getAccountNo());
+                transaction.setDebit(account.getAmount());
+                transaction.setTypeId("PD");
+                transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
+                transactionDAOService.save(transaction);
+            }
+
+            if (dueValue > 0) {
+                transaction = new Transaction();
+                transaction.setTransactionId(getNewId());
+                transaction.setAccountNo(account.getAccountNo());
+                transaction.setDebit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
+                transaction.setTypeId("Balance");
+                transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
+                transactionDAOService.save(transaction);
+                account.setAmount(BigDecimal.valueOf(dueValue));
+                accountDAOService.update(account);
+
+            }
+            if (dueValue < 0 && generalSummaryReceiptModel.getPayment() > 0.0) {
+                transaction = new Transaction();
+                transaction.setTransactionId(getNewId());
+                transaction.setAccountNo(account.getAccountNo());
+                transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getBalance()));
+                transaction.setTypeId("Balance");
+                transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
+                transactionDAOService.save(transaction);
+
+                transaction.setTransactionId(getNewId());
+                transaction.setAccountNo(account.getAccountNo());
+                transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getPayment() * -1));
+                transaction.setTypeId("Payment");
+                transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
+                transactionDAOService.save(transaction);
+
+                account.setAmount(BigDecimal.ZERO);
+                accountDAOService.update(account);
+            }
+
+            if (generalSummaryReceiptModel.getSalary() > 0.0) {
+                transaction = new Transaction();
+                transaction.setTransactionId(getNewId());
+                transaction.setAccountNo(account.getAccountNo());
+                transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getSalary()));
+                transaction.setTypeId("Salary");
+                transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
+                transactionDAOService.save(transaction);
+            }
+
+            if (generalSummaryReceiptModel.getOverPayment() > 0.0) {
+                transaction = new Transaction();
+                transaction.setTransactionId(getNewId());
+                transaction.setAccountNo(account.getAccountNo());
+                transaction.setDebit(BigDecimal.valueOf(generalSummaryReceiptModel.getOverPayment()));
+                transaction.setTypeId("OverPayment");
+                transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
+                transactionDAOService.save(transaction);
+            }
+
+            if (generalSummaryReceiptModel.getExcess() > 0.0) {
+                transaction = new Transaction();
+                transaction.setTransactionId(getNewId());
+                transaction.setAccountNo(account.getAccountNo());
+                transaction.setCredit(BigDecimal.valueOf(generalSummaryReceiptModel.getExcess()));
+                transaction.setTypeId("Excess");
+                transaction.setTime(generalSummaryReceiptModel.getDate());
+                transaction.setsTime(stringDate);
+                transactionDAOService.save(transaction);
+            }
+
+            String individualId = generalSummaryReceiptModel.getIndividualId();
+            List<Chit> chitList = chitDAOService.getAllChithsByFormattedDateNIndividualId(stringDate, individualId);
+            List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(generalSummaryReceiptModel.getEnvelopeId());
+            Envelope envelopeById = envelopeDAOService.getEnvelopeById(generalSummaryReceiptModel.getEnvelopeId());
+
+            if (envelopeById != null) {
+                if (center.getCommision() != null && envelopeById.getInvesment() != null && center.getCenterid() != null && envelopeById.getInvesment().doubleValue() != 0) {
+                    transaction = new Transaction();
+                    createTransactinonAccount(center.getCenterid(), transaction);
+                    String id = new Date().getTime() + "";
+                    Hashids hashids = new Hashids(id);
+                    String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
+                    String newid1 = getStringID(id, hashids, hexaid);
+                    transaction.setTransactionId(newid1);
+                    transaction.setTypeId("COM");
+                    double investmentValue = envelopeById.getInvesment().doubleValue();
+                    BigDecimal comm = calculateCommision(envelopeById.getInvesment(), center.getCommision());
+                    transaction.setCredit(comm);
+                    transaction.setTime(envelopeById.getDate());
+                    transaction.setsTime(stringDate);
+                    transactionDAOService.save(transaction);
+                }
+                envelopeById.setFinished(true);
+                String update = envelopeDAOService.update(envelopeById);
+
+            }
+
+            Individual individual1 = individualDAOService.getBranchById(generalSummaryReceiptModel.getIndividualId());
+            BigDecimal notcommisionPersentageForCenter = BigDecimal.ZERO;
+            BigDecimal notcommisionPersentageForIndividual = BigDecimal.ZERO;
+            BigDecimal notCommisionsTot = BigDecimal.ZERO;
+            BigDecimal lessCommisionSinglePersentageForCenter = BigDecimal.ZERO;
+            BigDecimal lessCommisionSingleTot = BigDecimal.ZERO;
+            BigDecimal lessCommisionSinglePersentageForIndividual = BigDecimal.ZERO;
+            /**
+             * If there is chits in envelope amounts setting them to totOayment value
+             */
             if (chitList.size() > 0) {
                 for (Chit chit : chitList) {
-                    if (chit.getFinish() == null || chit.getFinish() == false) {
-                        //adding if available lcs, nc to center or individual
-                        setNotComisionOLessComSingleVal(chit);
-                        chit.setFinish(true);
-                        chitDAOService.update(chit);
+                    if (chit.getAmount() != null) {
+                        totPayment += chit.getAmount().doubleValue();
                     }
                 }
             }
+
+            /**
+             * If not added manually finish time any NC value or lcs value and also there is current nc or lcs vale
+             * for the envelope
+             * calculate nc or lcs vale and add it to transaction table to individual & to center
+             */
+            if (nc == 0.0 && lcs == 0.0 && generalSummaryReceiptModel.getModelLcs() > 0.0 | generalSummaryReceiptModel.getModelNc() > 0.0) {
+                if (chitList.size() > 0) {
+                    for (Chit chit : chitList) {
+                        if (chit.getFinish() == null || chit.getFinish() == false) {
+                            //adding if available lcs, nc to center or individual
+                            setNotComisionOLessComSingleVal(chit);
+                            chit.setFinish(true);
+                            chitDAOService.update(chit);
+                        }
+                    }
+                }
+            }
+
+            /**
+             * If added manually finish time any NC value and also there is no current nc vale or there is current vale
+             * for the envelope
+             * calculate nc vale and add it to transaction table to individual & to center
+             */
+            if (generalSummaryReceiptModel.getModelNc() >= 0.0 && nc > 0.0) {
+                if (center != null && center.getNotCommisionPersentage() != null && center.getNotCommisionPersentage().doubleValue() > 0.0) {
+                    notcommisionPersentageForCenter = center.getNotCommisionPersentage();
+                    notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForCenter);
+                    transaction = new Transaction();
+                    transaction.setTransactionId(getNewId());
+                    transaction.setAccountNo(centerAccount.getAccountNo());
+                    transaction.setDebit(notCommisionsTot);
+                    transaction.setTypeId("NC");
+                    transaction.setTime(generalSummaryReceiptModel.getDate());
+                    transaction.setsTime(stringDate);
+                    transactionDAOService.save(transaction);
+                }
+                if (individual1 != null && individual1.getNotCommisionPersentage() != null && individual1.getNotCommisionPersentage().doubleValue() > 0.0) {
+                    notcommisionPersentageForIndividual = individual1.getNotCommisionPersentage();
+                    notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForIndividual);
+                    transaction = new Transaction();
+                    transaction.setTransactionId(getNewId());
+                    transaction.setAccountNo(account.getAccountNo());
+                    transaction.setDebit(notCommisionsTot);
+                    transaction.setTypeId("NC");
+                    transaction.setTime(generalSummaryReceiptModel.getDate());
+                    transaction.setsTime(stringDate);
+                    transactionDAOService.save(transaction);
+                }
+
+            }
+            /**
+             * If added manually finish time any LCS value and also there is no current lcs vale or there is current vale
+             * for the envelope
+             * calculate lcs vale and add it to transaction table to individual & to center
+             */
+            if (generalSummaryReceiptModel.getModelLcs() >= 0.0 && lcs > 0.0) {
+                if (center != null && center.getLessComissionSingle() != null && center.getLessComissionSingle().doubleValue() > 0.0) {
+                    lessCommisionSinglePersentageForCenter = center.getLessComissionSingle();
+                    lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(BigDecimal.valueOf(lcs), lessCommisionSinglePersentageForCenter);
+                    transaction = new Transaction();
+                    transaction.setTransactionId(getNewId());
+                    transaction.setAccountNo(centerAccount.getAccountNo());
+                    transaction.setDebit(lessCommisionSingleTot);
+                    transaction.setTypeId("LCS");
+                    transaction.setTime(generalSummaryReceiptModel.getDate());
+                    transaction.setsTime(stringDate);
+                    transactionDAOService.save(transaction);
+                }
+                if (individual1 != null && individual1.getLessComissionSingle() != null && individual1.getLessComissionSingle().doubleValue() > 0.0) {
+                    lessCommisionSinglePersentageForIndividual = individual1.getLessComissionSingle();
+                    lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(BigDecimal.valueOf(lcs), lessCommisionSinglePersentageForIndividual);
+                    transaction = new Transaction();
+                    transaction.setTransactionId(getNewId());
+                    transaction.setAccountNo(account.getAccountNo());
+                    transaction.setDebit(lessCommisionSingleTot);
+                    transaction.setTypeId("LCS");
+                    transaction.setTime(generalSummaryReceiptModel.getDate());
+                    transaction.setsTime(stringDate);
+                    transactionDAOService.save(transaction);
+                }
+
+            }
+            return ResponseMessage.SUCCESS;
         }
 
-        /**
-         * If added manually finish time any NC value and also there is no current nc vale or there is current vale
-         * for the envelope
-         * calculate nc vale and add it to transaction table to individual & to center
-         */
-        if(generalSummaryReceiptModel.getModelNc() >=0.0  && nc > 0.0){
-            if (center != null && center.getNotCommisionPersentage() != null && center.getNotCommisionPersentage().doubleValue() > 0.0) {
-                notcommisionPersentageForCenter = center.getNotCommisionPersentage();
-                notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForCenter);
-                transaction = new Transaction();
-                transaction.setTransactionId(getNewId());
-                transaction.setAccountNo(centerAccount.getAccountNo());
-                transaction.setDebit(notCommisionsTot);
-                transaction.setTypeId("NC");
-                transaction.setTime(generalSummaryReceiptModel.getDate());
-                transaction.setsTime(stringDate);
-                transactionDAOService.save(transaction);
-            }
-            if (individual1 != null && individual1.getNotCommisionPersentage() != null && individual1.getNotCommisionPersentage().doubleValue() > 0.0) {
-                notcommisionPersentageForIndividual = individual1.getNotCommisionPersentage();
-                notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForIndividual);
-                transaction = new Transaction();
-                transaction.setTransactionId(getNewId());
-                transaction.setAccountNo(account.getAccountNo());
-                transaction.setDebit(notCommisionsTot);
-                transaction.setTypeId("NC");
-                transaction.setTime(generalSummaryReceiptModel.getDate());
-                transaction.setsTime(stringDate);
-                transactionDAOService.save(transaction);
-            }
-
-        }
-        /**
-         * If added manually finish time any LCS value and also there is no current lcs vale or there is current vale
-         * for the envelope
-         * calculate lcs vale and add it to transaction table to individual & to center
-         */
-        if(generalSummaryReceiptModel.getModelLcs() >= 0.0 && lcs > 0.0){
-            if (center != null && center.getLessComissionSingle() != null  && center.getLessComissionSingle().doubleValue() > 0.0) {
-                lessCommisionSinglePersentageForCenter = center.getLessComissionSingle();
-                lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(BigDecimal.valueOf(lcs), lessCommisionSinglePersentageForCenter);
-                transaction = new Transaction();
-                transaction.setTransactionId(getNewId());
-                transaction.setAccountNo(centerAccount.getAccountNo());
-                transaction.setDebit(lessCommisionSingleTot);
-                transaction.setTypeId("LCS");
-                transaction.setTime(generalSummaryReceiptModel.getDate());
-                transaction.setsTime(stringDate);
-                transactionDAOService.save(transaction);
-            }
-            if (individual1 != null && individual1.getLessComissionSingle() != null && individual1.getLessComissionSingle().doubleValue() > 0.0) {
-                lessCommisionSinglePersentageForIndividual = individual1.getLessComissionSingle();
-                lessCommisionSingleTot = envelopeDAOService.calculateLessCommisionSingle(BigDecimal.valueOf(lcs), lessCommisionSinglePersentageForIndividual);
-                transaction = new Transaction();
-                transaction.setTransactionId(getNewId());
-                transaction.setAccountNo(account.getAccountNo());
-                transaction.setDebit(lessCommisionSingleTot);
-                transaction.setTypeId("LCS");
-                transaction.setTime(generalSummaryReceiptModel.getDate());
-                transaction.setsTime(stringDate);
-                transactionDAOService.save(transaction);
-            }
-
-        }
-
-        return ResponseMessage.SUCCESS;
+        return ResponseMessage.DANGER;
     }
 
     /**
@@ -557,6 +563,7 @@ public class IndividualController {
 
         Transaction tra = new Transaction();
         Account account = accountDAOService.getAccountByCenterOIndividualId(generalSummaryReceiptModel.getIndividualId());
+
         Individual individual = individualDAOService.getBranchById(generalSummaryReceiptModel.getIndividualId());
 
 
@@ -590,6 +597,7 @@ public class IndividualController {
                 }
 
                 String ty = tra.getTypeId().toLowerCase();
+              //  System.out.println("PPPPP"+ty);
                 if (tra.getDebit() != null) {
                     Object put = map.put(ty, tra.getDebit() + "");
                 }

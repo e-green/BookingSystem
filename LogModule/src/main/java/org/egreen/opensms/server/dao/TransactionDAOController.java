@@ -11,4 +11,5 @@ public interface TransactionDAOController extends DAOController<Transaction,Stri
 
     List<Transaction> getTodayTransactionDetailByDateNAccountNo(String date, String accountNo);
 
+    List<Transaction> getTransaActionByDateRange(String accountNo, String firstDate, String secondDate);
 }

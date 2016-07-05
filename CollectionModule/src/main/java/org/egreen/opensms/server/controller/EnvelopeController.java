@@ -1,17 +1,13 @@
 package org.egreen.opensms.server.controller;
 
-import org.egreen.opensms.server.entity.*;
+import org.egreen.opensms.server.entity.Envelope;
 import org.egreen.opensms.server.models.*;
-
 import org.egreen.opensms.server.service.EnvelopeDAOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Date;
 
 
 /**
@@ -34,6 +30,7 @@ public class EnvelopeController {
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
     public ReturnIdModel1 save(@RequestBody Envelope envelope) {
+
         String res = envelopeDAOService.save(envelope);
         ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
         returnIdModel1.setId(res);
@@ -50,6 +47,7 @@ public class EnvelopeController {
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
     public ReturnIdModel1 update(@RequestBody Envelope envelope) {
+
         String res = envelopeDAOService.update(envelope);
         ReturnIdModel1 returnIdModel1 = new ReturnIdModel1();
         returnIdModel1.setId(res);

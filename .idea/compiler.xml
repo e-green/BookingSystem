@@ -18,5 +18,25 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="basicweb_main" target="1.8" />
+      <module name="basicweb_test" target="1.8" />
+      <module name="CashModule_main" target="1.8" />
+      <module name="CashModule_test" target="1.8" />
+      <module name="CollectionModule_main" target="1.8" />
+      <module name="CollectionModule_test" target="1.8" />
+      <module name="dbcontroller_main" target="1.5" />
+      <module name="dbcontroller_test" target="1.5" />
+      <module name="LogModule_main" target="1.8" />
+      <module name="LogModule_test" target="1.8" />
+      <module name="main_main" target="1.8" />
+      <module name="main_test" target="1.8" />
+      <module name="ReportModule_main" target="1.8" />
+      <module name="ReportModule_test" target="1.8" />
+      <module name="UserModule_main" target="1.8" />
+      <module name="UserModule_test" target="1.8" />
+      <module name="web_main" target="1.8" />
+      <module name="web_test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

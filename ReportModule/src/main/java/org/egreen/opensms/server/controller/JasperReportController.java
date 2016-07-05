@@ -1634,6 +1634,7 @@ public class JasperReportController {
 
     /**
      * * getGeneralSummaryReceipt
+     *
      * <p/>
      * 0== Center
      * 1== individual
