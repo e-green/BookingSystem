@@ -80,7 +80,6 @@ public class EnvelopeDAOService {
                 String centerId = envelope.getCenter();
 
                 Individual individual = individualDAOController.read(individualId);
-
                 Center center=centerDAOController.read(centerId);
 
                 String accountNo = null;
