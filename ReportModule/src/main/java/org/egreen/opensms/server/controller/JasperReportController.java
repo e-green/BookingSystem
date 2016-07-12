@@ -72,34 +72,34 @@ public class JasperReportController {
      */
     @RequestMapping(value = "getGeneralSummaryReportModel", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public GeneralSummaryReportModel getGeneralSummaryReportModel(@RequestParam("centerId") String centerIdFrom,@RequestParam("sTime") String sTime) {
+    public GeneralSummaryReportModel getGeneralSummaryReportModel(@RequestParam("centerId") String centerIdFrom, @RequestParam("sTime") String sTime) {
         String stringTime = sTime;
         String centerId = centerIdFrom;
 
 
-        Double totInvesment=0.0;
-        Double totPayment=0.0;
+        Double totInvesment = 0.0;
+        Double totPayment = 0.0;
         Double payment = 0.0;
         Double investment = 0.0;
-        Double commision=0.0;
-        Double cash=0.0;
-        Double paymentDue=0.0;
-        Double excess=0.0;
-        Double expenses=0.0;
-        Double loanDeductionPayment=0.0;
-        Double tpyPayment=0.0;
-        Double tpyInvestment=0.0;
-        Double pcCharges=0.0;
-        Double loan=0.0;
-        Double loanDeductValue=0.0;
-        double ncValue=0.0;
-        double lcsValue=0.0;
-        Timestamp timestamp=null;
-        try{
+        Double commision = 0.0;
+        Double cash = 0.0;
+        Double paymentDue = 0.0;
+        Double excess = 0.0;
+        Double expenses = 0.0;
+        Double loanDeductionPayment = 0.0;
+        Double tpyPayment = 0.0;
+        Double tpyInvestment = 0.0;
+        Double pcCharges = 0.0;
+        Double loan = 0.0;
+        Double loanDeductValue = 0.0;
+        double ncValue = 0.0;
+        double lcsValue = 0.0;
+        Timestamp timestamp = null;
+        try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date parsedDate = dateFormat.parse(stringTime);
             timestamp = new java.sql.Timestamp(parsedDate.getTime());
-        }catch(Exception e) {
+        } catch (Exception e) {
         }
         // get center by centerId
         Center center = centerDAOService.getCenterById(centerId);
@@ -108,9 +108,9 @@ public class JasperReportController {
 
         // get individual list by centerId
         List<Individual> individualsByCenterId = individualDAOService.getIndividualsByCenterId(centerId);
-        int individualCount=0;
+        int individualCount = 0;
         //if transaction list not empty each center transaction values add to their value and some of values check are they already have in transaction
-        for (Individual individual:individualsByCenterId) {
+        for (Individual individual : individualsByCenterId) {
             individualCount++;
             //get individual account by individualId
             Account accountByIndividualId = accountDAOService.getAccountByCenterOIndividualId(individual.getIndividualId());
@@ -119,18 +119,18 @@ public class JasperReportController {
             //check is that above individual transaction list is not empty
             if (!transactionListByAccountNo.isEmpty()) {
                 //if transaction list not empty each individual transaction values add to their value
-                for (Transaction transaction:transactionListByAccountNo) {
-                    if(transaction != null){
-                        if(transaction.getTypeId().equals("PAY")){
-                            totPayment+=transaction.getCredit().doubleValue();
-                            payment+=transaction.getCredit().doubleValue();
+                for (Transaction transaction : transactionListByAccountNo) {
+                    if (transaction != null) {
+                        if (transaction.getTypeId().equals("PAY")) {
+                            totPayment += transaction.getCredit().doubleValue();
+                            payment += transaction.getCredit().doubleValue();
                         }
                         if (transaction.getTypeId().equals("Inv")) {
                             totInvesment += transaction.getDebit().doubleValue();
                             investment += transaction.getDebit().doubleValue();
                         }
-                        if(transaction.getTypeId().equals("LN")){
-                            loanDeductValue+=transaction.getDebit().doubleValue();
+                        if (transaction.getTypeId().equals("LN")) {
+                            loanDeductValue += transaction.getDebit().doubleValue();
                         }
                     }
                 }
@@ -141,96 +141,96 @@ public class JasperReportController {
         Account accountByCenterId = accountDAOService.getAccountByCenterOIndividualId(centerId);
         //get center Transaction list by sTime & center accountId
         List<Transaction> trList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(stringTime, accountByCenterId.getAccountNo());
-        Transaction transaction=null;
-        boolean isExistCash=false;
-        boolean isExistExcess=false;
-        boolean isExistExpenses=false;
-        boolean isExistLoanDeductionPayment=false;
-        boolean isExistLoan=false;
-        boolean isExistDue=false;
+        Transaction transaction = null;
+        boolean isExistCash = false;
+        boolean isExistExcess = false;
+        boolean isExistExpenses = false;
+        boolean isExistLoanDeductionPayment = false;
+        boolean isExistLoan = false;
+        boolean isExistDue = false;
         //check is that above center transaction list is not empty
         if (!trList.isEmpty()) {
             //if transaction list not empty each center transaction values add to their value and some of values check are they already have in transaction
-            for (Transaction tran:trList) {
-                if(tran != null){
-                    if(tran.getDebit() != null && tran.getTypeId().equals("NC")){
-                        ncValue+=tran.getDebit().doubleValue();
+            for (Transaction tran : trList) {
+                if (tran != null) {
+                    if (tran.getDebit() != null && tran.getTypeId().equals("NC")) {
+                        ncValue += tran.getDebit().doubleValue();
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("LCS")){
-                        lcsValue+=tran.getDebit().doubleValue();
+                    if (tran.getDebit() != null && tran.getTypeId().equals("LCS")) {
+                        lcsValue += tran.getDebit().doubleValue();
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("PD")){
-                        paymentDue+=tran.getDebit().doubleValue();
+                    if (tran.getDebit() != null && tran.getTypeId().equals("PD")) {
+                        paymentDue += tran.getDebit().doubleValue();
                     }
-                    if(tran.getTypeId().equals("LN")){
-                        loanDeductionPayment+=tran.getDebit().doubleValue();
+                    if (tran.getTypeId().equals("LN")) {
+                        loanDeductionPayment += tran.getDebit().doubleValue();
                     }
-                    if(tran.getTypeId().equals("LON")){
-                        loan+=tran.getCredit().doubleValue();
+                    if (tran.getTypeId().equals("LON")) {
+                        loan += tran.getCredit().doubleValue();
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("COM")){
-                        commision+=tran.getCredit().doubleValue();
+                    if (tran.getCredit() != null && tran.getTypeId().equals("COM")) {
+                        commision += tran.getCredit().doubleValue();
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("LN")){
-                        isExistLoanDeductionPayment=true;
+                    if (tran.getDebit() != null && tran.getTypeId().equals("LN")) {
+                        isExistLoanDeductionPayment = true;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("LON")){
-                        isExistLoan=true;
+                    if (tran.getCredit() != null && tran.getTypeId().equals("LON")) {
+                        isExistLoan = true;
                     }
                 }
             }
         }
 
 
-        ApprovedLoan approvedLoan=null;
-        if(centerId != null){
+        ApprovedLoan approvedLoan = null;
+        if (centerId != null) {
             // get approved loans by centerId
             approvedLoan = approvedLoanDAOService.getOpenLoanDetailByCenterlId(centerId);
         }
         //if there is no current LoanDeductionPayment value for specified date for center adding new value to transaction table and to genaral summary report
-        if(isExistLoanDeductionPayment == false){
-            if (approvedLoan!=null&&approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
-                BigDecimal dueAmount=null;
-                if(approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null){
+        if (isExistLoanDeductionPayment == false) {
+            if (approvedLoan != null && approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
+                BigDecimal dueAmount = null;
+                if (approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null) {
                     dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
-                    loanDeductionPayment=approvedLoan.getDeductionPayment().doubleValue();
+                    loanDeductionPayment = approvedLoan.getDeductionPayment().doubleValue();
                 }
             }
         }
         //if there is no current Loan value for specified date for center adding new value to transaction table and to genaral summary report
-        if(isExistLoan == false){
-            if (approvedLoan!=null&&approvedLoan.getsTime().equals(stringTime)) {
-                BigDecimal dueAmount=null;
-                if(approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null){
+        if (isExistLoan == false) {
+            if (approvedLoan != null && approvedLoan.getsTime().equals(stringTime)) {
+                BigDecimal dueAmount = null;
+                if (approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null) {
                     loan = approvedLoan.getDueamount().doubleValue();
                 }
             }
         }
         // if their is pc charges for center assign it to pcCharges attribute
-        if(center.getPcChargers() != null){
-            pcCharges=center.getPcChargers().doubleValue();
+        if (center.getPcChargers() != null) {
+            pcCharges = center.getPcChargers().doubleValue();
         }
 
-        tpyInvestment+=totInvesment;
-        tpyPayment+=totPayment;
-        tpyInvestment+=paymentDue;
-        tpyPayment+=cash;
-        tpyPayment+=commision;
-        tpyInvestment+=ncValue;
+        tpyInvestment += totInvesment;
+        tpyPayment += totPayment;
+        tpyInvestment += paymentDue;
+        tpyPayment += cash;
+        tpyPayment += commision;
+        tpyInvestment += ncValue;
 
-        tpyInvestment+=loanDeductionPayment;
+        tpyInvestment += loanDeductionPayment;
 
-        tpyInvestment+=loanDeductValue;
+        tpyInvestment += loanDeductValue;
         tpyInvestment += lcsValue;
-        tpyInvestment+=pcCharges;
-        tpyPayment+=excess;
-        tpyPayment+=expenses;
-        tpyPayment+=loan;
+        tpyInvestment += pcCharges;
+        tpyPayment += excess;
+        tpyPayment += expenses;
+        tpyPayment += loan;
 
         Double dueAmount = tpyInvestment - tpyPayment;
 
         //adding genaral summary report values to GeneralSummaryReportModel
-        GeneralSummaryReportModel reportModel=new GeneralSummaryReportModel();
+        GeneralSummaryReportModel reportModel = new GeneralSummaryReportModel();
         reportModel.setCenterId(centerId);
         reportModel.setsTime(stringTime);
         reportModel.setInvestment(investment);
@@ -254,8 +254,8 @@ public class JasperReportController {
         return reportModel;
 
     }
-    
-    
+
+
     /**
      * getGeneralSummaryReport
      *
@@ -273,32 +273,32 @@ public class JasperReportController {
                                   @RequestParam("loanDeduct") boolean loanDeduct
     ) {
 
-        double addCash=onCash;
-        double addExpenses=onExpenses;
-        double addExcess=onExcess;
-        Double totInvesment=0.0;
-        Double totPayment=0.0;
+        double addCash = onCash;
+        double addExpenses = onExpenses;
+        double addExcess = onExcess;
+        Double totInvesment = 0.0;
+        Double totPayment = 0.0;
         Double payment = 0.0;
         Double investment = 0.0;
-        Double commision=0.0;
-        Double cash=0.0;
-        Double paymentDue=0.0;
-        Double excess=0.0;
-        Double expenses=0.0;
-        Double loanDeductionPayment=0.0;
-        Double tpyPayment=0.0;
-        Double tpyInvestment=0.0;
-        Double pcCharges=0.0;
-        Double loan=0.0;
-        Double loanDeductValue=0.0;
-        double ncValue=0.0;
-        double lcsValue=0.0;
-        Timestamp timestamp=null;
-        try{
+        Double commision = 0.0;
+        Double cash = 0.0;
+        Double paymentDue = 0.0;
+        Double excess = 0.0;
+        Double expenses = 0.0;
+        Double loanDeductionPayment = 0.0;
+        Double tpyPayment = 0.0;
+        Double tpyInvestment = 0.0;
+        Double pcCharges = 0.0;
+        Double loan = 0.0;
+        Double loanDeductValue = 0.0;
+        double ncValue = 0.0;
+        double lcsValue = 0.0;
+        Timestamp timestamp = null;
+        try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date parsedDate = dateFormat.parse(date);
             timestamp = new java.sql.Timestamp(parsedDate.getTime());
-        }catch(Exception e){
+        } catch (Exception e) {
         }
 
         JRTableModelDataSource ds = null;
@@ -325,9 +325,9 @@ public class JasperReportController {
 
         // get individual list by centerId
         List<Individual> individualsByCenterId = individualDAOService.getIndividualsByCenterId(centerId);
-        int individualCount=0;
+        int individualCount = 0;
         // each Individual total values calculating
-        for (Individual individual:individualsByCenterId) {
+        for (Individual individual : individualsByCenterId) {
             individualCount++;
             //get account by individualId
             Account accountByIndividualId = accountDAOService.getAccountByCenterOIndividualId(individual.getIndividualId());
@@ -336,36 +336,36 @@ public class JasperReportController {
             //if individual transaction list is empty or not
             if (!transactionListByAccountNo.isEmpty()) {
                 //if transaction list not empty each individual transaction values add to their value
-                for (Transaction transaction:transactionListByAccountNo) {
-                    if(transaction != null){
-                        if(transaction.getTypeId().equals("PAY")){
-                            totPayment+=transaction.getCredit().doubleValue();
-                            payment=transaction.getCredit().doubleValue();
+                for (Transaction transaction : transactionListByAccountNo) {
+                    if (transaction != null) {
+                        if (transaction.getTypeId().equals("PAY")) {
+                            totPayment += transaction.getCredit().doubleValue();
+                            payment = transaction.getCredit().doubleValue();
                         }
                         if (transaction.getTypeId().equals("Inv")) {
                             totInvesment += transaction.getDebit().doubleValue();
                             investment = transaction.getDebit().doubleValue();
                         }
-                        if(transaction.getTypeId().equals("LN")){
-                            loanDeductValue+=transaction.getDebit().doubleValue();
+                        if (transaction.getTypeId().equals("LN")) {
+                            loanDeductValue += transaction.getDebit().doubleValue();
                         }
                     }
                 }
                 //add row to DefaultTableModel with above values for report
-                model.addRow(new Object[]{individualCount+"",  individual.getName()+ "",  investment+"", payment+""});
+                model.addRow(new Object[]{individualCount + "", individual.getName() + "", investment + "", payment + ""});
             }
         }
         // get account by centerId
         Account accountByCenterId = accountDAOService.getAccountByCenterOIndividualId(centerId);
         //get center transaction list by string date(sTime) & center acountNo
         List<Transaction> trList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(date, accountByCenterId.getAccountNo());
-        Transaction transaction=null;
-        boolean isExistCash=false;
-        boolean isExistExcess=false;
-        boolean isExistExpenses=false;
-        boolean isExistLoanDeductionPayment=false;
-        boolean isExistLoan=false;
-        boolean isExistDue=false;
+        Transaction transaction = null;
+        boolean isExistCash = false;
+        boolean isExistExcess = false;
+        boolean isExistExpenses = false;
+        boolean isExistLoanDeductionPayment = false;
+        boolean isExistLoan = false;
+        boolean isExistDue = false;
         //check if center transaction list is not empty
         if (!trList.isEmpty()) {
             /**
@@ -375,58 +375,58 @@ public class JasperReportController {
              * finish time update it or if their is no current cash, excess & expenses mark them
              */
 
-            for (Transaction tran:trList) {
-                if(tran != null){
-                    if(tran.getDebit() != null && tran.getTypeId().equals("NC")){
-                        ncValue+=tran.getDebit().doubleValue();
+            for (Transaction tran : trList) {
+                if (tran != null) {
+                    if (tran.getDebit() != null && tran.getTypeId().equals("NC")) {
+                        ncValue += tran.getDebit().doubleValue();
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("LCS")){
-                        lcsValue+=tran.getDebit().doubleValue();
+                    if (tran.getDebit() != null && tran.getTypeId().equals("LCS")) {
+                        lcsValue += tran.getDebit().doubleValue();
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("CSH") && addCash > 0){
+                    if (tran.getCredit() != null && tran.getTypeId().equals("CSH") && addCash > 0) {
                         tran.setCredit(BigDecimal.valueOf(addCash));
                         transactionDAOService.update(tran);
-                        cash+=addCash;
+                        cash += addCash;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("Excess") && addExcess > 0){
+                    if (tran.getCredit() != null && tran.getTypeId().equals("Excess") && addExcess > 0) {
                         tran.setCredit(BigDecimal.valueOf(addExcess));
                         transactionDAOService.update(tran);
-                        excess+=addExcess;
+                        excess += addExcess;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("EXP") && addExpenses > 0){
+                    if (tran.getCredit() != null && tran.getTypeId().equals("EXP") && addExpenses > 0) {
                         tran.setCredit(BigDecimal.valueOf(addExpenses));
                         transactionDAOService.update(tran);
-                        expenses+=addExpenses;
+                        expenses += addExpenses;
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("PD")){
-                        paymentDue+=tran.getDebit().doubleValue();
+                    if (tran.getDebit() != null && tran.getTypeId().equals("PD")) {
+                        paymentDue += tran.getDebit().doubleValue();
                     }
-                    if(tran.getTypeId().equals("LN")){
-                        loanDeductionPayment+=tran.getDebit().doubleValue();
+                    if (tran.getTypeId().equals("LN")) {
+                        loanDeductionPayment += tran.getDebit().doubleValue();
                     }
-                    if(tran.getTypeId().equals("LON")){
-                        loan+=tran.getCredit().doubleValue();
+                    if (tran.getTypeId().equals("LON")) {
+                        loan += tran.getCredit().doubleValue();
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("PD")){
-                        isExistDue=true;
+                    if (tran.getDebit() != null && tran.getTypeId().equals("PD")) {
+                        isExistDue = true;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("CSH")){
-                        isExistCash=true;
+                    if (tran.getCredit() != null && tran.getTypeId().equals("CSH")) {
+                        isExistCash = true;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("Excess")){
-                        isExistExcess=true;
+                    if (tran.getCredit() != null && tran.getTypeId().equals("Excess")) {
+                        isExistExcess = true;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("EXP")){
-                        isExistExpenses=true;
+                    if (tran.getCredit() != null && tran.getTypeId().equals("EXP")) {
+                        isExistExpenses = true;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("COM")){
-                        commision+=tran.getCredit().doubleValue();
+                    if (tran.getCredit() != null && tran.getTypeId().equals("COM")) {
+                        commision += tran.getCredit().doubleValue();
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("LN")){
-                        isExistLoanDeductionPayment=true;
+                    if (tran.getDebit() != null && tran.getTypeId().equals("LN")) {
+                        isExistLoanDeductionPayment = true;
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("LON")){
-                        isExistLoan=true;
+                    if (tran.getDebit() != null && tran.getTypeId().equals("LON")) {
+                        isExistLoan = true;
                     }
                 }
             }
@@ -435,8 +435,8 @@ public class JasperReportController {
          * if there is no current cash value for specified date for center adding
          * new value to transaction table and to genaral summary report
          */
-        if(isExistCash == false && addCash > 0){
-            transaction=new Transaction();
+        if (isExistCash == false && addCash > 0) {
+            transaction = new Transaction();
             String newId = idCreation();
             transaction.setTransactionId(newId);
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -445,14 +445,14 @@ public class JasperReportController {
             transaction.setTypeId("CSH");
             transaction.setCredit(BigDecimal.valueOf(addCash));
             transactionDAOService.save(transaction);
-            cash+=addCash;
+            cash += addCash;
         }
         /**
          * if there is no current Excess value for specified date for center
          * adding new value to transaction table and to genaral summary report
          */
-        if(isExistExcess == false && addExcess > 0){
-            transaction=new Transaction();
+        if (isExistExcess == false && addExcess > 0) {
+            transaction = new Transaction();
             String newId = idCreation();
             transaction.setTransactionId(newId);
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -461,15 +461,15 @@ public class JasperReportController {
             transaction.setTypeId("Excess");
             transaction.setCredit(BigDecimal.valueOf(addExcess));
             transactionDAOService.save(transaction);
-            excess+=addExcess;
+            excess += addExcess;
         }
         /**
          * if there is no current Expenses value for specified date for center
          * adding new value to transaction table and to genaral summary report
          */
 
-        if(isExistExpenses == false && addExpenses > 0){
-            transaction=new Transaction();
+        if (isExistExpenses == false && addExpenses > 0) {
+            transaction = new Transaction();
             String newId = idCreation();
             transaction.setTransactionId(newId);
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -478,10 +478,10 @@ public class JasperReportController {
             transaction.setTypeId("EXP");
             transaction.setCredit(BigDecimal.valueOf(addExpenses));
             transactionDAOService.save(transaction);
-            expenses+=addExpenses;
+            expenses += addExpenses;
         }
-        ApprovedLoan approvedLoan=null;
-        if(centerId != null){
+        ApprovedLoan approvedLoan = null;
+        if (centerId != null) {
             //if centerId is not null get approve loan by centerId
             approvedLoan = approvedLoanDAOService.getOpenLoanDetailByCenterlId(centerId);
         }
@@ -489,8 +489,8 @@ public class JasperReportController {
          *if there is no current LoanDeductionPayment value for specified date for
          * center adding new value to transaction table and to genaral summary report
          */
-        if(isExistLoanDeductionPayment == false){
-            if (approvedLoan!=null&&approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
+        if (isExistLoanDeductionPayment == false) {
+            if (approvedLoan != null && approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
                 String id = new Date().getTime() + "";
                 Hashids hashids = new Hashids(id);
                 String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
@@ -499,20 +499,20 @@ public class JasperReportController {
                 String newid1 = getStringID(id, hashids, hexaid);
                 transaction.setTransactionId(newid1);
                 transaction.setTypeId("LN");
-                BigDecimal dueAmount=null;
-                if(approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null && loanDeduct == true){
+                BigDecimal dueAmount = null;
+                if (approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null && loanDeduct == true) {
                     dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
                 }
 
-                if( loanDeduct == true){
+                if (loanDeduct == true) {
                     transaction.setDebit(approvedLoan.getDeductionPayment());
                     transaction.setTime(timestamp);
                     transaction.setsTime(date);
                     transactionDAOService.save(transaction);
-                    loanDeductionPayment+=approvedLoan.getDeductionPayment().doubleValue();
+                    loanDeductionPayment += approvedLoan.getDeductionPayment().doubleValue();
                 }
                 //set due amount to approve loan
-                if(approvedLoan.getDueamount() != null && dueAmount != null){
+                if (approvedLoan.getDueamount() != null && dueAmount != null) {
                     approvedLoan.setDueamount(dueAmount);
                 }
                 //update approve loan
@@ -523,8 +523,8 @@ public class JasperReportController {
          * if there is no current ExistLoan value for specified date for
          * center adding new value to transaction table and to genaral summary report
          */
-        if(isExistLoan == false){
-            if (approvedLoan!=null&&approvedLoan.getsTime().equals(date)) {
+        if (isExistLoan == false) {
+            if (approvedLoan != null && approvedLoan.getsTime().equals(date)) {
                 String id = new Date().getTime() + "";
                 Hashids hashids = new Hashids(id);
                 String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
@@ -537,15 +537,15 @@ public class JasperReportController {
                 transaction.setTime(timestamp);
                 transaction.setsTime(date);
                 transactionDAOService.save(transaction);
-                loan+=approvedLoan.getDueamount().doubleValue();
+                loan += approvedLoan.getDueamount().doubleValue();
             }
         }
         /**
          * if there is no current ExistDue value for specified date for center
          * adding new value to transaction table and to genaral summary report
          */
-        if(isExistDue == false){
-            if(accountByCenterId != null && accountByCenterId.getAmount() != null && accountByCenterId.getAmount().doubleValue() > 0.0){
+        if (isExistDue == false) {
+            if (accountByCenterId != null && accountByCenterId.getAmount() != null && accountByCenterId.getAmount().doubleValue() > 0.0) {
                 transaction = new Transaction();
                 transaction.setTransactionId(getNewId());
                 transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -554,42 +554,42 @@ public class JasperReportController {
                 transaction.setTime(timestamp);
                 transaction.setsTime(date);
                 transactionDAOService.save(transaction);
-                paymentDue+=accountByCenterId.getAmount().doubleValue();
+                paymentDue += accountByCenterId.getAmount().doubleValue();
             }
         }
         //if pc charges available to center get it
-        if(center.getPcChargers() != null){
-            pcCharges=center.getPcChargers().doubleValue();
+        if (center.getPcChargers() != null) {
+            pcCharges = center.getPcChargers().doubleValue();
         }
 
         //put values to map
-        map.put("totInv",totInvesment == null ? "--" : totInvesment + "");
+        map.put("totInv", totInvesment == null ? "--" : totInvesment + "");
         map.put("totPay", totPayment == null ? "--" : totPayment + "");
-        map.put("nc",ncValue+"");
+        map.put("nc", ncValue + "");
         map.put("lcs", lcsValue + "");
-        map.put("com",commision+"");
-        map.put("csh",cash+"");
-        map.put("pc",pcCharges+"");
-        map.put("exces",excess+"");
-        map.put("exp",expenses+"");
-        map.put("due",paymentDue+"");
-        map.put("ln",loanDeductionPayment+"");
-        map.put("lon",loan+"");
-        map.put("ld",loanDeductValue+"");
+        map.put("com", commision + "");
+        map.put("csh", cash + "");
+        map.put("pc", pcCharges + "");
+        map.put("exces", excess + "");
+        map.put("exp", expenses + "");
+        map.put("due", paymentDue + "");
+        map.put("ln", loanDeductionPayment + "");
+        map.put("lon", loan + "");
+        map.put("ld", loanDeductValue + "");
 
-        tpyInvestment+=totInvesment;
-        tpyPayment+=totPayment;
-        tpyInvestment+=paymentDue;
-        tpyPayment+=cash;
-        tpyPayment+=commision;
-        tpyInvestment+=ncValue;
-        tpyInvestment+=loanDeductionPayment;
-        tpyInvestment+=loanDeductValue;
+        tpyInvestment += totInvesment;
+        tpyPayment += totPayment;
+        tpyInvestment += paymentDue;
+        tpyPayment += cash;
+        tpyPayment += commision;
+        tpyInvestment += ncValue;
+        tpyInvestment += loanDeductionPayment;
+        tpyInvestment += loanDeductValue;
         tpyInvestment += lcsValue;
-        tpyInvestment+=pcCharges;
-        tpyPayment+=excess;
-        tpyPayment+=expenses;
-        tpyPayment+=loan;
+        tpyInvestment += pcCharges;
+        tpyPayment += excess;
+        tpyPayment += expenses;
+        tpyPayment += loan;
 
 
         map.put("tpyPay", tpyPayment == null ? "--" : tpyPayment + "");
@@ -602,7 +602,7 @@ public class JasperReportController {
          * if dueamount is more than 0 add it to transaction table balance
          * value and updating center account amount value
          */
-        if(dueAmount > 0.0){
+        if (dueAmount > 0.0) {
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -618,7 +618,7 @@ public class JasperReportController {
             map.put("dueLable", "Due");
             map.put("paymentLable", "");
             map.put("payment", "");
-            map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment+"");
+            map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment + "");
             map.put("tpyPayDeduct", "");
         }
 
@@ -627,7 +627,7 @@ public class JasperReportController {
          * value and add new transaction payment to transaction
          * updating center account amount value as 0
          */
-        if(dueAmount < 0.0){
+        if (dueAmount < 0.0) {
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -639,7 +639,7 @@ public class JasperReportController {
 
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(accountByCenterId.getAccountNo());
-            transaction.setCredit(BigDecimal.valueOf(dueAmount*-1));
+            transaction.setCredit(BigDecimal.valueOf(dueAmount * -1));
             transaction.setTypeId("Payment");
             transaction.setTime(timestamp);
             transaction.setsTime(date);
@@ -648,22 +648,22 @@ public class JasperReportController {
             accountByCenterId.setAmount(BigDecimal.ZERO);
             accountDAOService.update(accountByCenterId);
             //put map values
-            map.put("payment", dueAmount == null ? "--" : dueAmount*-1 + "");
+            map.put("payment", dueAmount == null ? "--" : dueAmount * -1 + "");
             map.put("dueLable", "");
             map.put("dueTot", "");
             map.put("paymentLable", "Payment");
-            map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment+"");
+            map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment + "");
             map.put("tpyInvDeduct", "");
         }
         /**
          * if dueAmount eaquels 0 center account amount value set as 0
          * and no transaction creating
          */
-        if(dueAmount == 0.0){
+        if (dueAmount == 0.0) {
             accountByCenterId.setAmount(BigDecimal.ZERO);
             accountDAOService.update(accountByCenterId);
             //put map values
-            map.put("dueTot","");
+            map.put("dueTot", "");
             map.put("paymentLable", "Balance");
             map.put("payment", "0.0");
             map.put("tpyInvDeduct", "");
@@ -695,8 +695,8 @@ public class JasperReportController {
             System.out.println(ex);
         }
         //save new centerSummeryCheckService set summaryFinish as true
-        if(centerId!= null && date!=null){
-            CenterSummeryCheck centerSummeryCheck=new CenterSummeryCheck();
+        if (centerId != null && date != null) {
+            CenterSummeryCheck centerSummeryCheck = new CenterSummeryCheck();
             centerSummeryCheck.setCenterId(centerId);
             centerSummeryCheck.setsDate(date);
             centerSummeryCheck.setSummaryFinish(true);
@@ -720,37 +720,37 @@ public class JasperReportController {
                                   @RequestParam("loanDeduct") boolean loanDeduct
     ) {
 
-        double addExpenses=onExpenses;
-        double addExcess=onExcess;
-        Double totInvesment=0.0;
-        Double totPayment=0.0;
+        double addExpenses = onExpenses;
+        double addExcess = onExcess;
+        Double totInvesment = 0.0;
+        Double totPayment = 0.0;
         Double investment = 0.0;
-        Double commision=0.0;
-        Double paymentDue=0.0;
-        Double excess=0.0;
-        Double expenses=0.0;
-        Double loanDeductionPayment=0.0;
-        Double tpyPayment=0.0;
-        Double tpyInvestment=0.0;
-        Double pcCharges=0.0;
-        Double loan=0.0;
-        Double loanDeductValue=0.0;
-        double ncValue=0.0;
-        double ncVal=0.0;
-        double totNc=0.0;
-        double lcsValue=0.0;
-        double lcsVal=0.0;
-        double totLcs=0.0;
-        double tot=0.0;
-        double total=0.0;
+        Double commision = 0.0;
+        Double paymentDue = 0.0;
+        Double excess = 0.0;
+        Double expenses = 0.0;
+        Double loanDeductionPayment = 0.0;
+        Double tpyPayment = 0.0;
+        Double tpyInvestment = 0.0;
+        Double pcCharges = 0.0;
+        Double loan = 0.0;
+        Double loanDeductValue = 0.0;
+        double ncValue = 0.0;
+        double ncVal = 0.0;
+        double totNc = 0.0;
+        double lcsValue = 0.0;
+        double lcsVal = 0.0;
+        double totLcs = 0.0;
+        double tot = 0.0;
+        double total = 0.0;
 
 
-        Timestamp timestamp=null;
-        try{
+        Timestamp timestamp = null;
+        try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date parsedDate = dateFormat.parse(date);
             timestamp = new java.sql.Timestamp(parsedDate.getTime());
-        }catch(Exception e){
+        } catch (Exception e) {
         }
 
         JRTableModelDataSource ds = null;
@@ -774,28 +774,28 @@ public class JasperReportController {
 
         // get individual list by centerId
         List<Individual> individualsByCenterId = individualDAOService.getIndividualsByCenterId(centerId);
-        int individualCount=0;
+        int individualCount = 0;
         // each Individual total values calculating
-        for (Individual individual:individualsByCenterId) {
+        for (Individual individual : individualsByCenterId) {
             //get chit list by individualId & string date(sTime)
             List<Chit> chitList = chitDAOService.getAllChithsByFormattedDateNIndividualId(date, individual.getIndividualId());
-            if(!chitList.isEmpty()){
-                for(Chit chit:chitList){
+            if (!chitList.isEmpty()) {
+                for (Chit chit : chitList) {
                     /**
                      * chech is there nc vale available and
                      * if it's add to ncVal attribute and add nc value to total nc value
                      */
-                    if(chit.getNC() != null && chit.getNcOLCValue() != null && chit.getIndividualId().equals(individual.getIndividualId()) && chit.getNC() == true && chit.getNcOLCValue().doubleValue() > 0){
-                        ncVal=chit.getNcOLCValue().doubleValue();
-                        totNc+=ncVal;
+                    if (chit.getNC() != null && chit.getNcOLCValue() != null && chit.getIndividualId().equals(individual.getIndividualId()) && chit.getNC() == true && chit.getNcOLCValue().doubleValue() > 0) {
+                        ncVal = chit.getNcOLCValue().doubleValue();
+                        totNc += ncVal;
                     }
                     /**
                      * chech is there lcs vale available and
                      * if it's add to lcsVal attribute and add lcs value to total lcs value
                      */
-                    if(chit.getLCS() != null && chit.getNcOLCValue() != null && chit.getIndividualId().equals(individual.getIndividualId()) && chit.getLCS() == true && chit.getNcOLCValue().doubleValue() > 0){
-                        lcsVal=chit.getNcOLCValue().doubleValue();
-                        totLcs+=lcsVal;
+                    if (chit.getLCS() != null && chit.getNcOLCValue() != null && chit.getIndividualId().equals(individual.getIndividualId()) && chit.getLCS() == true && chit.getNcOLCValue().doubleValue() > 0) {
+                        lcsVal = chit.getNcOLCValue().doubleValue();
+                        totLcs += lcsVal;
                     }
                 }
             }
@@ -807,8 +807,8 @@ public class JasperReportController {
             List<Transaction> transactionListByAccountNo = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(date, accountByIndividualId.getAccountNo());
             //if individual transaction list is not empty calculating them
             if (!transactionListByAccountNo.isEmpty()) {
-                for (Transaction transaction:transactionListByAccountNo) {
-                    if(transaction != null){
+                for (Transaction transaction : transactionListByAccountNo) {
+                    if (transaction != null) {
                         /**
                          * if transaction table type eaquels Inv get value and
                          * assign it ti investment value and add it to totInvesment
@@ -821,17 +821,17 @@ public class JasperReportController {
                          * if transaction table type eaquels LN get value and
                          * add it to loanDeductValue
                          */
-                        if(transaction.getTypeId().equals("LN")){
-                            loanDeductValue+=transaction.getDebit().doubleValue();
+                        if (transaction.getTypeId().equals("LN")) {
+                            loanDeductValue += transaction.getDebit().doubleValue();
                         }
                     }
                 }
                 //add row to model
-                model.addRow(new Object[]{individualCount+"",  individual.getName()+ "",  investment+"", ncVal+"", lcsVal+""});
+                model.addRow(new Object[]{individualCount + "", individual.getName() + "", investment + "", ncVal + "", lcsVal + ""});
                 //set investment,ncVal and lcsVal as 0
-                investment=0.0;
-                ncVal=0.0;
-                lcsVal=0.0;
+                investment = 0.0;
+                ncVal = 0.0;
+                lcsVal = 0.0;
             }
 
         }
@@ -840,66 +840,66 @@ public class JasperReportController {
         Account accountByCenterId = accountDAOService.getAccountByCenterOIndividualId(centerId);
         //get center transaction by center account no & string date(sTime)
         List<Transaction> trList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(date, accountByCenterId.getAccountNo());
-        Transaction transaction=null;
-        boolean isExistCash=false;
-        boolean isExistExcess=false;
-        boolean isExistExpenses=false;
-        boolean isExistLoanDeductionPayment=false;
-        boolean isExistLoan=false;
-        boolean isExistDue=false;
+        Transaction transaction = null;
+        boolean isExistCash = false;
+        boolean isExistExcess = false;
+        boolean isExistExpenses = false;
+        boolean isExistLoanDeductionPayment = false;
+        boolean isExistLoan = false;
+        boolean isExistDue = false;
         if (!trList.isEmpty()) {
-            for (Transaction tran:trList) {
-                if(tran != null){
+            for (Transaction tran : trList) {
+                if (tran != null) {
                     /**
                      * if type eaqual Excess and manually add exsess value more than 0
                      * update transaction and add excess to it
                      */
-                    if(tran.getCredit() != null && tran.getTypeId().equals("Excess") && addExcess > 0){
+                    if (tran.getCredit() != null && tran.getTypeId().equals("Excess") && addExcess > 0) {
                         tran.setCredit(BigDecimal.valueOf(addExcess));
                         transactionDAOService.update(tran);
-                        excess+=addExcess;
+                        excess += addExcess;
                     }
                     /**
                      * if type eaqual EXP and manually add expenses value more than 0
                      * update transaction and add expenses to it
-                    */
-                    if(tran.getCredit() != null && tran.getTypeId().equals("EXP") && addExpenses > 0){
+                     */
+                    if (tran.getCredit() != null && tran.getTypeId().equals("EXP") && addExpenses > 0) {
                         tran.setCredit(BigDecimal.valueOf(addExpenses));
                         transactionDAOService.update(tran);
-                        expenses+=addExpenses;
+                        expenses += addExpenses;
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("PD")){
-                        paymentDue+=tran.getDebit().doubleValue();
+                    if (tran.getDebit() != null && tran.getTypeId().equals("PD")) {
+                        paymentDue += tran.getDebit().doubleValue();
                     }
-                    if(tran.getTypeId().equals("LN")){
-                        loanDeductionPayment+=tran.getDebit().doubleValue();
+                    if (tran.getTypeId().equals("LN")) {
+                        loanDeductionPayment += tran.getDebit().doubleValue();
                     }
-                    if(tran.getTypeId().equals("LON")){
-                        loan+=tran.getCredit().doubleValue();
+                    if (tran.getTypeId().equals("LON")) {
+                        loan += tran.getCredit().doubleValue();
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("PD")){
-                        isExistDue=true;
+                    if (tran.getDebit() != null && tran.getTypeId().equals("PD")) {
+                        isExistDue = true;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("Excess")){
-                        isExistExcess=true;
+                    if (tran.getCredit() != null && tran.getTypeId().equals("Excess")) {
+                        isExistExcess = true;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("EXP")){
-                        isExistExpenses=true;
+                    if (tran.getCredit() != null && tran.getTypeId().equals("EXP")) {
+                        isExistExpenses = true;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("COM")){
-                        commision+=tran.getCredit().doubleValue();
+                    if (tran.getCredit() != null && tran.getTypeId().equals("COM")) {
+                        commision += tran.getCredit().doubleValue();
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("LN")){
-                        isExistLoanDeductionPayment=true;
+                    if (tran.getDebit() != null && tran.getTypeId().equals("LN")) {
+                        isExistLoanDeductionPayment = true;
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("LON")){
-                        isExistLoan=true;
+                    if (tran.getDebit() != null && tran.getTypeId().equals("LON")) {
+                        isExistLoan = true;
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("NC")){
-                        ncValue+=tran.getDebit().doubleValue();
+                    if (tran.getDebit() != null && tran.getTypeId().equals("NC")) {
+                        ncValue += tran.getDebit().doubleValue();
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("LCS")){
-                        lcsValue+=tran.getDebit().doubleValue();
+                    if (tran.getDebit() != null && tran.getTypeId().equals("LCS")) {
+                        lcsValue += tran.getDebit().doubleValue();
                     }
                 }
             }
@@ -908,8 +908,8 @@ public class JasperReportController {
          * if there is no current Excess value for specified date for
          * center adding new value to transaction table and to genaral summary report
          */
-        if(isExistExcess == false && addExcess > 0){
-            transaction=new Transaction();
+        if (isExistExcess == false && addExcess > 0) {
+            transaction = new Transaction();
             String newId = idCreation();
             transaction.setTransactionId(newId);
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -918,14 +918,14 @@ public class JasperReportController {
             transaction.setTypeId("Excess");
             transaction.setCredit(BigDecimal.valueOf(addExcess));
             transactionDAOService.save(transaction);
-            excess+=addExcess;
+            excess += addExcess;
         }
         /**
          * if there is no current Expenses value for
          * specified date for center adding new value to transaction table and to genaral summary report
          */
-        if(isExistExpenses == false && addExpenses > 0){
-            transaction=new Transaction();
+        if (isExistExpenses == false && addExpenses > 0) {
+            transaction = new Transaction();
             String newId = idCreation();
             transaction.setTransactionId(newId);
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -934,19 +934,19 @@ public class JasperReportController {
             transaction.setTypeId("EXP");
             transaction.setCredit(BigDecimal.valueOf(addExpenses));
             transactionDAOService.save(transaction);
-            expenses+=addExpenses;
+            expenses += addExpenses;
         }
-        ApprovedLoan approvedLoan=null;
+        ApprovedLoan approvedLoan = null;
         //if center have approve loan get it
-        if(centerId != null){
+        if (centerId != null) {
             approvedLoan = approvedLoanDAOService.getOpenLoanDetailByCenterlId(centerId);
         }
         /**
          * if there is no current LoanDeductionPayment value for specified date for
          * center adding new value to transaction table and to genaral summary report
          */
-        if(isExistLoanDeductionPayment == false){
-            if (approvedLoan!=null&&approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
+        if (isExistLoanDeductionPayment == false) {
+            if (approvedLoan != null && approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
                 String id = new Date().getTime() + "";
                 Hashids hashids = new Hashids(id);
                 String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
@@ -955,19 +955,19 @@ public class JasperReportController {
                 String newid1 = getStringID(id, hashids, hexaid);
                 transaction.setTransactionId(newid1);
                 transaction.setTypeId("LN");
-                BigDecimal dueAmount=null;
-                if(approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null && loanDeduct == true){
+                BigDecimal dueAmount = null;
+                if (approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null && loanDeduct == true) {
                     dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
                 }
 
-                if( loanDeduct == true){
+                if (loanDeduct == true) {
                     transaction.setDebit(approvedLoan.getDeductionPayment());
                     transaction.setTime(timestamp);
                     transaction.setsTime(date);
                     transactionDAOService.save(transaction);
-                    loanDeductionPayment+=approvedLoan.getDeductionPayment().doubleValue();
+                    loanDeductionPayment += approvedLoan.getDeductionPayment().doubleValue();
                 }
-                if(approvedLoan.getDueamount() != null && dueAmount != null){
+                if (approvedLoan.getDueamount() != null && dueAmount != null) {
                     approvedLoan.setDueamount(dueAmount);
                 }
                 approvedLoanDAOService.update(approvedLoan);
@@ -977,8 +977,8 @@ public class JasperReportController {
          * if there is no current ExistLoan value for specified date for
          * center adding new value to transaction table and to genaral summary report
          */
-        if(isExistLoan == false){
-            if (approvedLoan!=null&& approvedLoan.getsTime().equals(date)
+        if (isExistLoan == false) {
+            if (approvedLoan != null && approvedLoan.getsTime().equals(date)
                     ) {
                 String id = new Date().getTime() + "";
                 Hashids hashids = new Hashids(id);
@@ -992,15 +992,15 @@ public class JasperReportController {
                 transaction.setTime(timestamp);
                 transaction.setsTime(date);
                 transactionDAOService.save(transaction);
-                loan+=approvedLoan.getDueamount().doubleValue();
+                loan += approvedLoan.getDueamount().doubleValue();
             }
         }
         /**
          * if there is no current ExistDue value for specified center
          * add it to transaction
          */
-        if(isExistDue == false){
-            if(accountByCenterId != null && accountByCenterId.getAmount() != null && accountByCenterId.getAmount().doubleValue() > 0.0){
+        if (isExistDue == false) {
+            if (accountByCenterId != null && accountByCenterId.getAmount() != null && accountByCenterId.getAmount().doubleValue() > 0.0) {
                 transaction = new Transaction();
                 transaction.setTransactionId(getNewId());
                 transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -1009,48 +1009,48 @@ public class JasperReportController {
                 transaction.setTime(timestamp);
                 transaction.setsTime(date);
                 transactionDAOService.save(transaction);
-                paymentDue+=accountByCenterId.getAmount().doubleValue();
+                paymentDue += accountByCenterId.getAmount().doubleValue();
             }
         }
 
         //if center available pc charges get it
-        if(center.getPcChargers() != null){
-            pcCharges=center.getPcChargers().doubleValue();
+        if (center.getPcChargers() != null) {
+            pcCharges = center.getPcChargers().doubleValue();
         }
-        tot=ncValue+lcsValue+pcCharges+loanDeductionPayment+excess+expenses;
+        tot = ncValue + lcsValue + pcCharges + loanDeductionPayment + excess + expenses;
 
-        total=commision-tot;
+        total = commision - tot;
 
         //put values to map
-        map.put("totInv",totInvesment == null ? "--" : totInvesment + "");
+        map.put("totInv", totInvesment == null ? "--" : totInvesment + "");
         map.put("totPay", totPayment == null ? "--" : totPayment + "");
-        map.put("totNc", totNc+"");
-        map.put("totLcs", totLcs+"");
-        map.put("nc",ncValue+"");
+        map.put("totNc", totNc + "");
+        map.put("totLcs", totLcs + "");
+        map.put("nc", ncValue + "");
         map.put("lcs", lcsValue + "");
-        map.put("com",commision+"");
-        map.put("pc",pcCharges+"");
-        map.put("exces",excess+"");
-        map.put("exp",expenses+"");
-        map.put("due",paymentDue+"");
-        map.put("ln",loanDeductionPayment+"");
-        map.put("lon",loan+"");
-        map.put("ld",loanDeductValue+"");
-        map.put("tot",tot+"");
-        map.put("total",total+"");
+        map.put("com", commision + "");
+        map.put("pc", pcCharges + "");
+        map.put("exces", excess + "");
+        map.put("exp", expenses + "");
+        map.put("due", paymentDue + "");
+        map.put("ln", loanDeductionPayment + "");
+        map.put("lon", loan + "");
+        map.put("ld", loanDeductValue + "");
+        map.put("tot", tot + "");
+        map.put("total", total + "");
 
-        tpyInvestment+=totInvesment;
-        tpyPayment+=totPayment;
-        tpyInvestment+=paymentDue;
-        tpyPayment+=commision;
-        tpyInvestment+=ncValue;
-        tpyInvestment+=loanDeductionPayment;
-        tpyInvestment+=loanDeductValue;
+        tpyInvestment += totInvesment;
+        tpyPayment += totPayment;
+        tpyInvestment += paymentDue;
+        tpyPayment += commision;
+        tpyInvestment += ncValue;
+        tpyInvestment += loanDeductionPayment;
+        tpyInvestment += loanDeductValue;
         tpyInvestment += lcsValue;
-        tpyInvestment+=pcCharges;
-        tpyPayment+=excess;
-        tpyPayment+=expenses;
-        tpyPayment+=loan;
+        tpyInvestment += pcCharges;
+        tpyPayment += excess;
+        tpyPayment += expenses;
+        tpyPayment += loan;
 
 
         map.put("tpyPay", tpyPayment == null ? "--" : tpyPayment + "");
@@ -1062,7 +1062,7 @@ public class JasperReportController {
          * if dueamount is more than 0 add it to transaction table balance
          * value and updating center account amount value
          */
-        if(dueAmount > 0.0){
+        if (dueAmount > 0.0) {
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -1078,7 +1078,7 @@ public class JasperReportController {
             map.put("dueLable", "Due");
             map.put("paymentLable", "");
             map.put("payment", "");
-            map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment+"");
+            map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment + "");
             map.put("tpyPayDeduct", "");
         }
 
@@ -1087,7 +1087,7 @@ public class JasperReportController {
          * value and add new transaction payment to transaction
          * updating center account amount value as 0
          */
-        if(dueAmount < 0.0){
+        if (dueAmount < 0.0) {
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -1099,7 +1099,7 @@ public class JasperReportController {
 
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(accountByCenterId.getAccountNo());
-            transaction.setCredit(BigDecimal.valueOf(dueAmount*-1));
+            transaction.setCredit(BigDecimal.valueOf(dueAmount * -1));
             transaction.setTypeId("Payment");
             transaction.setTime(timestamp);
             transaction.setsTime(date);
@@ -1108,11 +1108,11 @@ public class JasperReportController {
             accountByCenterId.setAmount(BigDecimal.ZERO);
             accountDAOService.update(accountByCenterId);
 
-            map.put("payment", dueAmount == null ? "--" : dueAmount*-1 + "");
+            map.put("payment", dueAmount == null ? "--" : dueAmount * -1 + "");
             map.put("dueLable", "");
             map.put("dueTot", "");
             map.put("paymentLable", "Payment");
-            map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment+"");
+            map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment + "");
             map.put("tpyInvDeduct", "");
         }
 
@@ -1120,11 +1120,11 @@ public class JasperReportController {
          * if dueAmount eaquels 0 center account amount value set as 0
          * and no transaction creating
          */
-        if(dueAmount == 0.0){
+        if (dueAmount == 0.0) {
             accountByCenterId.setAmount(BigDecimal.ZERO);
             accountDAOService.update(accountByCenterId);
 
-            map.put("dueTot","");
+            map.put("dueTot", "");
             map.put("paymentLable", "Balance");
             map.put("payment", "0.0");
             map.put("tpyInvDeduct", "");
@@ -1156,8 +1156,8 @@ public class JasperReportController {
             System.out.println(ex);
         }
         //save new centerSummeryCheckService set summaryFinish as true
-        if(centerId!= null && date!=null){
-            CenterSummeryCheck centerSummeryCheck=new CenterSummeryCheck();
+        if (centerId != null && date != null) {
+            CenterSummeryCheck centerSummeryCheck = new CenterSummeryCheck();
             centerSummeryCheck.setCenterId(centerId);
             centerSummeryCheck.setsDate(date);
             centerSummeryCheck.setSummaryFinish(true);
@@ -1165,7 +1165,7 @@ public class JasperReportController {
         }
     }
 
- /**
+    /**
      * get Genaral Summary Of Cash
      *
      * @param session
@@ -1174,48 +1174,48 @@ public class JasperReportController {
      */
     @RequestMapping(value = "getGenaralSummaryWithCash", method = RequestMethod.GET)
     public void getGenaralSummaryWithCash(HttpSession session, HttpServletResponse response,
-                                  @RequestParam("centerId") String centerId,
-                                  @RequestParam("datetime") String date,
-                                  @RequestParam("onExpenses") double onExpenses,
-                                  @RequestParam("onExcess") double onExcess,
-                                  @RequestParam("loanDeduct") boolean loanDeduct
+                                          @RequestParam("centerId") String centerId,
+                                          @RequestParam("datetime") String date,
+                                          @RequestParam("onExpenses") double onExpenses,
+                                          @RequestParam("onExcess") double onExcess,
+                                          @RequestParam("loanDeduct") boolean loanDeduct
     ) {
 
-        double addExpenses=onExpenses;
-        double addExcess=onExcess;
-        Double totInvesment=0.0;
-        Double totPayment=0.0;
-        Double totPay=0.0;
-        Double totCash=0.0;
+        double addExpenses = onExpenses;
+        double addExcess = onExcess;
+        Double totInvesment = 0.0;
+        Double totPayment = 0.0;
+        Double totPay = 0.0;
+        Double totCash = 0.0;
         Double investment = 0.0;
-        Double commision=0.0;
-        Double paymentDue=0.0;
-        Double excess=0.0;
-        Double expenses=0.0;
-        Double loanDeductionPayment=0.0;
-        Double tpyPayment=0.0;
-        Double tpyInvestment=0.0;
-        Double pcCharges=0.0;
-        Double loan=0.0;
-        Double loanDeductValue=0.0;
-        Double payValue=0.0;
-        Double cashValue=0.0;
-        double ncValue=0.0;
-        double ncVal=0.0;
-        double totNc=0.0;
-        double lcsValue=0.0;
-        double lcsVal=0.0;
-        double totLcs=0.0;
-        double tot=0.0;
-        double total=0.0;
+        Double commision = 0.0;
+        Double paymentDue = 0.0;
+        Double excess = 0.0;
+        Double expenses = 0.0;
+        Double loanDeductionPayment = 0.0;
+        Double tpyPayment = 0.0;
+        Double tpyInvestment = 0.0;
+        Double pcCharges = 0.0;
+        Double loan = 0.0;
+        Double loanDeductValue = 0.0;
+        Double payValue = 0.0;
+        Double cashValue = 0.0;
+        double ncValue = 0.0;
+        double ncVal = 0.0;
+        double totNc = 0.0;
+        double lcsValue = 0.0;
+        double lcsVal = 0.0;
+        double totLcs = 0.0;
+        double tot = 0.0;
+        double total = 0.0;
 
 
-        Timestamp timestamp=null;
-        try{
+        Timestamp timestamp = null;
+        try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date parsedDate = dateFormat.parse(date);
             timestamp = new java.sql.Timestamp(parsedDate.getTime());
-        }catch(Exception e){
+        } catch (Exception e) {
         }
 
         JRTableModelDataSource ds = null;
@@ -1240,28 +1240,28 @@ public class JasperReportController {
 
         // get individual list by centerId
         List<Individual> individualsByCenterId = individualDAOService.getIndividualsByCenterId(centerId);
-        int individualCount=0;
+        int individualCount = 0;
         // each Individual total values calculating
-        for (Individual individual:individualsByCenterId) {
+        for (Individual individual : individualsByCenterId) {
             //get chit list by individualId & string date(sTime)
             List<Chit> chitList = chitDAOService.getAllChithsByFormattedDateNIndividualId(date, individual.getIndividualId());
-            if(!chitList.isEmpty()){
-                for(Chit chit:chitList){
+            if (!chitList.isEmpty()) {
+                for (Chit chit : chitList) {
                     /**
                      * chech is there nc vale available and
                      * if it's add to ncVal attribute and add nc value to total nc value
                      */
-                    if(chit.getNC() != null && chit.getNcOLCValue() != null && chit.getIndividualId().equals(individual.getIndividualId()) && chit.getNC() == true && chit.getNcOLCValue().doubleValue() > 0){
-                        ncVal=chit.getNcOLCValue().doubleValue();
-                        totNc+=ncVal;
+                    if (chit.getNC() != null && chit.getNcOLCValue() != null && chit.getIndividualId().equals(individual.getIndividualId()) && chit.getNC() == true && chit.getNcOLCValue().doubleValue() > 0) {
+                        ncVal = chit.getNcOLCValue().doubleValue();
+                        totNc += ncVal;
                     }
                     /**
                      * chech is there lcs vale available and
                      * if it's add to lcsVal attribute and add lcs value to total lcs value
                      */
-                    if(chit.getLCS() != null && chit.getNcOLCValue() != null && chit.getIndividualId().equals(individual.getIndividualId()) && chit.getLCS() == true && chit.getNcOLCValue().doubleValue() > 0){
-                        lcsVal=chit.getNcOLCValue().doubleValue();
-                        totLcs+=lcsVal;
+                    if (chit.getLCS() != null && chit.getNcOLCValue() != null && chit.getIndividualId().equals(individual.getIndividualId()) && chit.getLCS() == true && chit.getNcOLCValue().doubleValue() > 0) {
+                        lcsVal = chit.getNcOLCValue().doubleValue();
+                        totLcs += lcsVal;
                     }
                 }
             }
@@ -1273,30 +1273,30 @@ public class JasperReportController {
             List<Transaction> transactionListByAccountNo = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(date, accountByIndividualId.getAccountNo());
             //if individual transaction list is not empty calculating them
             if (!transactionListByAccountNo.isEmpty()) {
-                for (Transaction transaction:transactionListByAccountNo) {
-                    if(transaction != null){
+                for (Transaction transaction : transactionListByAccountNo) {
+                    if (transaction != null) {
                         if (transaction.getTypeId().equals("Inv")) {
                             totInvesment += transaction.getDebit().doubleValue();
                             investment = transaction.getDebit().doubleValue();
                         }
-                        if(transaction.getTypeId().equals("LN")){
-                            loanDeductValue+=transaction.getDebit().doubleValue();
+                        if (transaction.getTypeId().equals("LN")) {
+                            loanDeductValue += transaction.getDebit().doubleValue();
                         }
-                        if(transaction.getTypeId().equals("PAY")){
-                            totPay+=transaction.getCredit().doubleValue();
-                            payValue=transaction.getCredit().doubleValue();
+                        if (transaction.getTypeId().equals("PAY")) {
+                            totPay += transaction.getCredit().doubleValue();
+                            payValue = transaction.getCredit().doubleValue();
                         }
-                        if(transaction.getTypeId().equals("CSH")){
-                            totCash+=transaction.getCredit().doubleValue();
-                            cashValue=transaction.getCredit().doubleValue();
+                        if (transaction.getTypeId().equals("CSH")) {
+                            totCash += transaction.getCredit().doubleValue();
+                            cashValue = transaction.getCredit().doubleValue();
                         }
                     }
                 }
-                model.addRow(new Object[]{individualCount+"",  individual.getName()+ "",  investment+"", payValue+"",cashValue+"",ncVal+""});
-                investment=0.0;
-                payValue=0.0;
-                cashValue=0.0;
-                ncVal=0.0;
+                model.addRow(new Object[]{individualCount + "", individual.getName() + "", investment + "", payValue + "", cashValue + "", ncVal + ""});
+                investment = 0.0;
+                payValue = 0.0;
+                cashValue = 0.0;
+                ncVal = 0.0;
             }
         }
 
@@ -1304,66 +1304,66 @@ public class JasperReportController {
         Account accountByCenterId = accountDAOService.getAccountByCenterOIndividualId(centerId);
         //get center transaction by center account no & string date(sTime)
         List<Transaction> trList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(date, accountByCenterId.getAccountNo());
-        Transaction transaction=null;
-        boolean isExistCash=false;
-        boolean isExistExcess=false;
-        boolean isExistExpenses=false;
-        boolean isExistLoanDeductionPayment=false;
-        boolean isExistLoan=false;
-        boolean isExistDue=false;
+        Transaction transaction = null;
+        boolean isExistCash = false;
+        boolean isExistExcess = false;
+        boolean isExistExpenses = false;
+        boolean isExistLoanDeductionPayment = false;
+        boolean isExistLoan = false;
+        boolean isExistDue = false;
         if (!trList.isEmpty()) {
-            for (Transaction tran:trList) {
-                if(tran != null){
+            for (Transaction tran : trList) {
+                if (tran != null) {
                     /**
                      * if type eaqual Excess and manually add exsess value more than 0
                      * update transaction and add excess to it
                      */
-                    if(tran.getCredit() != null && tran.getTypeId().equals("Excess") && addExcess > 0){
+                    if (tran.getCredit() != null && tran.getTypeId().equals("Excess") && addExcess > 0) {
                         tran.setCredit(BigDecimal.valueOf(addExcess));
                         transactionDAOService.update(tran);
-                        excess+=addExcess;
+                        excess += addExcess;
                     }
                     /**
                      * if type eaqual EXP and manually add expenses value more than 0
                      * update transaction and add expenses to it
                      */
-                    if(tran.getCredit() != null && tran.getTypeId().equals("EXP") && addExpenses > 0){
+                    if (tran.getCredit() != null && tran.getTypeId().equals("EXP") && addExpenses > 0) {
                         tran.setCredit(BigDecimal.valueOf(addExpenses));
                         transactionDAOService.update(tran);
-                        expenses+=addExpenses;
+                        expenses += addExpenses;
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("PD")){
-                        paymentDue+=tran.getDebit().doubleValue();
+                    if (tran.getDebit() != null && tran.getTypeId().equals("PD")) {
+                        paymentDue += tran.getDebit().doubleValue();
                     }
-                    if(tran.getTypeId().equals("LN")){
-                        loanDeductionPayment+=tran.getDebit().doubleValue();
+                    if (tran.getTypeId().equals("LN")) {
+                        loanDeductionPayment += tran.getDebit().doubleValue();
                     }
-                    if(tran.getTypeId().equals("LON")){
-                        loan+=tran.getCredit().doubleValue();
+                    if (tran.getTypeId().equals("LON")) {
+                        loan += tran.getCredit().doubleValue();
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("PD")){
-                        isExistDue=true;
+                    if (tran.getDebit() != null && tran.getTypeId().equals("PD")) {
+                        isExistDue = true;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("Excess")){
-                        isExistExcess=true;
+                    if (tran.getCredit() != null && tran.getTypeId().equals("Excess")) {
+                        isExistExcess = true;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("EXP")){
-                        isExistExpenses=true;
+                    if (tran.getCredit() != null && tran.getTypeId().equals("EXP")) {
+                        isExistExpenses = true;
                     }
-                    if(tran.getCredit() != null && tran.getTypeId().equals("COM")){
-                        commision+=tran.getCredit().doubleValue();
+                    if (tran.getCredit() != null && tran.getTypeId().equals("COM")) {
+                        commision += tran.getCredit().doubleValue();
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("LN")){
-                        isExistLoanDeductionPayment=true;
+                    if (tran.getDebit() != null && tran.getTypeId().equals("LN")) {
+                        isExistLoanDeductionPayment = true;
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("LON")){
-                        isExistLoan=true;
+                    if (tran.getDebit() != null && tran.getTypeId().equals("LON")) {
+                        isExistLoan = true;
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("NC")){
-                        ncValue+=tran.getDebit().doubleValue();
+                    if (tran.getDebit() != null && tran.getTypeId().equals("NC")) {
+                        ncValue += tran.getDebit().doubleValue();
                     }
-                    if(tran.getDebit() != null && tran.getTypeId().equals("LCS")){
-                        lcsValue+=tran.getDebit().doubleValue();
+                    if (tran.getDebit() != null && tran.getTypeId().equals("LCS")) {
+                        lcsValue += tran.getDebit().doubleValue();
                     }
                 }
             }
@@ -1372,8 +1372,8 @@ public class JasperReportController {
          * if there is no current Excess value for specified date for
          * center adding new value to transaction table and to genaral summary report
          */
-        if(isExistExcess == false && addExcess > 0){
-            transaction=new Transaction();
+        if (isExistExcess == false && addExcess > 0) {
+            transaction = new Transaction();
             String newId = idCreation();
             transaction.setTransactionId(newId);
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -1382,14 +1382,14 @@ public class JasperReportController {
             transaction.setsTime(date);
             transaction.setCredit(BigDecimal.valueOf(addExcess));
             transactionDAOService.save(transaction);
-            excess+=addExcess;
+            excess += addExcess;
         }
         /**
          * if there is no current Expenses value for specified date for
          * center adding new value to transaction table and to genaral summary report
          */
-        if(isExistExpenses == false && addExpenses > 0){
-            transaction=new Transaction();
+        if (isExistExpenses == false && addExpenses > 0) {
+            transaction = new Transaction();
             String newId = idCreation();
             transaction.setTransactionId(newId);
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -1398,18 +1398,18 @@ public class JasperReportController {
             transaction.setTypeId("EXP");
             transaction.setCredit(BigDecimal.valueOf(addExpenses));
             transactionDAOService.save(transaction);
-            expenses+=addExpenses;
+            expenses += addExpenses;
         }
-        ApprovedLoan approvedLoan=null;
-        if(centerId != null){
+        ApprovedLoan approvedLoan = null;
+        if (centerId != null) {
             approvedLoan = approvedLoanDAOService.getOpenLoanDetailByCenterlId(centerId);
         }
         /**
          * if there is no current LoanDeductionPayment value for specified date for
          * center adding new value to transaction table and to genaral summary report
          */
-        if(isExistLoanDeductionPayment == false){
-            if (approvedLoan!=null&&approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
+        if (isExistLoanDeductionPayment == false) {
+            if (approvedLoan != null && approvedLoan.getDueamount() != null && approvedLoan.getDueamount().doubleValue() != 0) {
                 String id = new Date().getTime() + "";
                 Hashids hashids = new Hashids(id);
                 String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
@@ -1418,19 +1418,19 @@ public class JasperReportController {
                 String newid1 = getStringID(id, hashids, hexaid);
                 transaction.setTransactionId(newid1);
                 transaction.setTypeId("LN");
-                BigDecimal dueAmount=null;
-                if(approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null && loanDeduct == true){
+                BigDecimal dueAmount = null;
+                if (approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null && loanDeduct == true) {
                     dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
                 }
 
-                if( loanDeduct == true){
+                if (loanDeduct == true) {
                     transaction.setDebit(approvedLoan.getDeductionPayment());
                     transaction.setTime(timestamp);
                     transaction.setsTime(date);
                     transactionDAOService.save(transaction);
-                    loanDeductionPayment+=approvedLoan.getDeductionPayment().doubleValue();
+                    loanDeductionPayment += approvedLoan.getDeductionPayment().doubleValue();
                 }
-                if(approvedLoan.getDueamount() != null && dueAmount != null){
+                if (approvedLoan.getDueamount() != null && dueAmount != null) {
                     approvedLoan.setDueamount(dueAmount);
                 }
                 approvedLoanDAOService.update(approvedLoan);
@@ -1440,8 +1440,8 @@ public class JasperReportController {
          * if there is no current ExistLoan value for specified date for
          * center adding new value to transaction table and to genaral summary report
          */
-        if(isExistLoan == false){
-            if (approvedLoan!=null&&approvedLoan.getsTime().equals(date)) {
+        if (isExistLoan == false) {
+            if (approvedLoan != null && approvedLoan.getsTime().equals(date)) {
                 String id = new Date().getTime() + "";
                 Hashids hashids = new Hashids(id);
                 String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
@@ -1454,15 +1454,15 @@ public class JasperReportController {
                 transaction.setTime(timestamp);
                 transaction.setsTime(date);
                 transactionDAOService.save(transaction);
-                loan+=approvedLoan.getDueamount().doubleValue();
+                loan += approvedLoan.getDueamount().doubleValue();
             }
         }
         /**
          * if there is no current ExistDue value for
          * center adding new value to transaction table and to genaral summary report
          */
-        if(isExistDue == false){
-            if(accountByCenterId != null && accountByCenterId.getAmount() != null && accountByCenterId.getAmount().doubleValue() > 0.0){
+        if (isExistDue == false) {
+            if (accountByCenterId != null && accountByCenterId.getAmount() != null && accountByCenterId.getAmount().doubleValue() > 0.0) {
                 transaction = new Transaction();
                 transaction.setTransactionId(getNewId());
                 transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -1471,51 +1471,51 @@ public class JasperReportController {
                 transaction.setTime(timestamp);
                 transaction.setsTime(date);
                 transactionDAOService.save(transaction);
-                paymentDue+=accountByCenterId.getAmount().doubleValue();
+                paymentDue += accountByCenterId.getAmount().doubleValue();
             }
         }
 
-        if(center.getPcChargers() != null){
-            pcCharges=center.getPcChargers().doubleValue();
+        if (center.getPcChargers() != null) {
+            pcCharges = center.getPcChargers().doubleValue();
         }
-        tot=ncValue+lcsValue+pcCharges+loanDeductionPayment+excess+expenses;
+        tot = ncValue + lcsValue + pcCharges + loanDeductionPayment + excess + expenses;
 
-        total=commision-tot;
+        total = commision - tot;
 
         //put values to map
-        map.put("totInv",totInvesment == null ? "--" : totInvesment + "");
+        map.put("totInv", totInvesment == null ? "--" : totInvesment + "");
         map.put("totPay", totPay == null ? "--" : totPay + "");
         map.put("totCash", totCash == null ? "--" : totCash + "");
-        map.put("totNc", totNc+"");
-        map.put("totLcs", totLcs+"");
-        map.put("nc",ncValue+"");
+        map.put("totNc", totNc + "");
+        map.put("totLcs", totLcs + "");
+        map.put("nc", ncValue + "");
         map.put("lcs", lcsValue + "");
-        map.put("com",commision+"");
-        map.put("csh",totCash+"");
-        map.put("pc",pcCharges+"");
-        map.put("exces",excess+"");
-        map.put("exp",expenses+"");
-        map.put("due",paymentDue+"");
-        map.put("ln",loanDeductionPayment+"");
-        map.put("lon",loan+"");
-        map.put("ld",loanDeductValue+"");
-        map.put("tot",tot+"");
-        map.put("total",total+"");
+        map.put("com", commision + "");
+        map.put("csh", totCash + "");
+        map.put("pc", pcCharges + "");
+        map.put("exces", excess + "");
+        map.put("exp", expenses + "");
+        map.put("due", paymentDue + "");
+        map.put("ln", loanDeductionPayment + "");
+        map.put("lon", loan + "");
+        map.put("ld", loanDeductValue + "");
+        map.put("tot", tot + "");
+        map.put("total", total + "");
 
-        tpyInvestment+=totInvesment;
-        tpyPayment+=totPayment;
-        tpyInvestment+=paymentDue;
-        tpyPayment+=commision;
-        tpyInvestment+=ncValue;
-        tpyInvestment+=loanDeductionPayment;
-        tpyInvestment+=loanDeductValue;
+        tpyInvestment += totInvesment;
+        tpyPayment += totPayment;
+        tpyInvestment += paymentDue;
+        tpyPayment += commision;
+        tpyInvestment += ncValue;
+        tpyInvestment += loanDeductionPayment;
+        tpyInvestment += loanDeductValue;
         tpyInvestment += lcsValue;
-        tpyInvestment+=pcCharges;
-        tpyPayment+=excess;
-        tpyPayment+=expenses;
-        tpyPayment+=loan;
-        tpyPayment+=totCash;
-        tpyPayment+=totPay;
+        tpyInvestment += pcCharges;
+        tpyPayment += excess;
+        tpyPayment += expenses;
+        tpyPayment += loan;
+        tpyPayment += totCash;
+        tpyPayment += totPay;
 
 
         map.put("tpyPay", tpyPayment == null ? "--" : tpyPayment + "");
@@ -1527,7 +1527,7 @@ public class JasperReportController {
          * if dueamount is more than 0 add it to transaction table balance
          * value and updating center account amount value
          */
-        if(dueAmount > 0.0){
+        if (dueAmount > 0.0) {
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -1543,7 +1543,7 @@ public class JasperReportController {
             map.put("dueLable", "Due");
             map.put("paymentLable", "");
             map.put("payment", "");
-            map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment+"");
+            map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment + "");
             map.put("tpyPayDeduct", "");
         }
 
@@ -1552,7 +1552,7 @@ public class JasperReportController {
          * value and add new transaction payment to transaction
          * updating center account amount value as 0
          */
-        if(dueAmount < 0.0){
+        if (dueAmount < 0.0) {
             transaction = new Transaction();
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -1564,7 +1564,7 @@ public class JasperReportController {
 
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(accountByCenterId.getAccountNo());
-            transaction.setCredit(BigDecimal.valueOf(dueAmount*-1));
+            transaction.setCredit(BigDecimal.valueOf(dueAmount * -1));
             transaction.setTypeId("Payment");
             transaction.setsTime(date);
             transaction.setTime(timestamp);
@@ -1573,11 +1573,11 @@ public class JasperReportController {
             accountByCenterId.setAmount(BigDecimal.ZERO);
             accountDAOService.update(accountByCenterId);
 
-            map.put("payment", dueAmount == null ? "--" : dueAmount*-1 + "");
+            map.put("payment", dueAmount == null ? "--" : dueAmount * -1 + "");
             map.put("dueLable", "");
             map.put("dueTot", "");
             map.put("paymentLable", "Payment");
-            map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment+"");
+            map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment + "");
             map.put("tpyInvDeduct", "");
         }
 
@@ -1585,11 +1585,11 @@ public class JasperReportController {
          * if dueAmount eaquels 0 center account amount value set as 0
          * and no transaction creating
          */
-        if(dueAmount == 0.0){
+        if (dueAmount == 0.0) {
             accountByCenterId.setAmount(BigDecimal.ZERO);
             accountDAOService.update(accountByCenterId);
 
-            map.put("dueTot","");
+            map.put("dueTot", "");
             map.put("paymentLable", "Balance");
             map.put("payment", "0.0");
             map.put("tpyInvDeduct", "");
@@ -1622,8 +1622,8 @@ public class JasperReportController {
         }
 
         //save new centerSummeryCheckService set summaryFinish as true
-        if(centerId!= null && date!=null){
-            CenterSummeryCheck centerSummeryCheck=new CenterSummeryCheck();
+        if (centerId != null && date != null) {
+            CenterSummeryCheck centerSummeryCheck = new CenterSummeryCheck();
             centerSummeryCheck.setCenterId(centerId);
             centerSummeryCheck.setsDate(date);
             centerSummeryCheck.setSummaryFinish(true);
@@ -1633,8 +1633,8 @@ public class JasperReportController {
 
 
     /**
-     * * getGeneralSummaryReceipt
-     *
+     * getGeneralSummaryReceipt
+     * <p>
      * <p/>
      * 0== Center
      * 1== individual
@@ -1657,29 +1657,29 @@ public class JasperReportController {
         double inValue = 0;
         double outValue = 0;
         Double totInvesment = inValue;
-        double ncValue=0.0;
-        double lcsValue=0.0;
+        double ncValue = 0.0;
+        double lcsValue = 0.0;
         Double totPayment = 0.0;
         Double tpyPayment = outValue;
         Double tpyInvestment = inValue;
-        Double salary=0.0;
-        Double overPayment=0.0;
-        Double excess=0.0;
-        Double expenses=0.0;
-        Double pcCharges=0.0;
-        Double loanDeductionPayment=0.0;
-        Double paymentDue=0.0;
-        Double cash=0.0;
-        Double commision=0.0;
-        Double loan=0.0;
-        Double rent=0.0;
+        Double salary = 0.0;
+        Double overPayment = 0.0;
+        Double excess = 0.0;
+        Double expenses = 0.0;
+        Double pcCharges = 0.0;
+        Double loanDeductionPayment = 0.0;
+        Double paymentDue = 0.0;
+        Double cash = 0.0;
+        Double commision = 0.0;
+        Double loan = 0.0;
+        Double rent = 0.0;
 
-        Timestamp timestamp=null;
-        try{
+        Timestamp timestamp = null;
+        try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date parsedDate = dateFormat.parse(date);
             timestamp = new java.sql.Timestamp(parsedDate.getTime());
-        }catch(Exception e){
+        } catch (Exception e) {
         }
 
         JRTableModelDataSource ds = null;
@@ -1699,8 +1699,8 @@ public class JasperReportController {
         map.put("ln", "");
         map.put("pd", "");
         map.put("com", "");
-        map.put("nc","");
-        map.put("lcs","");
+        map.put("nc", "");
+        map.put("lcs", "");
         map.put("lon", "");
         map.put("sal", "");
         map.put("overPay", "");
@@ -1724,64 +1724,64 @@ public class JasperReportController {
                     inValue += value;
                 }
 
-                String ty=tra.getTypeId().toLowerCase();
-                if(tra.getDebit()!= null){
+                String ty = tra.getTypeId().toLowerCase();
+                if (tra.getDebit() != null) {
                     Object put = map.put(ty, tra.getDebit() + "");
                 }
-                if(tra.getCredit()!= null){
+                if (tra.getCredit() != null) {
                     Object put = map.put(ty, tra.getCredit() + "");
                 }
                 if (tra.getTypeId().equals("Inv")) {
                     totInvesment = tra.getDebit().doubleValue();
                 }
-                if(tra.getDebit() != null && tra.getTypeId().equals("NC")){
-                    ncValue+=tra.getDebit().doubleValue();
+                if (tra.getDebit() != null && tra.getTypeId().equals("NC")) {
+                    ncValue += tra.getDebit().doubleValue();
                 }
-                if(tra.getDebit() != null && tra.getTypeId().equals("LCS")){
-                    lcsValue+=tra.getDebit().doubleValue();
+                if (tra.getDebit() != null && tra.getTypeId().equals("LCS")) {
+                    lcsValue += tra.getDebit().doubleValue();
                 }
 
-                if(tra.getTypeId().equals("Salary")){
-                    salary+=tra.getCredit().doubleValue();
+                if (tra.getTypeId().equals("Salary")) {
+                    salary += tra.getCredit().doubleValue();
                 }
-                if(tra.getTypeId().equals("OverPayment")){
-                    overPayment+=tra.getDebit().doubleValue();
+                if (tra.getTypeId().equals("OverPayment")) {
+                    overPayment += tra.getDebit().doubleValue();
                 }
-                if(tra.getTypeId().equals("RENT")){
-                    rent+=tra.getDebit().doubleValue();
+                if (tra.getTypeId().equals("RENT")) {
+                    rent += tra.getDebit().doubleValue();
                 }
-                if(tra.getTypeId().equals("Excess")){
-                    excess+=tra.getCredit().doubleValue();
+                if (tra.getTypeId().equals("Excess")) {
+                    excess += tra.getCredit().doubleValue();
                 }
-                if(tra.getTypeId().equals("EXP")){
-                    expenses+=tra.getCredit().doubleValue();
+                if (tra.getTypeId().equals("EXP")) {
+                    expenses += tra.getCredit().doubleValue();
                 }
-                if(tra.getTypeId().equals("PC")){
-                    pcCharges+=tra.getDebit().doubleValue();
+                if (tra.getTypeId().equals("PC")) {
+                    pcCharges += tra.getDebit().doubleValue();
                 }
-                if(tra.getTypeId().equals("LN")){
-                    loanDeductionPayment+=tra.getDebit().doubleValue();
+                if (tra.getTypeId().equals("LN")) {
+                    loanDeductionPayment += tra.getDebit().doubleValue();
                 }
-                if(tra.getDebit() != null && tra.getTypeId().equals("PD")){
-                    paymentDue+=tra.getDebit().doubleValue();
+                if (tra.getDebit() != null && tra.getTypeId().equals("PD")) {
+                    paymentDue += tra.getDebit().doubleValue();
                 }
-                if(tra.getTypeId().equals("PAY")){
-                    totPayment+=tra.getCredit().doubleValue();
+                if (tra.getTypeId().equals("PAY")) {
+                    totPayment += tra.getCredit().doubleValue();
                 }
-                if(tra.getTypeId().equals("CSH")){
-                    cash+=tra.getCredit().doubleValue();
+                if (tra.getTypeId().equals("CSH")) {
+                    cash += tra.getCredit().doubleValue();
                 }
-                if(tra.getTypeId().equals("COM")){
-                    commision+=tra.getCredit().doubleValue();
+                if (tra.getTypeId().equals("COM")) {
+                    commision += tra.getCredit().doubleValue();
                 }
-                if(tra.getTypeId().equals("LON")){
-                    loan+=tra.getCredit().doubleValue();
+                if (tra.getTypeId().equals("LON")) {
+                    loan += tra.getCredit().doubleValue();
                 }
-                if(tra.getCredit() != null && tra.getTypeId().equals("Balance")){
-                    tpyPayment+=tra.getCredit().doubleValue();
+                if (tra.getCredit() != null && tra.getTypeId().equals("Balance")) {
+                    tpyPayment += tra.getCredit().doubleValue();
                 }
-                if(tra.getTypeId().equals("Payment")){
-                    tpyPayment-=tra.getCredit().doubleValue();
+                if (tra.getTypeId().equals("Payment")) {
+                    tpyPayment -= tra.getCredit().doubleValue();
                 }
             }
         }
@@ -1805,89 +1805,95 @@ public class JasperReportController {
         model.addColumn("ncOfTable");
 
 
+        int chitCount = 0;
+
         for (Envelope envelope : envelopesByCenterId) {
             List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId());
-
+            chitCount = chits.size();
             for (Chit chit : chits) {
-                String ncOLCS=null;
-                String wT=null;
-                if(chit.getNC() != null && chit.getNC() == true){
-                    ncOLCS="NC";
-                }else if(chit.getLCS() != null && chit.getLCS() == true){
-                    ncOLCS="LCS";
-                }else if(chit.getNC() == null && chit.getLCS() == null){
-                    ncOLCS="";
-                }else if(chit.getNC() == false && chit.getLCS() == false){
-                    ncOLCS="";
+                String ncOLCS = null;
+                String wT = null;
+                if (chit.getNC() != null && chit.getNC() == true) {
+                    ncOLCS = "NC";
+                } else if (chit.getLCS() != null && chit.getLCS() == true) {
+                    ncOLCS = "LCS";
+                } else if (chit.getNC() == null && chit.getLCS() == null) {
+                    ncOLCS = "-";
+                } else if (chit.getNC() == false && chit.getLCS() == false) {
+                    ncOLCS = "-";
                 }
-                if(chit.getwT() != null && chit.getwT() == true){
-                    wT="WT";
-                }else if(chit.getwT() == false){
-                    wT="";
+                if (chit.getwT() != null && chit.getwT() == true) {
+                    wT = "WT";
+                } else if (chit.getwT() == false) {
+                    wT = "-";
                 }
 
-                model.addRow(new Object[]{chit.getNumber(),wT,chit.getInvesment() == null ? "--" : chit.getInvesment() + "", chit.getAmount() == null ? "--" : chit.getAmount() + "", ncOLCS});
+                model.addRow(new Object[]{chit.getNumber(), wT, chit.getInvesment() == null ? "--" : chit.getInvesment() + "", chit.getAmount() == null ? "--" : chit.getAmount() + "", ncOLCS});
             }
+
+
         }
 
-        Double perDue=0.0;
+        map.put("chitCount", chitCount + "");
+
+        Double perDue = 0.0;
 
         tpyPayment += totPayment;
-        tpyInvestment+=totInvesment;
-        if(perDue > 0.0){
-            tpyInvestment+=perDue;
+        tpyInvestment += totInvesment;
+        if (perDue > 0.0) {
+            tpyInvestment += perDue;
         }
-        if(salary > 0.0){
-            map.put("sal",salary+"");
-            tpyPayment+=salary;
+        if (salary > 0.0) {
+            map.put("sal", salary + "");
+            tpyPayment += salary;
         }
-        if(cash > 0.0){
-            map.put("csh",cash+"");
-            tpyPayment+=cash;
+        if (cash > 0.0) {
+            map.put("csh", cash + "");
+            tpyPayment += cash;
         }
-        if(commision > 0.0){
-            map.put("com",commision+"");
-            tpyPayment+=commision;
+        if (commision > 0.0) {
+            map.put("com", commision + "");
+            tpyPayment += commision;
         }
-        if(ncValue > 0.0){
-            map.put("nc",ncValue+"");
-            tpyInvestment+=ncValue;
+        if (ncValue > 0.0) {
+            map.put("nc", ncValue + "");
+            tpyInvestment += ncValue;
         }
-        if(loanDeductionPayment > 0.0){
-            map.put("ln",loanDeductionPayment+"");
-            tpyInvestment+=loanDeductionPayment;
+        if (loanDeductionPayment > 0.0) {
+            map.put("ln", loanDeductionPayment + "");
+            tpyInvestment += loanDeductionPayment;
         }
-        if(lcsValue > 0.0) {
+        if (lcsValue > 0.0) {
             map.put("lcs", lcsValue + "");
             tpyInvestment += lcsValue;
         }
-        if(paymentDue > 0.0){
-            map.put("pd",paymentDue+"");
-            tpyInvestment+=paymentDue;
+        if (paymentDue > 0.0) {
+            map.put("pd", paymentDue + "");
+            tpyInvestment += paymentDue;
         }
-        if(overPayment > 0.0){
-            map.put("overPay",overPayment+"");
-            tpyInvestment+=overPayment;
+        if (overPayment > 0.0) {
+            map.put("overPay", overPayment + "");
+            tpyInvestment += overPayment;
         }
-        if(rent > 0.0){
-            map.put("rent",rent+"");
-            tpyInvestment+=rent;
+        if (rent > 0.0) {
+            map.put("rent", rent + "");
+            tpyInvestment += rent;
         }
-        if(pcCharges > 0.0){
-            map.put("pc",pcCharges+"");
-            tpyInvestment+=pcCharges;
+        if (pcCharges > 0.0) {
+            map.put("pc", pcCharges + "");
+            tpyInvestment += pcCharges;
         }
-        if(excess > 0.0){
-            map.put("exces",excess+"");
-            tpyPayment+=excess;
+        if (excess > 0.0) {
+            map.put("exces", excess + "");
+            tpyPayment += excess;
         }
-        if(expenses > 0.0){
-            map.put("exp",expenses+"");
-            tpyPayment+=expenses;
+        if (expenses > 0.0) {
+            map.put("exp", expenses + "");
+            tpyPayment += expenses;
         }
-        if(loan > 0.0){
-            map.put("lon",loan+"");
-            tpyPayment+=loan;
+        if (loan > 0.0) {
+            map.put("lon", loan + "");
+            tpyPayment += loan;
         }
 
 
@@ -1899,24 +1905,24 @@ public class JasperReportController {
 
         Double dueAmount = tpyInvestment - tpyPayment;
 
-        if(dueAmount > 0.0){
+        if (dueAmount > 0.0) {
             map.put("due", dueAmount == null ? "--" : dueAmount + "");
             map.put("dueLable", "Due");
             map.put("paymentLable", "");
             map.put("payment", "");
-            map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment+"");
+            map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment + "");
             map.put("tpyPayDeduct", "");
         }
-        if(dueAmount < 0.0){
-            map.put("payment", dueAmount == null ? "--" : dueAmount*-1 + "");
+        if (dueAmount < 0.0) {
+            map.put("payment", dueAmount == null ? "--" : dueAmount * -1 + "");
             map.put("dueLable", "");
             map.put("due", "");
             map.put("paymentLable", "Payment");
-            map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment+"");
+            map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment + "");
             map.put("tpyInvDeduct", "");
         }
-        if(dueAmount == 0.0){
-            map.put("due","");
+        if (dueAmount == 0.0) {
+            map.put("due", "");
             map.put("paymentLable", "Balance");
             map.put("payment", "0.0");
             map.put("tpyInvDeduct", "");
@@ -1925,10 +1931,10 @@ public class JasperReportController {
         }
 
         List<ApprovedLoan> approvedLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
-        BigDecimal approveLoanDueAmount =BigDecimal.ZERO;
-        for (ApprovedLoan approvedLoan:approvedLoanList){
-            if(approvedLoan != null && approvedLoan.getDueamount()!=null ){
-                approveLoanDueAmount=approveLoanDueAmount.add(approvedLoan.getDueamount());
+        BigDecimal approveLoanDueAmount = BigDecimal.ZERO;
+        for (ApprovedLoan approvedLoan : approvedLoanList) {
+            if (approvedLoan != null && approvedLoan.getDueamount() != null) {
+                approveLoanDueAmount = approveLoanDueAmount.add(approvedLoan.getDueamount());
             }
         }
         map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
@@ -1945,7 +1951,7 @@ public class JasperReportController {
                 InputStream inputStream = new FileInputStream(pdf);
                 response.setContentType("application/pdf");
                 SimpleDateFormat sDF = new SimpleDateFormat("dd-MM-yyyy");
-                response.setHeader("Content-Disposition", "attachment; filename=" + individual.getName() +" "+  date + ".pdf");
+                response.setHeader("Content-Disposition", "attachment; filename=" + individual.getName() + " " + date + ".pdf");
                 IOUtils.copy(inputStream, response.getOutputStream());
                 response.flushBuffer();
                 inputStream.close();
@@ -1975,7 +1981,7 @@ public class JasperReportController {
         return sb.toString();
     }
 
-    private String idCreation(){
+    private String idCreation() {
         String id = new Date().getTime() + "";
         Hashids hashids = new Hashids(id);
         String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
@@ -1984,7 +1990,6 @@ public class JasperReportController {
     }
 
     /**
-     *
      * @param individualId
      * @param transaction
      */
@@ -1999,7 +2004,6 @@ public class JasperReportController {
     }
 
     /**
-     *
      * @param id
      * @param hashids
      * @param hexaid
@@ -2013,8 +2017,8 @@ public class JasperReportController {
     }
 
     /**
-     *
      * genarating new id
+     *
      * @return
      */
     private String getNewId() {

@@ -6,7 +6,8 @@ package org.egreen.opensms.server.models;
 public class InOutModel {
 
     private String individualName;
-    private Double chitCount;
+    private Double totalChitCount;
+    private Integer winChitCount;
     private Double totalInvesment;
     private Double totalPayment;
     private Double totalCash;
@@ -20,12 +21,20 @@ public class InOutModel {
         this.individualName = individualName;
     }
 
-    public Double getChitCount() {
-        return chitCount;
+    public Double getTotalChitCount() {
+        return totalChitCount;
     }
 
-    public void setChitCount(Double chitCount) {
-        this.chitCount = chitCount;
+    public void setTotalChitCount(Double totalChitCount) {
+        this.totalChitCount = totalChitCount;
+    }
+
+    public Integer getWinChitCount() {
+        return winChitCount;
+    }
+
+    public void setWinChitCount(Integer winChitCount) {
+        this.winChitCount = winChitCount;
     }
 
     public Double getTotalInvesment() {

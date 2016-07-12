@@ -260,8 +260,6 @@ public class IndividualController {
     @RequestMapping(value = "closeGenralSummery", method = RequestMethod.POST)
     @ResponseBody
     public ResponseMessage closeGenralSummery(@RequestBody GeneralSummaryReceiptModel generalSummaryReceiptModel) {
-
-        System.out.println("Env : "+generalSummaryReceiptModel.getEnvelopeId());
         Envelope envelope = envelopeDAOService.getEnvelopeById(generalSummaryReceiptModel.getEnvelopeId());
         if(envelope!=null && envelope.getFinished() == false) {
             String stringDate = generalSummaryReceiptModel.getsTime();

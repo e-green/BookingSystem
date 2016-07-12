@@ -87,56 +87,68 @@ public class EnvelopeDAOService {
                 ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
 
                 //when different type call
-                if(center.getType() == 1){
-                    if (envelope.getInvesment() != null ) {
-                        transaction = new Transaction();
-                        createTransactinonAccount(individualId, transaction);
-                        String newid1 = getStringID(id, hashids, hexaid);
-                        transaction.setTransactionId(newid1);
-                        transaction.setTypeId("Inv");
-                        transaction.setDebit(envelope.getInvesment());
-                        transaction.setTime(envelope.getDate());
-                        transaction.setsTime(fd);
-                        transactionDAOController.create(transaction);
-                    }
-
-                    if (approvedLoan!=null&&approvedLoan.getsTime().equals(envelope.getsTime()) ) {
-
-                        transaction = new Transaction();
-                        createTransactinonAccount(individualId, transaction);
-                        String newid1 = getStringID(id, hashids, hexaid);
-                        transaction.setTransactionId(newid1);
-                        transaction.setTypeId("LON");
-                        transaction.setCredit(approvedLoan.getDueamount());
-                        transaction.setTime(envelope.getDate());
-                        transaction.setsTime(fd);
-                        transactionDAOController.create(transaction);
-                    } else if (approvedLoan!=null&&approvedLoan.getDueamount() != null ) {
-
-                        transaction = new Transaction();
-                        createTransactinonAccount(individualId, transaction);
-                        String newid1 = getStringID(id, hashids, hexaid);
-                        transaction.setTransactionId(newid1);
-                        transaction.setTypeId("LN");
-                        BigDecimal dueAmount = null;
-                        if (approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null && envelope.getLoanDeduct() != null && envelope.getLoanDeduct() == true) {
-                            dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
-                        }
-
-
-                        if (envelope.getLoanDeduct() != null && envelope.getLoanDeduct() == true) {
-                            transaction.setDebit(approvedLoan.getDeductionPayment());
-                            transaction.setTime(envelope.getDate());
-                            transaction.setsTime(fd);
-                            transactionDAOController.create(transaction);
-                        }
-
-                        if (approvedLoan.getDueamount() != null && dueAmount != null) {
-                            approvedLoan.setDueamount(dueAmount);
-                        }
-                        approvedLoanDAOService.update(approvedLoan);
-                    }
-                } else {
+//                if(center.getType() == 1){
+//                    if (envelope.getInvesment() != null ) {
+//                        transaction = new Transaction();
+//                        createTransactinonAccount(individualId, transaction);
+//                        String newid1 = getStringID(id, hashids, hexaid);
+//                        transaction.setTransactionId(newid1);
+//                        transaction.setTypeId("Inv");
+//                        transaction.setDebit(envelope.getInvesment());
+//                        transaction.setTime(envelope.getDate());
+//                        transaction.setsTime(fd);
+//                        transactionDAOController.create(transaction);
+//                    }
+//
+//                    if (individual.getPcChargers() != null ) {
+//                        transaction = new Transaction();
+//                        createTransactinonAccount(individualId, transaction);
+//                        String newid1 = getStringID(id, hashids, hexaid);
+//                        transaction.setTransactionId(newid1);
+//                        transaction.setTypeId("PC");
+//                        transaction.setDebit(individual.getPcChargers());
+//                        transaction.setTime(envelope.getDate());
+//                        transaction.setsTime(fd);
+//                        transactionDAOController.create(transaction);
+//                    }
+//
+//                    if (approvedLoan!=null&&approvedLoan.getsTime().equals(envelope.getsTime()) ) {
+//
+//                        transaction = new Transaction();
+//                        createTransactinonAccount(individualId, transaction);
+//                        String newid1 = getStringID(id, hashids, hexaid);
+//                        transaction.setTransactionId(newid1);
+//                        transaction.setTypeId("LON");
+//                        transaction.setCredit(approvedLoan.getDueamount());
+//                        transaction.setTime(envelope.getDate());
+//                        transaction.setsTime(fd);
+//                        transactionDAOController.create(transaction);
+//                    } else if (approvedLoan!=null&&approvedLoan.getDueamount() != null ) {
+//
+//                        transaction = new Transaction();
+//                        createTransactinonAccount(individualId, transaction);
+//                        String newid1 = getStringID(id, hashids, hexaid);
+//                        transaction.setTransactionId(newid1);
+//                        transaction.setTypeId("LN");
+//                        BigDecimal dueAmount = null;
+//                        if (approvedLoan.getDueamount() != null && approvedLoan.getDeductionPayment() != null && envelope.getLoanDeduct() != null && envelope.getLoanDeduct() == true) {
+//                            dueAmount = approvedLoan.getDueamount().subtract(approvedLoan.getDeductionPayment());
+//                        }
+//
+//
+//                        if (envelope.getLoanDeduct() != null && envelope.getLoanDeduct() == true) {
+//                            transaction.setDebit(approvedLoan.getDeductionPayment());
+//                            transaction.setTime(envelope.getDate());
+//                            transaction.setsTime(fd);
+//                            transactionDAOController.create(transaction);
+//                        }
+//
+//                        if (approvedLoan.getDueamount() != null && dueAmount != null) {
+//                            approvedLoan.setDueamount(dueAmount);
+//                        }
+//                        approvedLoanDAOService.update(approvedLoan);
+//                    }
+//                } else {
 
 
                     if (envelope.getInvesment() != null ) {
@@ -247,7 +259,7 @@ public class EnvelopeDAOService {
                         }
                         approvedLoanDAOService.update(approvedLoan);
                     }
-                }
+//                }
             }
         }
 

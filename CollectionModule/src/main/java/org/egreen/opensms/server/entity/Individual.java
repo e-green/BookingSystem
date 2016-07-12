@@ -20,6 +20,7 @@ public class Individual implements EntityInterface <String> {
     private String nic;
     private String center;
     private BigDecimal commision;
+    private BigDecimal deductionInv;
     private BigDecimal lessComissionSingle;
     private BigDecimal rent;
     private boolean isSalaryPay;
@@ -84,6 +85,14 @@ public class Individual implements EntityInterface <String> {
 
     public void setCommision(BigDecimal commision) {
         this.commision = commision;
+    }
+
+    public BigDecimal getDeductionInv() {
+        return deductionInv;
+    }
+
+    public void setDeductionInv(BigDecimal deductionInv) {
+        this.deductionInv = deductionInv;
     }
 
     public BigDecimal getLessComissionSingle() {

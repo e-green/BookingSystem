@@ -243,13 +243,28 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
 
     @Override
     public List<Envelope> getEnvelopeByDateRange(String centerId, String individualId, String firstDate, String secondDate) {
-        Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.individualId = :individualId AND e.sTime BETWEEN  :firstDate AND :secondDate AND e.finished = :finished");
 
-        query.setString("center", centerId);
-        query.setString("individualId", individualId);
-        query.setString("firstDate", firstDate);
-        query.setString("secondDate", secondDate);
-        query.setBoolean("finished",true);
+
+        Query query;
+        if (secondDate!=null && !secondDate.isEmpty()) {
+
+
+             query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.individualId = :individualId AND e.sTime BETWEEN  :firstDate AND :secondDate AND e.finished = :finished");
+
+            query.setString("center", centerId);
+            query.setString("individualId", individualId);
+            query.setString("firstDate", firstDate);
+            query.setString("secondDate", secondDate);
+            query.setBoolean("finished", true);
+        }else{
+
+             query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.individualId = :individualId AND e.sTime =:firstDate AND e.finished = :finished");
+
+            query.setString("center", centerId);
+            query.setString("individualId", individualId);
+            query.setString("firstDate", firstDate);
+            query.setBoolean("finished", true);
+        }
 
         return query.list();
     }
