@@ -340,6 +340,7 @@ public class EnvelopeDAOService {
      * @return
      */
     public String update(Envelope envelope) {
+        System.out.println("Res Envi : "+envelope);
         String indId=envelope.getIndividualId();
         Envelope envelopesByDateNByIndividualId = envelopeDAOController.getEnvelopesByDateNByIndividualId(indId, envelope.getsTime());
         String s=null;

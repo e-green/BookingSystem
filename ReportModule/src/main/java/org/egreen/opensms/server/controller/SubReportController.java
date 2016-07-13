@@ -70,18 +70,21 @@ public class SubReportController {
             InOutModel inOutModel =  new InOutModel();
             inOutModel.setIndividualName(individual.getName());
 
-            Double totalChitCount = 0.0;
-            Integer winTotalChitCount = 0;
+
 
             List<Envelope> envelopeList = envelopeDAOService.getEnvelopeByDateRange(centerId,individual.getIndividualId(),firstDate,secondDate);
+            Double totalChitCount = 0.0;
+            Integer winTotalChitCount = 0;
             for (Envelope envelope : envelopeList) {
-                totalChitCount = envelope.getChitCount().doubleValue();
 
-                winTotalChitCount = chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId()).size();
+                totalChitCount += envelope.getChitCount().doubleValue();
+
+                winTotalChitCount += chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId()).size();
 
             }
             inOutModel.setWinChitCount(winTotalChitCount);
             inOutModel.setTotalChitCount(totalChitCount);
+
             Account account = accountDAOService.getAccountByCenterOIndividualId(individual.getIndividualId());
 
             if (account != null) {
@@ -93,15 +96,15 @@ public class SubReportController {
 
                     if (transaction.getTypeId().equals("Inv")) {
 
-                        totalInvesment = transaction.getDebit().doubleValue();
+                        totalInvesment += transaction.getDebit().doubleValue();
                     }
 
                     if (transaction.getTypeId().equals("PAY")) {
-                        totalPayment = transaction.getCredit().doubleValue();
+                        totalPayment += transaction.getCredit().doubleValue();
                     }
 
                     if (transaction.getTypeId().equals("CSH")) {
-                        totalCash = transaction.getCredit().doubleValue();
+                        totalCash += transaction.getCredit().doubleValue();
                     }
                 }
                 inOutModel.setTotalInvesment(totalInvesment);

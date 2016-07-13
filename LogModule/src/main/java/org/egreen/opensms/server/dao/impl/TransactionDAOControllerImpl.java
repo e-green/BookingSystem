@@ -57,13 +57,13 @@ public class TransactionDAOControllerImpl extends  AbstractDAOController<Transac
         List<Transaction> transactionList;
 
         if (secondDate!=null && !secondDate.isEmpty()) {
-            query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND t.sTime BETWEEN :firstDate AND :secondDate");
+            query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND DATE(t.sTime) BETWEEN :firstDate AND :secondDate");
             query.setString("accountNo", accountNo);
             query.setString("firstDate", firstDate);
             query.setString("secondDate", secondDate);
            transactionList = query.list();
         }else {
-            query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND t.sTime =:firstDate");
+            query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND DATE(t.sTime) =:firstDate");
             query.setString("accountNo", accountNo);
             query.setString("firstDate", firstDate);
             transactionList = query.list();

@@ -60,7 +60,7 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
     }
 
     @Override
-    public List<Envelope> getEnvelopesByCenterId(String centerId,Integer limit, Integer offset,String date) {
+    public List<Envelope> getEnvelopesByCenterId(String centerId, Integer limit, Integer offset, String date) {
 
         /**
          * please use below code when you try to get with unique string Id(date)
@@ -193,10 +193,10 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         }
         if (list.size() > 0) {
             for (Envelope envelope : list) {
-                if ( envelope.getFinished() == true) {
+                if (envelope.getFinished() == true) {
                     val = "1";
                 }
-                if ( envelope.getFinished() == false) {
+                if (envelope.getFinished() == false) {
                     val = "2";
                 }
             }
@@ -209,7 +209,7 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         Query query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.sTime = :formatedDate AND e.finished = :finished");
         query.setString("formatedDate", formatedDate);
         query.setString("center", center);
-        query.setBoolean("finished",true);
+        query.setBoolean("finished", true);
 
         List<Envelope> list = query.list();
         return list.size();
@@ -221,49 +221,40 @@ public class EnvelopeDAOControllerImpl extends AbstractDAOController<Envelope, S
         query.setString("formatedDate", sTime);
         query.setString("center", centerId);
         List<Envelope> list = query.list();
-        boolean notFinishOneDetected=false;
-        boolean returnBool=false;
-        if(list.size()==0){
-            notFinishOneDetected=true;
+        boolean notFinishOneDetected = false;
+        boolean returnBool = false;
+        if (list.size() == 0) {
+            notFinishOneDetected = true;
         }
-        for (Envelope envelope:list) {
+        for (Envelope envelope : list) {
             Boolean finished = envelope.getFinished();
-            if(finished==false){
-                notFinishOneDetected=true;
+            if (finished == false) {
+                notFinishOneDetected = true;
             }
         }
-        if(notFinishOneDetected==true){
-            returnBool=false;
+        if (notFinishOneDetected == true) {
+            returnBool = false;
         }
-        if(notFinishOneDetected==false){
-            returnBool=true;
+        if (notFinishOneDetected == false) {
+            returnBool = true;
         }
         return returnBool;
     }
 
     @Override
     public List<Envelope> getEnvelopeByDateRange(String centerId, String individualId, String firstDate, String secondDate) {
-
-
         Query query;
-        if (secondDate!=null && !secondDate.isEmpty()) {
-
-
-             query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.individualId = :individualId AND e.sTime BETWEEN  :firstDate AND :secondDate AND e.finished = :finished");
-
-            query.setString("center", centerId);
+        if (secondDate != null && !secondDate.isEmpty()) {
+            query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.individualId = :individualId AND DATE(e.sTime) BETWEEN  :firstDate AND :secondDate AND e.finished = true");
             query.setString("individualId", individualId);
             query.setString("firstDate", firstDate);
             query.setString("secondDate", secondDate);
-            query.setBoolean("finished", true);
-        }else{
-
-             query = getSession().createQuery("SELECT e FROM Envelope e WHERE e.center = :center AND e.individualId = :individualId AND e.sTime =:firstDate AND e.finished = :finished");
-
-            query.setString("center", centerId);
+//            query.setBoolean("finished", true);
+        } else {
+            query = getSession().createQuery("SELECT e FROM Envelope e WHERE  e.individualId = :individualId AND DATE(e.sTime) =:firstDate AND e.finished = true");
             query.setString("individualId", individualId);
             query.setString("firstDate", firstDate);
-            query.setBoolean("finished", true);
+//            query.setBoolean("finished", true);
         }
 
         return query.list();

@@ -13,6 +13,7 @@ public class InOutModel {
     private Double totalCash;
 
 
+
     public String getIndividualName() {
         return individualName;
     }
