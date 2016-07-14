@@ -82,6 +82,7 @@ public class SubReportController {
                 winTotalChitCount += chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId()).size();
 
             }
+
             inOutModel.setWinChitCount(winTotalChitCount);
             inOutModel.setTotalChitCount(totalChitCount);
 
