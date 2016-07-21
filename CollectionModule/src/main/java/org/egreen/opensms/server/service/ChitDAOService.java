@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -44,6 +45,7 @@ public class ChitDAOService {
 
         if(envelope.getFinished()!= null && envelope.getFinished() == false){
             chit.setFinish(false);
+            chit.setDatetime(getTime());
             chitDAOController.create(chit);
             s= "1";
         }
@@ -53,6 +55,14 @@ public class ChitDAOService {
 
         return s;
     }
+
+    public Timestamp getTime() {
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date now = calendar.getTime();
+        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
+       return  currentTimestamp;
+    }
+
 
     /**
      * updating chit

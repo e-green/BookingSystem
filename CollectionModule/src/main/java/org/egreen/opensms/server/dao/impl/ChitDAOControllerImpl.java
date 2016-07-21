@@ -6,6 +6,7 @@ import org.egreen.opensms.server.models.ChitCountListModel;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -50,14 +51,14 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
             /**
              * please use below code when you try to get with unique string Id(date)
              */
-            query = getSession().createQuery("SELECT c FROM Chit c WHERE c.centerid = :id AND c.sTime = :date  ORDER BY c.sTime ASC");
+            query = getSession().createQuery("SELECT c FROM Chit c WHERE c.centerid = :id AND c.sTime = :date  ORDER BY c.datetime ASC");
             query.setString("date", date);
             query.setString("id", id);
         } else if (type == 1) {
             /**
              * please use below code when you try to get with unique string Id(date)
              */
-            query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :id AND c.sTime = :date ORDER BY c.sTime ASC ");
+            query = getSession().createQuery("SELECT c FROM Chit c WHERE c.individualId = :id AND c.sTime = :date ORDER BY c.datetime ASC ");
             query.setString("date", date);
             query.setString("id", id);
         }
@@ -84,6 +85,8 @@ public class ChitDAOControllerImpl extends AbstractDAOController<Chit, String> i
     public List<Chit> getAllChitsByEnvelopeId(String envelopeId) {
         Criteria criteria = getSession().createCriteria(entityType);
         criteria.add(Restrictions.eq("envelopeId", envelopeId));
+        criteria.addOrder(Order.asc("datetime"));
+
         return criteria.list();
     }
 

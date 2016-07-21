@@ -241,7 +241,7 @@ public class EnvelopeDAOService {
                     transaction = new Transaction();
                     createTransactinonAccount(individualId, transaction);
 
-                    System.out.println("ACCT : " + transaction.getAccountNo());
+
                     String newid1 = getStringID(id, hashids, hexaid);
                     transaction.setTransactionId(newid1);
                     transaction.setTypeId("LN");
@@ -361,8 +361,8 @@ public class EnvelopeDAOService {
                     if (transaction.getTypeId().equals("LN")) {
                         System.out.println("1");
                         if (envelope.getLoanDeduct() == false) {
-                            System.out.println("2");
-                            System.out.println("DELETED TRANCE : " + transaction);
+                         //   System.out.println("2");
+                          //  System.out.println("DELETED TRANCE : " + transaction);
                             int delete = transactionDAOController.delete(transaction);
                             if (delete == 1) {
                                 ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
@@ -371,7 +371,7 @@ public class EnvelopeDAOService {
                                 approvedLoanDAOService.update(approvedLoan);
                             }
                         } else {
-                            System.out.println("3");
+                          //  System.out.println("3");
                             ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
                             if (approvedLoan != null) {
                                 transaction.setDebit(approvedLoan.getDeductionPayment());
@@ -385,16 +385,16 @@ public class EnvelopeDAOService {
                         }
 
                     } else {
-                        System.out.println("4");
+                      //  System.out.println("4");
                         Transaction existTrasaction = null;
                         if (account!=null) {
-                            System.out.println("5");
-                            System.out.println("DATE DATE : "+envelope.getsTime()+""+account.getAccountNo());
+                          //  System.out.println("5");
+                          //  System.out.println("DATE DATE : "+envelope.getsTime()+""+account.getAccountNo());
                              existTrasaction = transactionDAOController.getTransactionsByDateNAccountNoNType(envelope.getsTime(), account.getAccountNo(),"LN");
                         }
                         System.out.println("EXT : "+existTrasaction);
                         if (existTrasaction==null) {
-                            System.out.println("6");
+                        //    System.out.println("6");
                             String id = new Date().getTime() + "";
                             Hashids hashids = new Hashids(id);
                             String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
@@ -444,8 +444,6 @@ public class EnvelopeDAOService {
             }
 
         }
-
-
         return s;
     }
 

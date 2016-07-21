@@ -1937,7 +1937,8 @@ public class JasperReportController {
                 approveLoanDueAmount = approveLoanDueAmount.add(approvedLoan.getDueamount());
             }
         }
-        map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
+        //map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
+        map.put("loanDue", "--");
 
         ds = new JRTableModelDataSource(model);
         try {
