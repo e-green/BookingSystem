@@ -1809,7 +1809,9 @@ public class JasperReportController {
 
         for (Envelope envelope : envelopesByCenterId) {
             List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId());
-            chitCount = chits.size();
+            //chitCount = chits.size();
+
+            chitCount = envelope.getChitCount().intValue();
             for (Chit chit : chits) {
                 String ncOLCS = null;
                 String wT = null;
@@ -1937,8 +1939,16 @@ public class JasperReportController {
                 approveLoanDueAmount = approveLoanDueAmount.add(approvedLoan.getDueamount());
             }
         }
-        //map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
-        map.put("loanDue", "--");
+
+        if (individualId.equals("2kqgZagpo0HB3QBagPdJcW4qQLP0EWH0xQHGXR2TLQWC")){
+            map.put("loanDue", "--");
+
+        }else if (individualId.equals("GzWkvQky6Bs5Mz5Ogb09HAvYXBwAyeI9dQ9A4ILU0F7W")){
+            map.put("loanDue", "--");
+        }
+        else {
+            map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
+        }
 
         ds = new JRTableModelDataSource(model);
         try {
