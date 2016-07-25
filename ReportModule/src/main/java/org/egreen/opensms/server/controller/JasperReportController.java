@@ -1950,6 +1950,8 @@ public class JasperReportController {
             map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
         }
 
+      //  map.put("loanDue", "--");
+
         ds = new JRTableModelDataSource(model);
         try {
             InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual6.jrxml");

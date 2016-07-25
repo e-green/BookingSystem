@@ -66,6 +66,7 @@ public class EnvelopeDAOService {
         if (envelopesByDateNByIndividualId == null) {
             //setting envelopeId
             envelope.setEnvelopId(newid);
+
             //if chit count is null set new value 0
             if (envelope.getChitCount() == null) {
                 envelope.setChitCount(new BigInteger("0"));
@@ -322,6 +323,11 @@ public class EnvelopeDAOService {
         return envelopeDAOController.getAllBranchersByPagination(limit, offset);
     }
 
+
+    public String updateEnve(Envelope envelope) {
+        return envelopeDAOController.update(envelope);
+    }
+
     /**
      * Update Envelope
      *
@@ -329,9 +335,6 @@ public class EnvelopeDAOService {
      * @return
      */
     public String update(Envelope envelope) {
-
-
-
         String indId = envelope.getIndividualId();
         Envelope envelopesByDateNByIndividualId = envelopeDAOController.getEnvelopesByDateNByIndividualId(indId, envelope.getsTime());
         String s = null;
@@ -361,7 +364,7 @@ public class EnvelopeDAOService {
                     if (transaction.getTypeId().equals("LN")) {
                         System.out.println("1");
                         if (envelope.getLoanDeduct() == false) {
-                         //   System.out.println("2");
+                            System.out.println("2");
                           //  System.out.println("DELETED TRANCE : " + transaction);
                             int delete = transactionDAOController.delete(transaction);
                             if (delete == 1) {
@@ -371,7 +374,7 @@ public class EnvelopeDAOService {
                                 approvedLoanDAOService.update(approvedLoan);
                             }
                         } else {
-                          //  System.out.println("3");
+                            System.out.println("3");
                             ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
                             if (approvedLoan != null) {
                                 transaction.setDebit(approvedLoan.getDeductionPayment());
@@ -392,7 +395,7 @@ public class EnvelopeDAOService {
                           //  System.out.println("DATE DATE : "+envelope.getsTime()+""+account.getAccountNo());
                              existTrasaction = transactionDAOController.getTransactionsByDateNAccountNoNType(envelope.getsTime(), account.getAccountNo(),"LN");
                         }
-                        System.out.println("EXT : "+existTrasaction);
+                      //  System.out.println("EXT : "+existTrasaction);
                         if (existTrasaction==null) {
                         //    System.out.println("6");
                             String id = new Date().getTime() + "";

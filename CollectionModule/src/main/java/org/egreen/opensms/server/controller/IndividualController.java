@@ -425,7 +425,7 @@ public class IndividualController {
                     transactionDAOService.save(transaction);
                 }
                 envelopeById.setFinished(true);
-                String update = envelopeDAOService.update(envelopeById);
+                String update = envelopeDAOService.updateEnve(envelopeById);
 
             }
 
