@@ -470,8 +470,12 @@ public class IndividualController {
              * for the envelope
              * calculate nc vale and add it to transaction table to individual & to center
              */
+
+          //  System.out.println(generalSummaryReceiptModel.getModelNc() +  "-----" + nc);
             if (generalSummaryReceiptModel.getModelNc() >= 0.0 && nc > 0.0) {
+              //  System.out.println("1");
                 if (center != null && center.getNotCommisionPersentage() != null && center.getNotCommisionPersentage().doubleValue() > 0.0) {
+                   // System.out.println("2");
                     notcommisionPersentageForCenter = center.getNotCommisionPersentage();
                     notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForCenter);
                     transaction = new Transaction();
@@ -484,6 +488,7 @@ public class IndividualController {
                     transactionDAOService.save(transaction);
                 }
                 if (individual1 != null && individual1.getNotCommisionPersentage() != null && individual1.getNotCommisionPersentage().doubleValue() > 0.0) {
+                 //   System.out.println("3");
                     notcommisionPersentageForIndividual = individual1.getNotCommisionPersentage();
                     notCommisionsTot = envelopeDAOService.calculateNotCommision(BigDecimal.valueOf(nc), notcommisionPersentageForIndividual);
                     transaction = new Transaction();

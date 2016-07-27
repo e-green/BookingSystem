@@ -19,6 +19,13 @@
         <property name="password" value="ijse"/>
     </bean>
 
+    <bean id="developingServer2" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost/bookingTwo"/>
+        <property name="username" value="root"/>
+        <property name="password" value="ijse"/>
+    </bean>
+
     <bean id="testingServerUp" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost/testingbooking"/>
@@ -35,7 +42,7 @@
 
     <!-- TODO 9: Define a bean named 'sessionFactory' that configures a test SessionFactory -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="actualServer"/>
+        <property name="dataSource" ref="developingServer2"/>
         <property name="packagesToScan">
             <value>
                 org.egreen.opensms.server.entity

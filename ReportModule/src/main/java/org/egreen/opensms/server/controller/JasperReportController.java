@@ -824,13 +824,20 @@ public class JasperReportController {
                         if (transaction.getTypeId().equals("LN")) {
                             loanDeductValue += transaction.getDebit().doubleValue();
                         }
+
+                        if (transaction.getTypeId().equals("NC")) {
+                             ncVal = transaction.getDebit().doubleValue() * 100 / individual.getNotCommisionPersentage().doubleValue();
+                          //  System.out.println("XXXXXXXXXXXX -- "+transaction.getDebit());
+                        }
+
+
                     }
                 }
                 //add row to model
                 model.addRow(new Object[]{individualCount + "", individual.getName() + "", investment + "", ncVal + "", lcsVal + ""});
                 //set investment,ncVal and lcsVal as 0
                 investment = 0.0;
-                ncVal = 0.0;
+               // ncVal = 0.0;
                 lcsVal = 0.0;
             }
 
@@ -1919,7 +1926,7 @@ public class JasperReportController {
             map.put("payment", dueAmount == null ? "--" : dueAmount * -1 + "");
             map.put("dueLable", "");
             map.put("due", "");
-            map.put("paymentLable", "Payment");
+            map.put("paymentLable", "Pay");
             map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment + "");
             map.put("tpyInvDeduct", "");
         }
@@ -1940,17 +1947,17 @@ public class JasperReportController {
             }
         }
 
-        if (individualId.equals("2kqgZagpo0HB3QBagPdJcW4qQLP0EWH0xQHGXR2TLQWC")){
-            map.put("loanDue", "--");
+//        if (individualId.equals("2kqgZagpo0HB3QBagPdJcW4qQLP0EWH0xQHGXR2TLQWC")){
+//            map.put("loanDue", "--");
+//
+//        }else if (individualId.equals("GzWkvQky6Bs5Mz5Ogb09HAvYXBwAyeI9dQ9A4ILU0F7W")){
+//            map.put("loanDue", "--");
+//        }
+//        else {
+//            map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
+//        }
 
-        }else if (individualId.equals("GzWkvQky6Bs5Mz5Ogb09HAvYXBwAyeI9dQ9A4ILU0F7W")){
-            map.put("loanDue", "--");
-        }
-        else {
-            map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
-        }
-
-      //  map.put("loanDue", "--");
+        map.put("loanDue", "--");
 
         ds = new JRTableModelDataSource(model);
         try {
