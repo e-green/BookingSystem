@@ -695,6 +695,7 @@ public class JasperReportController {
             System.out.println(ex);
         }
         //save new centerSummeryCheckService set summaryFinish as true
+
         if (centerId != null && date != null) {
             CenterSummeryCheck centerSummeryCheck = new CenterSummeryCheck();
             centerSummeryCheck.setCenterId(centerId);
@@ -717,7 +718,8 @@ public class JasperReportController {
                                   @RequestParam("datetime") String date,
                                   @RequestParam("onExpenses") double onExpenses,
                                   @RequestParam("onExcess") double onExcess,
-                                  @RequestParam("loanDeduct") boolean loanDeduct
+                                  @RequestParam("loanDeduct") boolean loanDeduct,
+                                  @RequestParam("isViewed") boolean isViewed
     ) {
 
         double addExpenses = onExpenses;
@@ -743,6 +745,8 @@ public class JasperReportController {
         double totLcs = 0.0;
         double tot = 0.0;
         double total = 0.0;
+
+        // boolean isViewed = false;
 
 
         Timestamp timestamp = null;
@@ -826,8 +830,10 @@ public class JasperReportController {
                         }
 
                         if (transaction.getTypeId().equals("NC")) {
-                             ncVal = transaction.getDebit().doubleValue() * 100 / individual.getNotCommisionPersentage().doubleValue();
-                          //  System.out.println("XXXXXXXXXXXX -- "+transaction.getDebit());
+                            //  System.out.println("TranceID"+transaction.getTransactionId());
+                            // System.out.println("account : "+transaction.getAccountNo());
+                            ncVal = transaction.getDebit().doubleValue() * 100 / individual.getNotCommisionPersentage().doubleValue();
+                            //  System.out.println("XXXXXXXXXXXX -- "+transaction.getDebit());
                         }
 
 
@@ -837,7 +843,7 @@ public class JasperReportController {
                 model.addRow(new Object[]{individualCount + "", individual.getName() + "", investment + "", ncVal + "", lcsVal + ""});
                 //set investment,ncVal and lcsVal as 0
                 investment = 0.0;
-               // ncVal = 0.0;
+                ncVal = 0.0;
                 lcsVal = 0.0;
             }
 
@@ -863,7 +869,9 @@ public class JasperReportController {
                      */
                     if (tran.getCredit() != null && tran.getTypeId().equals("Excess") && addExcess > 0) {
                         tran.setCredit(BigDecimal.valueOf(addExcess));
-                        transactionDAOService.update(tran);
+                        if (isViewed) {
+                            transactionDAOService.update(tran);
+                        }
                         excess += addExcess;
                     }
                     /**
@@ -872,7 +880,9 @@ public class JasperReportController {
                      */
                     if (tran.getCredit() != null && tran.getTypeId().equals("EXP") && addExpenses > 0) {
                         tran.setCredit(BigDecimal.valueOf(addExpenses));
-                        transactionDAOService.update(tran);
+                        if (isViewed) {
+                            transactionDAOService.update(tran);
+                        }
                         expenses += addExpenses;
                     }
                     if (tran.getDebit() != null && tran.getTypeId().equals("PD")) {
@@ -924,7 +934,9 @@ public class JasperReportController {
             transaction.setsTime(date);
             transaction.setTypeId("Excess");
             transaction.setCredit(BigDecimal.valueOf(addExcess));
-            transactionDAOService.save(transaction);
+            if (isViewed) {
+                transactionDAOService.save(transaction);
+            }
             excess += addExcess;
         }
         /**
@@ -940,7 +952,9 @@ public class JasperReportController {
             transaction.setsTime(date);
             transaction.setTypeId("EXP");
             transaction.setCredit(BigDecimal.valueOf(addExpenses));
-            transactionDAOService.save(transaction);
+            if (isViewed) {
+                transactionDAOService.save(transaction);
+            }
             expenses += addExpenses;
         }
         ApprovedLoan approvedLoan = null;
@@ -971,13 +985,17 @@ public class JasperReportController {
                     transaction.setDebit(approvedLoan.getDeductionPayment());
                     transaction.setTime(timestamp);
                     transaction.setsTime(date);
-                    transactionDAOService.save(transaction);
+                    if (isViewed) {
+                        transactionDAOService.save(transaction);
+                    }
                     loanDeductionPayment += approvedLoan.getDeductionPayment().doubleValue();
                 }
                 if (approvedLoan.getDueamount() != null && dueAmount != null) {
                     approvedLoan.setDueamount(dueAmount);
                 }
-                approvedLoanDAOService.update(approvedLoan);
+                if (isViewed) {
+                    approvedLoanDAOService.update(approvedLoan);
+                }
             }
         }
         /**
@@ -998,7 +1016,9 @@ public class JasperReportController {
                 transaction.setCredit(approvedLoan.getDueamount());
                 transaction.setTime(timestamp);
                 transaction.setsTime(date);
-                transactionDAOService.save(transaction);
+                if (isViewed) {
+                    transactionDAOService.save(transaction);
+                }
                 loan += approvedLoan.getDueamount().doubleValue();
             }
         }
@@ -1015,7 +1035,9 @@ public class JasperReportController {
                 transaction.setTypeId("PD");
                 transaction.setTime(timestamp);
                 transaction.setsTime(date);
-                transactionDAOService.save(transaction);
+                if (isViewed) {
+                    transactionDAOService.save(transaction);
+                }
                 paymentDue += accountByCenterId.getAmount().doubleValue();
             }
         }
@@ -1077,9 +1099,13 @@ public class JasperReportController {
             transaction.setTypeId("Balance");
             transaction.setTime(timestamp);
             transaction.setsTime(date);
-            transactionDAOService.save(transaction);
+            if (isViewed) {
+                transactionDAOService.save(transaction);
+            }
             accountByCenterId.setAmount(BigDecimal.valueOf(dueAmount));
-            accountDAOService.update(accountByCenterId);
+            if (isViewed) {
+                accountDAOService.update(accountByCenterId);
+            }
 
             map.put("dueTot", dueAmount == null ? "--" : dueAmount + "");
             map.put("dueLable", "Due");
@@ -1102,7 +1128,9 @@ public class JasperReportController {
             transaction.setTypeId("Balance");
             transaction.setTime(timestamp);
             transaction.setsTime(date);
-            transactionDAOService.save(transaction);
+            if (isViewed) {
+                transactionDAOService.save(transaction);
+            }
 
             transaction.setTransactionId(getNewId());
             transaction.setAccountNo(accountByCenterId.getAccountNo());
@@ -1110,10 +1138,14 @@ public class JasperReportController {
             transaction.setTypeId("Payment");
             transaction.setTime(timestamp);
             transaction.setsTime(date);
-            transactionDAOService.save(transaction);
+            if (isViewed) {
+                transactionDAOService.save(transaction);
+            }
 
             accountByCenterId.setAmount(BigDecimal.ZERO);
-            accountDAOService.update(accountByCenterId);
+            if (isViewed) {
+                accountDAOService.update(accountByCenterId);
+            }
 
             map.put("payment", dueAmount == null ? "--" : dueAmount * -1 + "");
             map.put("dueLable", "");
@@ -1129,7 +1161,9 @@ public class JasperReportController {
          */
         if (dueAmount == 0.0) {
             accountByCenterId.setAmount(BigDecimal.ZERO);
-            accountDAOService.update(accountByCenterId);
+            if (isViewed) {
+                accountDAOService.update(accountByCenterId);
+            }
 
             map.put("dueTot", "");
             map.put("paymentLable", "Balance");
@@ -1162,13 +1196,15 @@ public class JasperReportController {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        //save new centerSummeryCheckService set summaryFinish as true
-        if (centerId != null && date != null) {
-            CenterSummeryCheck centerSummeryCheck = new CenterSummeryCheck();
-            centerSummeryCheck.setCenterId(centerId);
-            centerSummeryCheck.setsDate(date);
-            centerSummeryCheck.setSummaryFinish(true);
-            centerSummeryCheckService.save(centerSummeryCheck);
+        if (isViewed) {
+            //save new centerSummeryCheckService set summaryFinish as true
+            if (centerId != null && date != null) {
+                CenterSummeryCheck centerSummeryCheck = new CenterSummeryCheck();
+                centerSummeryCheck.setCenterId(centerId);
+                centerSummeryCheck.setsDate(date);
+                centerSummeryCheck.setSummaryFinish(true);
+                centerSummeryCheckService.save(centerSummeryCheck);
+            }
         }
     }
 
@@ -1701,19 +1737,27 @@ public class JasperReportController {
         //get individual by individualId
         Individual individual = individualDAOService.getBranchById(individualId);
 
+        Center center = centerDAOService.getCenterById(centerId);
+
+
         //inisializing empty values to map
-        map.put("pc", "");
-        map.put("ln", "");
-        map.put("pd", "");
-        map.put("com", "");
-        map.put("nc", "");
-        map.put("lcs", "");
-        map.put("lon", "");
-        map.put("sal", "");
-        map.put("overPay", "");
-        map.put("exces", "");
-        map.put("exp", "");
-        map.put("rent", "");
+        if (center != null) {
+              if (center.getType() == 1 || center.getType() == 4) {
+
+                map.put("pc", "");
+                map.put("ln", "");
+                map.put("pd", "");
+                map.put("com", "");
+                map.put("nc", "");
+                map.put("lcs", "");
+                map.put("lon", "");
+                map.put("sal", "");
+                map.put("overPay", "");
+                map.put("exces", "");
+                map.put("exp", "");
+                map.put("rent", "");
+            }
+        }
 
         // get individual transaction list by string date(sTime) and individual accountId
         List<Transaction> transactionList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(date, account.getAccountNo());
@@ -1853,55 +1897,107 @@ public class JasperReportController {
             tpyInvestment += perDue;
         }
         if (salary > 0.0) {
-            map.put("sal", salary + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("sal", salary + "");
+                }
+            }
             tpyPayment += salary;
         }
         if (cash > 0.0) {
-            map.put("csh", cash + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("csh", cash + "");
+                }
+            }
             tpyPayment += cash;
         }
         if (commision > 0.0) {
-            map.put("com", commision + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("com", commision + "");
+                }
+            }
             tpyPayment += commision;
         }
         if (ncValue > 0.0) {
-            map.put("nc", ncValue + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("nc", ncValue + "");
+                }
+            }
             tpyInvestment += ncValue;
         }
         if (loanDeductionPayment > 0.0) {
-            map.put("ln", loanDeductionPayment + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("ln", loanDeductionPayment + "");
+                }
+            }
             tpyInvestment += loanDeductionPayment;
         }
         if (lcsValue > 0.0) {
-            map.put("lcs", lcsValue + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("lcs", lcsValue + "");
+                }
+            }
             tpyInvestment += lcsValue;
         }
         if (paymentDue > 0.0) {
-            map.put("pd", paymentDue + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("pd", paymentDue + "");
+                }
+            }
             tpyInvestment += paymentDue;
         }
         if (overPayment > 0.0) {
-            map.put("overPay", overPayment + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("overPay", overPayment + "");
+                }
+            }
             tpyInvestment += overPayment;
         }
         if (rent > 0.0) {
-            map.put("rent", rent + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("rent", rent + "");
+                }
+            }
             tpyInvestment += rent;
         }
         if (pcCharges > 0.0) {
-            map.put("pc", pcCharges + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("pc", pcCharges + "");
+                }
+            }
             tpyInvestment += pcCharges;
         }
         if (excess > 0.0) {
-            map.put("exces", excess + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("exces", excess + "");
+                }
+            }
             tpyPayment += excess;
         }
         if (expenses > 0.0) {
-            map.put("exp", expenses + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("exp", expenses + "");
+                }
+            }
             tpyPayment += expenses;
         }
         if (loan > 0.0) {
-            map.put("lon", loan + "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("lon", loan + "");
+                }
+            }
             tpyPayment += loan;
         }
 
@@ -1909,43 +2005,51 @@ public class JasperReportController {
         map.put("totInv", totInvesment == null ? "--" : totInvesment + "");
         map.put("totPay", totPayment == null ? "--" : totPayment + "");
 
-        map.put("tpyPay", tpyPayment == null ? "--" : tpyPayment + "");
-        map.put("tpyInv", tpyInvestment == null ? "--" : tpyInvestment + "");
-
-        Double dueAmount = tpyInvestment - tpyPayment;
-
-        if (dueAmount > 0.0) {
-            map.put("due", dueAmount == null ? "--" : dueAmount + "");
-            map.put("dueLable", "Due");
-            map.put("paymentLable", "");
-            map.put("payment", "");
-            map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment + "");
-            map.put("tpyPayDeduct", "");
-        }
-        if (dueAmount < 0.0) {
-            map.put("payment", dueAmount == null ? "--" : dueAmount * -1 + "");
-            map.put("dueLable", "");
-            map.put("due", "");
-            map.put("paymentLable", "Pay");
-            map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment + "");
-            map.put("tpyInvDeduct", "");
-        }
-        if (dueAmount == 0.0) {
-            map.put("due", "");
-            map.put("paymentLable", "Balance");
-            map.put("payment", "0.0");
-            map.put("tpyInvDeduct", "");
-            map.put("tpyPayDeduct", "");
-            map.put("dueLable", "");
-        }
-
-        List<ApprovedLoan> approvedLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
-        BigDecimal approveLoanDueAmount = BigDecimal.ZERO;
-        for (ApprovedLoan approvedLoan : approvedLoanList) {
-            if (approvedLoan != null && approvedLoan.getDueamount() != null) {
-                approveLoanDueAmount = approveLoanDueAmount.add(approvedLoan.getDueamount());
+        if (center != null) {
+           if (center.getType() == 1 || center.getType() == 4) {
+                map.put("tpyPay", tpyPayment == null ? "--" : tpyPayment + "");
+                map.put("tpyInv", tpyInvestment == null ? "--" : tpyInvestment + "");
             }
         }
+
+
+        if (center != null) {
+           if (center.getType() == 1 || center.getType() == 4) {
+                Double dueAmount = tpyInvestment - tpyPayment;
+
+                if (dueAmount > 0.0) {
+                    map.put("due", dueAmount == null ? "--" : dueAmount + "");
+                    map.put("dueLable", "Due");
+                    map.put("paymentLable", "");
+                    map.put("payment", "");
+                    map.put("tpyInvDeduct", tpyPayment == null ? "--" : tpyPayment + "");
+                    map.put("tpyPayDeduct", "");
+                }
+                if (dueAmount < 0.0) {
+                    map.put("payment", dueAmount == null ? "--" : dueAmount * -1 + "");
+                    map.put("dueLable", "");
+                    map.put("due", "");
+                    map.put("paymentLable", "Pay");
+                    map.put("tpyPayDeduct", tpyInvestment == null ? "--" : tpyInvestment + "");
+                    map.put("tpyInvDeduct", "");
+                }
+                if (dueAmount == 0.0) {
+                    map.put("due", "");
+                    map.put("paymentLable", "Balance");
+                    map.put("payment", "0.0");
+                    map.put("tpyInvDeduct", "");
+                    map.put("tpyPayDeduct", "");
+                    map.put("dueLable", "");
+                }
+
+            }
+            List<ApprovedLoan> approvedLoanList = approvedLoanDAOService.getUnpaidLoansByIndividualId(individualId);
+            BigDecimal approveLoanDueAmount = BigDecimal.ZERO;
+            for (ApprovedLoan approvedLoan : approvedLoanList) {
+                if (approvedLoan != null && approvedLoan.getDueamount() != null) {
+                    approveLoanDueAmount = approveLoanDueAmount.add(approvedLoan.getDueamount());
+                }
+            }
 
 //        if (individualId.equals("2kqgZagpo0HB3QBagPdJcW4qQLP0EWH0xQHGXR2TLQWC")){
 //            map.put("loanDue", "--");
@@ -1957,29 +2061,64 @@ public class JasperReportController {
 //            map.put("loanDue", approveLoanDueAmount == null ? "--" : approveLoanDueAmount + "");
 //        }
 
-        map.put("loanDue", "--");
-
-        ds = new JRTableModelDataSource(model);
-        try {
-            InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual6.jrxml");
-            JasperReport jr = JasperCompileManager.compileReport(systemResourceAsStream);
-            JasperPrint jp = JasperFillManager.fillReport(jr, map, ds);
-            // JasperViewer.viewReport(jp, false);
-            File pdf = File.createTempFile("output.", ".pdf");
-            JasperExportManager.exportReportToPdfStream(jp, new FileOutputStream(pdf));
-            try {
-                InputStream inputStream = new FileInputStream(pdf);
-                response.setContentType("application/pdf");
-                SimpleDateFormat sDF = new SimpleDateFormat("dd-MM-yyyy");
-                response.setHeader("Content-Disposition", "attachment; filename=" + individual.getName() + " " + date + ".pdf");
-                IOUtils.copy(inputStream, response.getOutputStream());
-                response.flushBuffer();
-                inputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    map.put("loanDue", "--");
+                }
             }
-        } catch (Exception ex) {
-            System.out.println(ex);
+            map.put("other", "");
+            if (center != null) {
+               if (center.getType() == 1 || center.getType() == 4) {
+                    ds = new JRTableModelDataSource(model);
+                    try {
+                        InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual6.jrxml");
+                        JasperReport jr = JasperCompileManager.compileReport(systemResourceAsStream);
+                        JasperPrint jp = JasperFillManager.fillReport(jr, map, ds);
+                        // JasperViewer.viewReport(jp, false);
+                        File pdf = File.createTempFile("output.", ".pdf");
+                        JasperExportManager.exportReportToPdfStream(jp, new FileOutputStream(pdf));
+                        try {
+                            InputStream inputStream = new FileInputStream(pdf);
+                            response.setContentType("application/pdf");
+                            SimpleDateFormat sDF = new SimpleDateFormat("dd-MM-yyyy");
+                            response.setHeader("Content-Disposition", "attachment; filename=" + individual.getName() + " " + date + ".pdf");
+                            IOUtils.copy(inputStream, response.getOutputStream());
+                            response.flushBuffer();
+                            inputStream.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } catch (Exception ex) {
+                        System.out.println(ex);
+                    }
+
+                } else {
+                    ////////////////////////////////////////
+                    ds = new JRTableModelDataSource(model);
+                    try {
+                        InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryIndividualShort.jrxml");
+                        JasperReport jr = JasperCompileManager.compileReport(systemResourceAsStream);
+                        JasperPrint jp = JasperFillManager.fillReport(jr, map, ds);
+                        // JasperViewer.viewReport(jp, false);
+                        File pdf = File.createTempFile("output.", ".pdf");
+                        JasperExportManager.exportReportToPdfStream(jp, new FileOutputStream(pdf));
+                        try {
+                            InputStream inputStream = new FileInputStream(pdf);
+                            response.setContentType("application/pdf");
+                            SimpleDateFormat sDF = new SimpleDateFormat("dd-MM-yyyy");
+                            response.setHeader("Content-Disposition", "attachment; filename=" + individual.getName() + " " + date + ".pdf");
+                            IOUtils.copy(inputStream, response.getOutputStream());
+                            response.flushBuffer();
+                            inputStream.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } catch (Exception ex) {
+                        System.out.println(ex);
+                    }
+
+                }
+            }
         }
     }
 

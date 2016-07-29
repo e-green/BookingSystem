@@ -33,6 +33,7 @@
 	<parameter name="rent" class="java.lang.String"/>
 	<parameter name="chitCount" class="java.lang.String"/>
 	<parameter name="time" class="java.lang.String"/>
+	<parameter name="other" class="java.lang.String"/>
 	<field name="no" class="java.lang.String"/>
 	<field name="Inv" class="java.lang.String"/>
 	<field name="Pay" class="java.lang.String"/>
@@ -457,6 +458,21 @@
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
+			<staticText>
+				<reportElement x="101" y="123" width="33" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Other :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="135" y="123" width="67" height="19"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{other}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

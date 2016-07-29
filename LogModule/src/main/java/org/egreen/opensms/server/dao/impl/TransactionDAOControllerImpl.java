@@ -44,7 +44,7 @@ public class TransactionDAOControllerImpl extends  AbstractDAOController<Transac
         /**
          * please use below code when you try to get with unique string Id(date)
          */
-        Query query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND t.sTime = :formattedDate");
+        Query query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND DATE(t.sTime) = :formattedDate");
         query.setString("accountNo", accountNo);
         query.setString("formattedDate", formatedDate);
         List<Transaction> transactionList= query.list();
