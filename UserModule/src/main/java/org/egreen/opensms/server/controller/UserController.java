@@ -99,9 +99,7 @@ public class UserController {
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    public UserModel login(
-                            @RequestParam("username") String username,
-                            @RequestParam("password") String password) {
+    public UserModel login(@RequestParam("username") String username,@RequestParam("password") String password) {
         User user = userDAOService.login(username,password);
         if (user!=null){
             UserModel userModel =  new UserModel();
@@ -110,7 +108,8 @@ public class UserController {
             userModel.setUsername(user.getUsername());
             userModel.setContactnum(user.getContactnum());
             userModel.setEmail(user.getEmail());
-
+            userModel.setFirstName(user.getFirstName());
+            userModel.setLastName(user.getLastName());
             return userModel;
         }else {
             return new UserModel();

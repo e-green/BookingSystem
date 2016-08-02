@@ -30,6 +30,7 @@ public class Chit implements EntityInterface <String> {
     private BigDecimal ncOLCValue;
     private String sTime;
     private Boolean wT;
+    private String username;
 
 
     @Id
@@ -158,6 +159,14 @@ public class Chit implements EntityInterface <String> {
 
     public void setwT(Boolean wT) { this.wT = wT; }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     @Transient
     public String getId() {
@@ -184,6 +193,7 @@ public class Chit implements EntityInterface <String> {
                 ", ncOLCValue=" + ncOLCValue +
                 ", sTime='" + sTime + '\'' +
                 ", wT=" + wT +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

@@ -10,6 +10,8 @@ public class UserModel {
     private String username;
     private String email;
     private String contactnum;
+    private String firstName;
+    private String LastName;
    
 
 
@@ -53,7 +55,19 @@ public class UserModel {
         this.contactnum = contactnum;
     }
 
- 
+    public String getFirstName() {
+        return firstName;
+    }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
+    }
 }

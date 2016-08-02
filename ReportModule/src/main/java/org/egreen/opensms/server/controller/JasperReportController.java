@@ -1742,7 +1742,7 @@ public class JasperReportController {
 
         //inisializing empty values to map
         if (center != null) {
-              if (center.getType() == 1 || center.getType() == 4) {
+            if (center.getType() == 1 || center.getType() == 4) {
 
                 map.put("pc", "");
                 map.put("ln", "");
@@ -1858,9 +1858,13 @@ public class JasperReportController {
 
         int chitCount = 0;
 
+        String userName = "--";
+
         for (Envelope envelope : envelopesByCenterId) {
             List<Chit> chits = chitDAOService.getAllChitsByEnvelopeId(envelope.getEnvelopId());
-            //chitCount = chits.size();
+            if (chits.size()>0) {
+                userName = chits.get(0).getUsername();
+            }
 
             chitCount = envelope.getChitCount().intValue();
             for (Chit chit : chits) {
@@ -1887,6 +1891,8 @@ public class JasperReportController {
 
         }
 
+        map.put("userName",userName);
+
         map.put("chitCount", chitCount + "");
 
         Double perDue = 0.0;
@@ -1898,7 +1904,7 @@ public class JasperReportController {
         }
         if (salary > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("sal", salary + "");
                 }
             }
@@ -1906,7 +1912,7 @@ public class JasperReportController {
         }
         if (cash > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("csh", cash + "");
                 }
             }
@@ -1914,7 +1920,7 @@ public class JasperReportController {
         }
         if (commision > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("com", commision + "");
                 }
             }
@@ -1922,7 +1928,7 @@ public class JasperReportController {
         }
         if (ncValue > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("nc", ncValue + "");
                 }
             }
@@ -1930,7 +1936,7 @@ public class JasperReportController {
         }
         if (loanDeductionPayment > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("ln", loanDeductionPayment + "");
                 }
             }
@@ -1938,7 +1944,7 @@ public class JasperReportController {
         }
         if (lcsValue > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("lcs", lcsValue + "");
                 }
             }
@@ -1946,7 +1952,7 @@ public class JasperReportController {
         }
         if (paymentDue > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("pd", paymentDue + "");
                 }
             }
@@ -1954,7 +1960,7 @@ public class JasperReportController {
         }
         if (overPayment > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("overPay", overPayment + "");
                 }
             }
@@ -1962,7 +1968,7 @@ public class JasperReportController {
         }
         if (rent > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("rent", rent + "");
                 }
             }
@@ -1970,7 +1976,7 @@ public class JasperReportController {
         }
         if (pcCharges > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("pc", pcCharges + "");
                 }
             }
@@ -1978,7 +1984,7 @@ public class JasperReportController {
         }
         if (excess > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("exces", excess + "");
                 }
             }
@@ -1986,7 +1992,7 @@ public class JasperReportController {
         }
         if (expenses > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("exp", expenses + "");
                 }
             }
@@ -1994,7 +2000,7 @@ public class JasperReportController {
         }
         if (loan > 0.0) {
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("lon", loan + "");
                 }
             }
@@ -2006,7 +2012,7 @@ public class JasperReportController {
         map.put("totPay", totPayment == null ? "--" : totPayment + "");
 
         if (center != null) {
-           if (center.getType() == 1 || center.getType() == 4) {
+            if (center.getType() == 1 || center.getType() == 4) {
                 map.put("tpyPay", tpyPayment == null ? "--" : tpyPayment + "");
                 map.put("tpyInv", tpyInvestment == null ? "--" : tpyInvestment + "");
             }
@@ -2014,7 +2020,7 @@ public class JasperReportController {
 
 
         if (center != null) {
-           if (center.getType() == 1 || center.getType() == 4) {
+            if (center.getType() == 1 || center.getType() == 4) {
                 Double dueAmount = tpyInvestment - tpyPayment;
 
                 if (dueAmount > 0.0) {
@@ -2062,13 +2068,21 @@ public class JasperReportController {
 //        }
 
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     map.put("loanDue", "--");
                 }
             }
             map.put("other", "");
+
+            if (individual!=null) {
+
+                double totalNc = ncValue * 100 / individual.getNotCommisionPersentage().doubleValue();
+                map.put("totalNc",totalNc+"");
+            }
+
+
             if (center != null) {
-               if (center.getType() == 1 || center.getType() == 4) {
+                if (center.getType() == 1 || center.getType() == 4) {
                     ds = new JRTableModelDataSource(model);
                     try {
                         InputStream systemResourceAsStream = this.getClass().getClassLoader().getResourceAsStream("GenaralSummaryOfIndividual6.jrxml");
