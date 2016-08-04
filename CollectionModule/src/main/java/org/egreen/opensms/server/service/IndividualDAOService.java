@@ -161,7 +161,7 @@ public class IndividualDAOService {
      * @return
      */
     public List<Individual> getIndividualsByCenterId(String centerId) {
-        List<Individual> individualList = individualDAOController.getAllByPropertyByStringValue(centerId, "center");
+        List<Individual> individualList = individualDAOController.getIndividualsByCenterId(centerId);
         List<Individual> list=new ArrayList<Individual>();
         for (Individual individual:individualList ) {
 

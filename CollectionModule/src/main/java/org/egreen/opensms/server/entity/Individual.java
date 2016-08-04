@@ -11,7 +11,8 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "individual")
 @JsonIgnoreProperties
-public class Individual implements EntityInterface <String> {
+public class
+Individual implements EntityInterface <String> {
 
     private String individualId;
     private String name;

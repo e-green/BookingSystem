@@ -4,6 +4,7 @@ import org.egreen.opensms.server.dao.IndividualDAOController;
 import org.egreen.opensms.server.entity.Individual;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -78,5 +79,13 @@ public class IndividualDAOControllerImpl extends AbstractDAOController<Individua
             }
         }
         return fIndividual;
+    }
+
+    @Override
+    public List<Individual> getIndividualsByCenterId(String centerId) {
+        Criteria criteria = getSession().createCriteria(entityType);
+        criteria.add(Restrictions.eq("center", centerId));
+        criteria.addOrder(Order.asc("name"));
+        return  criteria.list();
     }
 }

@@ -20,4 +20,6 @@ public interface IndividualDAOController extends DAOController<Individual,String
     Individual getIndividualsByCenterIdAndIndividualId(String centerId, String individualId);
 
     Individual getIndividualByName(String memberName);
+
+    List<Individual> getIndividualsByCenterId(String centerId);
 }
