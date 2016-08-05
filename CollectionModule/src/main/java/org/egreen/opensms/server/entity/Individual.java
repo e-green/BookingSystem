@@ -11,8 +11,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "individual")
 @JsonIgnoreProperties
-public class
-Individual implements EntityInterface <String> {
+public class Individual implements EntityInterface <String> {
 
     private String individualId;
     private String name;
@@ -29,6 +28,7 @@ Individual implements EntityInterface <String> {
     private BigDecimal fixedSalary;
     private BigDecimal notCommisionPersentage;
     private Integer type;
+
 
     @Id
     @Column(name = "individualId")

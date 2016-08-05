@@ -202,20 +202,47 @@ public class EnvelopeDAOService {
                     transactionDAOController.create(transaction);
                 }
 
+                if (individual != null) {
+                    if (individual.getDeductionInv() != null) {
+                        if (envelope.getInvesment() != null) {
+                            double deductValue = envelope.getInvesment().doubleValue() - individual.getDeductionInv().doubleValue();
+                            System.out.println("DUDE :"+deductValue);
+                            System.out.println("commmi : "+individual.getCommision());
+                            double commision = (deductValue * individual.getCommision().doubleValue()) / 100;
 
-                if (individual.getCommision() != null && envelope.getInvesment() != null) {
-                    transaction = new Transaction();
-                    createTransactinonAccount(individualId, transaction);
-                    String newid1 = getStringID(id, hashids, hexaid);
-                    transaction.setTransactionId(newid1);
-                    transaction.setTypeId("COM");
-                    double investmentValue = envelope.getInvesment().doubleValue();
-                    BigDecimal commision = calculateCommision(invesment, individual.getCommision());
-                    transaction.setCredit(commision);
-                    transaction.setTime(envelope.getDate());
-                    transaction.setsTime(fd);
-                    transactionDAOController.create(transaction);
+                            System.out.println("COM"+commision);
+                            if (commision != 0) {
+                                transaction = new Transaction();
+                                createTransactinonAccount(individualId, transaction);
+                                String newid1 = getStringID(id, hashids, hexaid);
+                                transaction.setTransactionId(newid1);
+                                transaction.setTypeId("COM");
+                            //    double investmentValue = envelope.getInvesment().doubleValue();
+                                //    BigDecimal commision = calculateCommision(invesment, individual.getCommision());
+                                transaction.setCredit(BigDecimal.valueOf(commision));
+                                transaction.setTime(envelope.getDate());
+                                transaction.setsTime(fd);
+                                String s1 = transactionDAOController.create(transaction);
+                                System.out.println(s1);
+                            }
+                        }
+                    } else {
+                        if (individual.getCommision() != null && envelope.getInvesment() != null) {
+                            transaction = new Transaction();
+                            createTransactinonAccount(individualId, transaction);
+                            String newid1 = getStringID(id, hashids, hexaid);
+                            transaction.setTransactionId(newid1);
+                            transaction.setTypeId("COM");
+                            double investmentValue = envelope.getInvesment().doubleValue();
+                            BigDecimal commision = calculateCommision(invesment, individual.getCommision());
+                            transaction.setCredit(commision);
+                            transaction.setTime(envelope.getDate());
+                            transaction.setsTime(fd);
+                            transactionDAOController.create(transaction);
+                        }
+                    }
                 }
+
 
                 if (envelope.getRentDeduct() != null && envelope.getRentDeduct() == true && individual.getRent() != null) {
                     transaction = new Transaction();
@@ -267,7 +294,6 @@ public class EnvelopeDAOService {
 
         return s;
     }
-
 
 
     /**
@@ -358,14 +384,14 @@ public class EnvelopeDAOService {
                 Account centerAccount = accountDAOController.getAccountByCenterOIndividualId(centerId);
                 Individual individual = individualDAOController.read(individualId);
                 List<Transaction> transactionList = transactionDAOController.getTodayTransactionDetailByDateNAccountNo(envelope.getsTime(), account.getAccountNo());
-              //  List<Transaction> centerTransactionList = transactionDAOController.getTodayTransactionDetailByDateNAccountNo(envelope.getsTime(), centerAccount.getAccountNo());
+                //  List<Transaction> centerTransactionList = transactionDAOController.getTodayTransactionDetailByDateNAccountNo(envelope.getsTime(), centerAccount.getAccountNo());
                 Center center = centerDAOController.read(centerId);
                 for (Transaction transaction : transactionList) {
                     if (transaction.getTypeId().equals("LN")) {
                         System.out.println("1");
                         if (envelope.getLoanDeduct() == false) {
                             System.out.println("2");
-                          //  System.out.println("DELETED TRANCE : " + transaction);
+                            //  System.out.println("DELETED TRANCE : " + transaction);
                             int delete = transactionDAOController.delete(transaction);
                             if (delete == 1) {
                                 ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
@@ -388,16 +414,16 @@ public class EnvelopeDAOService {
                         }
 
                     } else {
-                      //  System.out.println("4");
+                        //  System.out.println("4");
                         Transaction existTrasaction = null;
-                        if (account!=null) {
-                          //  System.out.println("5");
-                          //  System.out.println("DATE DATE : "+envelope.getsTime()+""+account.getAccountNo());
-                             existTrasaction = transactionDAOController.getTransactionsByDateNAccountNoNType(envelope.getsTime(), account.getAccountNo(),"LN");
+                        if (account != null) {
+                            //  System.out.println("5");
+                            //  System.out.println("DATE DATE : "+envelope.getsTime()+""+account.getAccountNo());
+                            existTrasaction = transactionDAOController.getTransactionsByDateNAccountNoNType(envelope.getsTime(), account.getAccountNo(), "LN");
                         }
-                      //  System.out.println("EXT : "+existTrasaction);
-                        if (existTrasaction==null) {
-                        //    System.out.println("6");
+                        //  System.out.println("EXT : "+existTrasaction);
+                        if (existTrasaction == null) {
+                            //    System.out.println("6");
                             String id = new Date().getTime() + "";
                             Hashids hashids = new Hashids(id);
                             String hexaid = hashids.encodeHex(String.format("%040x", new BigInteger(1, id.getBytes())));
@@ -407,7 +433,7 @@ public class EnvelopeDAOService {
                             Transaction transaction1 = new Transaction();
                             transaction1.setDebit(BigDecimal.ZERO);
                             transaction1.setTypeId("LN");
-                            if (envelope!=null) {
+                            if (envelope != null) {
                                 transaction1.setsTime(envelope.getsTime());
                                 transaction.setTime(envelope.getDate());
                             }
@@ -439,8 +465,15 @@ public class EnvelopeDAOService {
                         transactionDAOController.update(transaction);
                     }
                     if (individual.getCommision() != null && envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0 && transaction.getTypeId().equals("COM") && transaction.getAccountNo().equals(account.getAccountNo())) {
-                        BigDecimal con = calculateCommision(invesment, individual.getCommision());
-                        transaction.setCredit(con);
+                        if (individual.getDeductionInv()!=null){
+                            double deductValue = envelope.getInvesment().doubleValue() - individual.getDeductionInv().doubleValue();
+                            double commision = (deductValue * individual.getCommision().doubleValue()) / 100;
+                            transaction.setCredit(BigDecimal.valueOf(commision));
+                        }else {
+                            BigDecimal con = calculateCommision(invesment, individual.getCommision());
+                            transaction.setCredit(con);
+                        }
+
                         transactionDAOController.update(transaction);
                     }
                 }
