@@ -297,7 +297,7 @@
 			<staticText>
 				<reportElement x="1" y="197" width="39" height="16"/>
 				<box leftPadding="2"/>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Serif" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[LB :]]></text>
@@ -439,9 +439,9 @@
 				<textFieldExpression><![CDATA[$P{rent}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="116" y="197" width="33" height="16"/>
+				<reportElement x="106" y="197" width="38" height="16"/>
 				<box leftPadding="2"/>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Serif" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOC :]]></text>
@@ -476,30 +476,31 @@
 				<textFieldExpression><![CDATA[$P{other}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="133" y="213" width="69" height="16"/>
-				<textElement verticalAlignment="Middle">
-					<font size="9"/>
+				<reportElement x="149" y="213" width="53" height="16"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{userName}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="89" y="213" width="44" height="16"/>
+				<reportElement x="100" y="213" width="44" height="16"/>
 				<box leftPadding="2"/>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Serif" size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[CE By :]]></text>
+				<text><![CDATA[CE :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="213" width="37" height="16"/>
+				<reportElement x="1" y="213" width="39" height="16"/>
 				<box leftPadding="2"/>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Serif" size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[TNc :]]></text>
+				<text><![CDATA[TN :]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="38" y="213" width="51" height="16"/>
+				<reportElement x="40" y="213" width="51" height="16"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Serif" size="12"/>
 				</textElement>

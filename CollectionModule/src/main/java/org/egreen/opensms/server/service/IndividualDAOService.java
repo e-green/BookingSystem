@@ -50,16 +50,16 @@ public class IndividualDAOService {
             individual.setNotCommisionPersentage(BigDecimal.ZERO);
         }
 
-        if(individual.getCommision() == null){
-            individual.setCommision(BigDecimal.ZERO);
-        }
+//        if(individual.getCommision() == null){
+//            individual.setCommision(BigDecimal.ZERO);
+//        }
         if(individual.getPcChargers() == null){
             individual.setPcChargers(BigDecimal.ZERO);
         }
 
-        if(individual.getFixedSalary() == null){
-            individual.setFixedSalary(BigDecimal.ZERO);
-        }
+//        if(individual.getFixedSalary() == null){
+//            individual.setFixedSalary(BigDecimal.ZERO);
+//        }
         String s = individualDAOController.create(individual);
         return s;
     }

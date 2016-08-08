@@ -206,11 +206,10 @@ public class EnvelopeDAOService {
                     if (individual.getDeductionInv() != null) {
                         if (envelope.getInvesment() != null) {
                             double deductValue = envelope.getInvesment().doubleValue() - individual.getDeductionInv().doubleValue();
-                            System.out.println("DUDE :"+deductValue);
-                            System.out.println("commmi : "+individual.getCommision());
+
                             double commision = (deductValue * individual.getCommision().doubleValue()) / 100;
 
-                            System.out.println("COM"+commision);
+
                             if (commision != 0) {
                                 transaction = new Transaction();
                                 createTransactinonAccount(individualId, transaction);
@@ -223,7 +222,6 @@ public class EnvelopeDAOService {
                                 transaction.setTime(envelope.getDate());
                                 transaction.setsTime(fd);
                                 String s1 = transactionDAOController.create(transaction);
-                                System.out.println(s1);
                             }
                         }
                     } else {
@@ -388,9 +386,9 @@ public class EnvelopeDAOService {
                 Center center = centerDAOController.read(centerId);
                 for (Transaction transaction : transactionList) {
                     if (transaction.getTypeId().equals("LN")) {
-                        System.out.println("1");
+
                         if (envelope.getLoanDeduct() == false) {
-                            System.out.println("2");
+
                             //  System.out.println("DELETED TRANCE : " + transaction);
                             int delete = transactionDAOController.delete(transaction);
                             if (delete == 1) {
@@ -400,7 +398,7 @@ public class EnvelopeDAOService {
                                 approvedLoanDAOService.update(approvedLoan);
                             }
                         } else {
-                            System.out.println("3");
+
                             ApprovedLoan approvedLoan = approvedLoanDAOService.getOpenLoanDetailByIndividualId(individualId);
                             if (approvedLoan != null) {
                                 transaction.setDebit(approvedLoan.getDeductionPayment());
