@@ -6,4 +6,5 @@ import org.egreen.opensms.server.entity.Tempdata;
  * Created by dewmal on 7/31/14.
  */
 public interface TempDataDAOController extends DAOController<Tempdata,String> {
+    Boolean getTokenValidate(String key, String token);
 }

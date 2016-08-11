@@ -72,5 +72,21 @@ public class TransactionDAOControllerImpl extends  AbstractDAOController<Transac
         return transactionList;
     }
 
+    @Override
+    public Transaction getTodayTranseActionByTypeId(String date, String accountNo,String typeId) {
+        Query query = getSession().createQuery("SELECT t FROM Transaction t WHERE t.accountNo = :accountNo AND DATE(t.sTime) = :formattedDate AND t.typeId =:typeId");
+        query.setString("accountNo", accountNo);
+        query.setString("formattedDate", date);
+        query.setString("typeId", typeId);
+        if (query.list().size()>0) {
+
+                return (Transaction)query.list().get(0);
+
+        }else {
+            return null;
+        }
+
+    }
+
 
 }

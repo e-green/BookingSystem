@@ -578,12 +578,16 @@ public class IndividualController {
         map.put("lcs", "0.00");
         map.put("lon", "0.00");
         map.put("sal", "0.00");
-        map.put("overPay", "0.00");
-        map.put("exces", "0.00");
+
         map.put("rent", "0.00");
 
         Double dueAmount=0.0;
         Double perDue=0.0;
+
+        Double ovpayment = 0.0;
+        Double excesspayment = 0.0;
+
+
         List<Transaction> transactionList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(stringDate, account.getAccountNo());
         for (Transaction transaction : transactionList) {
             if (transaction != null) {
@@ -615,8 +619,20 @@ public class IndividualController {
                     paymentToDeduct= tra.getCredit().doubleValue()*-1;
                 }
 
+                if(tra.getDebit() != null && tra.getTypeId().equals("OverPayment")){
+                    ovpayment= tra.getDebit().doubleValue();
+                }
+
+                if(tra.getCredit() != null && tra.getTypeId().equals("Excess")){
+                    excesspayment= tra.getCredit().doubleValue();
+                }
+
             }
         }
+
+
+        map.put("overPay", ovpayment);
+        map.put("exces", excesspayment);
 
         if(account != null && account.getAmount() != null){
             if(account.getAmount().doubleValue() > 0.0){

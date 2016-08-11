@@ -55,4 +55,8 @@ public class TempDateService {
         }
         return tDate;
     }
+
+    public Boolean getTokenValidate(String key, String token) {
+        return tempDataDAOController.getTokenValidate(key,token);
+    }
 }

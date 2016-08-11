@@ -1,5 +1,7 @@
 package org.egreen.opensms.server.listner;
 
+import org.egreen.opensms.server.service.TempDateService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class SecureDispatcher extends DispatcherServlet {
 
+    @Autowired
+    TempDateService tempDateService;
+
     private static final Queue QUEUE = new ConcurrentLinkedQueue();
     private static Boolean isLogging = false;
 
@@ -34,13 +39,20 @@ public class SecureDispatcher extends DispatcherServlet {
                 request.getQueryString();       // "lastname=Fox&age=30"
 
         QUEUE.add(new Date() + "," + request.getHeader("username")
-                        + "," + request.getHeader("nic") + ","
-                        + request.getHeader("userId") + ","
-                        + uri
+                + "," + request.getHeader("nic") + ","
+                + request.getHeader("userId") + ","
+                + uri
         );
         check();
-        super.doDispatch(request, response);
+        String token = request.getHeader("token");
+      //  System.out.println(token);
+//        Boolean aBoolean = tempDateService.getTokenValidate("token", token);
 
+//        if (aBoolean) {
+            super.doDispatch(request, response);
+//        } else {
+//            response.sendError(403, "");
+//        }
     }
 
 
@@ -69,10 +81,8 @@ public class SecureDispatcher extends DispatcherServlet {
 
 
                     int year = cal.get(Calendar.YEAR);
-                    int month = cal.get(Calendar.MONTH)+1;
+                    int month = cal.get(Calendar.MONTH) + 1;
                     int day = cal.get(Calendar.DATE);
-
-
 
 
                     File file = new File(path + year + "" + month + "" + day + "");
@@ -99,10 +109,10 @@ public class SecureDispatcher extends DispatcherServlet {
                         }
                     }
                 } catch (Exception e) {
-                   // System.out.println("NOt Write");
+                    // System.out.println("NOt Write");
                 }
 
-               // System.out.println("Done");
+                // System.out.println("Done");
                 try {
                     line = QUEUE.remove();
                 } catch (Exception e) {

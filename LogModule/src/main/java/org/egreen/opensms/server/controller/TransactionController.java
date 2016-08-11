@@ -53,6 +53,25 @@ public class TransactionController {
 
     }
 
+    /**
+     *
+     *
+     * getTodayTranseAction
+     *
+     * @param date
+     * @param accountNo
+     * @return
+     */
+    @RequestMapping(value = "getTodayTranseActionByTypeId", method = RequestMethod.GET, headers = "Accept=application/json")
+    @ResponseBody
+    public Transaction getTodayTranseActionOverPayment(@RequestParam("sdate")String date,
+                                                       @RequestParam("accountNo") String accountNo,
+                                                       @RequestParam("typeId") String typeId) {
+
+        Transaction all = transactionDAOService.getTodayTranseActionByTypeId(date,accountNo,typeId);
+        return all;
+    }
+
 
     /**
      * Get All
