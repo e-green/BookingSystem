@@ -1796,13 +1796,13 @@ public class JasperReportController {
                     salary += tra.getCredit().doubleValue();
                 }
                 if (tra.getTypeId().equals("OverPayment")) {
-                    overPayment += tra.getDebit().doubleValue();
+                    overPayment = tra.getDebit().doubleValue();
                 }
                 if (tra.getTypeId().equals("RENT")) {
                     rent += tra.getDebit().doubleValue();
                 }
                 if (tra.getTypeId().equals("Excess")) {
-                    excess += tra.getCredit().doubleValue();
+                    excess = tra.getCredit().doubleValue();
                 }
                 if (tra.getTypeId().equals("EXP")) {
                     expenses += tra.getCredit().doubleValue();
