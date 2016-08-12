@@ -44,7 +44,7 @@ public class SecureDispatcher extends DispatcherServlet {
                 + uri
         );
         check();
-        String token = request.getHeader("token");
+        //String token = request.getHeader("token");
       //  System.out.println(token);
 //        Boolean aBoolean = tempDateService.getTokenValidate("token", token);
 

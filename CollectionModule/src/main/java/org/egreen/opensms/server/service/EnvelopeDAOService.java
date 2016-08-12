@@ -206,22 +206,35 @@ public class EnvelopeDAOService {
                     if (individual.getDeductionInv() != null) {
                         if (envelope.getInvesment() != null) {
                             double deductValue = envelope.getInvesment().doubleValue() - individual.getDeductionInv().doubleValue();
+                            if (deductValue>0) {
+                                double commision = (deductValue * individual.getCommision().doubleValue()) / 100;
+                                if (commision != 0) {
+                                    transaction = new Transaction();
+                                    createTransactinonAccount(individualId, transaction);
+                                    String newid1 = getStringID(id, hashids, hexaid);
+                                    transaction.setTransactionId(newid1);
+                                    transaction.setTypeId("COM");
+                                    //    double investmentValue = envelope.getInvesment().doubleValue();
+                                    //    BigDecimal commision = calculateCommision(invesment, individual.getCommision());
+                                    transaction.setCredit(BigDecimal.valueOf(commision));
+                                    transaction.setTime(envelope.getDate());
+                                    transaction.setsTime(fd);
+                                    String s1 = transactionDAOController.create(transaction);
+                                }
+                            }else {
+                                if (individual.getCommision() != null && envelope.getInvesment() != null) {
+                                    transaction = new Transaction();
+                                    createTransactinonAccount(individualId, transaction);
+                                    String newid1 = getStringID(id, hashids, hexaid);
+                                    transaction.setTransactionId(newid1);
+                                    transaction.setTypeId("COM");
 
-                            double commision = (deductValue * individual.getCommision().doubleValue()) / 100;
-
-
-                            if (commision != 0) {
-                                transaction = new Transaction();
-                                createTransactinonAccount(individualId, transaction);
-                                String newid1 = getStringID(id, hashids, hexaid);
-                                transaction.setTransactionId(newid1);
-                                transaction.setTypeId("COM");
-                            //    double investmentValue = envelope.getInvesment().doubleValue();
-                                //    BigDecimal commision = calculateCommision(invesment, individual.getCommision());
-                                transaction.setCredit(BigDecimal.valueOf(commision));
-                                transaction.setTime(envelope.getDate());
-                                transaction.setsTime(fd);
-                                String s1 = transactionDAOController.create(transaction);
+                                    BigDecimal commision = calculateCommision(invesment, individual.getCommision());
+                                    transaction.setCredit(BigDecimal.ZERO);
+                                    transaction.setTime(envelope.getDate());
+                                    transaction.setsTime(fd);
+                                    transactionDAOController.create(transaction);
+                                }
                             }
                         }
                     } else {
@@ -465,9 +478,15 @@ public class EnvelopeDAOService {
                     if (individual.getCommision() != null && envelope.getInvesment() != null && envelope.getInvesment().doubleValue() != 0 && transaction.getTypeId().equals("COM") && transaction.getAccountNo().equals(account.getAccountNo())) {
                         if (individual.getDeductionInv()!=null){
                             double deductValue = envelope.getInvesment().doubleValue() - individual.getDeductionInv().doubleValue();
-                            double commision = (deductValue * individual.getCommision().doubleValue()) / 100;
-                            transaction.setCredit(BigDecimal.valueOf(commision));
+                            if (deductValue>0) {
+                                double commision = (deductValue * individual.getCommision().doubleValue()) / 100;
+                                transaction.setCredit(BigDecimal.valueOf(commision));
+                            }else {
+                                //BigDecimal con = calculateCommision(invesment, individual.getCommision());
+                                transaction.setCredit(BigDecimal.ZERO);
+                            }
                         }else {
+
                             BigDecimal con = calculateCommision(invesment, individual.getCommision());
                             transaction.setCredit(con);
                         }
