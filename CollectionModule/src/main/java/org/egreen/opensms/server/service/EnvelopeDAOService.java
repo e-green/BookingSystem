@@ -866,7 +866,7 @@ public class EnvelopeDAOService {
             salary = new BigDecimal(600.00);
         }
         if (invesment.doubleValue() > 6000.00) {
-            salary = new BigDecimal(600).add(BigDecimal.valueOf((invesment.doubleValue() - 6000.00) / 100 * 5));
+            salary = new BigDecimal(600).add(BigDecimal.valueOf((invesment.doubleValue() - 6000.00) / 100 * 10));
         }
         double doubleValue = salary.doubleValue();
         long round = Math.round(doubleValue);
