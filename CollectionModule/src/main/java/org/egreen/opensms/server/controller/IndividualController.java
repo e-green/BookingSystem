@@ -300,7 +300,10 @@ public class IndividualController {
                 transaction.setTypeId("PAY");
                 transaction.setTime(generalSummaryReceiptModel.getDate());
                 transaction.setsTime(stringDate);
-                transactionDAOService.save(transaction);
+               Transaction pay1 = transactionDAOService.getTodayTranseActionByTypeId(stringDate, account.getAccountNo(), "PAY");
+                if (pay1==null) {
+                    transactionDAOService.save(transaction);
+                }
             }
             if (payValue > 0.0 && generalSummaryReceiptModel.getPay() == 0.0) {
                 transaction = new Transaction();

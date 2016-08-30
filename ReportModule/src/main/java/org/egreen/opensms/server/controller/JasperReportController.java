@@ -86,6 +86,7 @@ public class JasperReportController {
         Double paymentDue = 0.0;
         Double excess = 0.0;
         Double expenses = 0.0;
+        Double overPayment = 0.0;
         Double loanDeductionPayment = 0.0;
         Double tpyPayment = 0.0;
         Double tpyInvestment = 0.0;
@@ -138,7 +139,7 @@ public class JasperReportController {
         }
 
         // get Account by centerId
-        Account accountByCenterId = accountDAOService.getAccountByCenterOIndividualId(centerId);
+       Account accountByCenterId = accountDAOService.getAccountByCenterOIndividualId(centerId);
         //get center Transaction list by sTime & center accountId
         List<Transaction> trList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(stringTime, accountByCenterId.getAccountNo());
         Transaction transaction = null;
@@ -152,6 +153,7 @@ public class JasperReportController {
         if (!trList.isEmpty()) {
             //if transaction list not empty each center transaction values add to their value and some of values check are they already have in transaction
             for (Transaction tran : trList) {
+
                 if (tran != null) {
                     if (tran.getDebit() != null && tran.getTypeId().equals("NC")) {
                         ncValue += tran.getDebit().doubleValue();
@@ -177,9 +179,56 @@ public class JasperReportController {
                     if (tran.getCredit() != null && tran.getTypeId().equals("LON")) {
                         isExistLoan = true;
                     }
+//                    if ( tran.getTypeId().equals("Excess")) {
+//                        excess += tran.getCredit().doubleValue();
+//                    }
+//
+////                    if ( tran.getTypeId().equals("EXP")) {
+////                       //    System.out.println("EXXXXP"+tran.getCredit().doubleValue());
+////                        expenses += tran.getCredit().doubleValue();
+////                    }
+//
+//
+//                    if (tran.getDebit() != null && tran.getTypeId().equals("OverPayment")) {
+//                        overPayment += tran.getDebit().doubleValue();
+//                    }
                 }
             }
         }
+
+        /**
+         * @apiNote Get Expences and Excess and OverPayment By Individuals
+         * @since 2016-08-30
+         */
+        List<Individual> individualList = individualDAOService.getIndividualsByCenterId(centerId);
+        for (Individual individual : individualList) {
+
+            Account account = accountDAOService.getAccountByCenterOIndividualId(individual.getIndividualId());
+            Transaction exp = null;
+            Transaction exce = null;
+            Transaction overpaymentTran = null;
+            if (account!=null) {
+                exp = transactionDAOService.getTodayTranseActionByTypeId(stringTime, account.getAccountNo(), "EXP");
+                exce = transactionDAOService.getTodayTranseActionByTypeId(stringTime, account.getAccountNo(), "Excess");
+                overpaymentTran = transactionDAOService.getTodayTranseActionByTypeId(stringTime, account.getAccountNo(), "OverPayment");
+            }
+            if (exp!=null)
+            if ( exp.getCredit() != null && exp.getTypeId().equals("EXP")) {
+                expenses += exp.getCredit().doubleValue();
+            }
+
+            if (exce!=null)
+                if ( exce.getCredit() != null && exce.getTypeId().equals("Excess")) {
+                    excess += exce.getCredit().doubleValue();
+                }
+            if (overpaymentTran!=null)
+                if ( overpaymentTran.getDebit() != null && overpaymentTran.getTypeId().equals("OverPayment")) {
+                    overPayment += overpaymentTran.getDebit().doubleValue();
+                }
+
+
+        }
+
 
 
         ApprovedLoan approvedLoan = null;
@@ -223,6 +272,7 @@ public class JasperReportController {
         tpyInvestment += loanDeductValue;
         tpyInvestment += lcsValue;
         tpyInvestment += pcCharges;
+        tpyInvestment += overPayment;
         tpyPayment += excess;
         tpyPayment += expenses;
         tpyPayment += loan;
@@ -245,6 +295,7 @@ public class JasperReportController {
         reportModel.setCash(cash);
         reportModel.setExcess(excess);
         reportModel.setExpences(expenses);
+        reportModel.setOverPayment(overPayment);
         reportModel.setLoan(loan);
         reportModel.setTpyInv(tpyInvestment);
         reportModel.setTpyPay(tpyPayment);
@@ -270,12 +321,14 @@ public class JasperReportController {
                                   @RequestParam("onCash") double onCash,
                                   @RequestParam("onExpenses") double onExpenses,
                                   @RequestParam("onExcess") double onExcess,
+                                  @RequestParam("overPayment") double onOverPayment,
                                   @RequestParam("loanDeduct") boolean loanDeduct
     ) {
 
         double addCash = onCash;
         double addExpenses = onExpenses;
         double addExcess = onExcess;
+        double addOverPayment = onOverPayment;
         Double totInvesment = 0.0;
         Double totPayment = 0.0;
         Double payment = 0.0;
@@ -285,6 +338,7 @@ public class JasperReportController {
         Double paymentDue = 0.0;
         Double excess = 0.0;
         Double expenses = 0.0;
+        Double overpayment = 0.0;
         Double loanDeductionPayment = 0.0;
         Double tpyPayment = 0.0;
         Double tpyInvestment = 0.0;
@@ -366,6 +420,7 @@ public class JasperReportController {
         boolean isExistLoanDeductionPayment = false;
         boolean isExistLoan = false;
         boolean isExistDue = false;
+        boolean isOverPayment = false;
         //check if center transaction list is not empty
         if (!trList.isEmpty()) {
             /**
@@ -398,6 +453,16 @@ public class JasperReportController {
                         transactionDAOService.update(tran);
                         expenses += addExpenses;
                     }
+
+                    if (tran.getDebit() != null && tran.getTypeId().equals("OverPayment") && addOverPayment > 0) {
+                        tran.setDebit(BigDecimal.valueOf(addOverPayment));
+                        transactionDAOService.update(tran);
+                        overpayment += addOverPayment;
+                    }
+
+
+
+
                     if (tran.getDebit() != null && tran.getTypeId().equals("PD")) {
                         paymentDue += tran.getDebit().doubleValue();
                     }
@@ -418,6 +483,9 @@ public class JasperReportController {
                     }
                     if (tran.getCredit() != null && tran.getTypeId().equals("EXP")) {
                         isExistExpenses = true;
+                    }
+                    if (tran.getDebit() != null && tran.getTypeId().equals("OverPayment")) {
+                        isOverPayment = true;
                     }
                     if (tran.getCredit() != null && tran.getTypeId().equals("COM")) {
                         commision += tran.getCredit().doubleValue();
@@ -479,6 +547,19 @@ public class JasperReportController {
             transaction.setCredit(BigDecimal.valueOf(addExpenses));
             transactionDAOService.save(transaction);
             expenses += addExpenses;
+        }
+
+        if (isOverPayment == false && addOverPayment > 0) {
+            transaction = new Transaction();
+            String newId = idCreation();
+            transaction.setTransactionId(newId);
+            transaction.setAccountNo(accountByCenterId.getAccountNo());
+            transaction.setTime(timestamp);
+            transaction.setsTime(date);
+            transaction.setTypeId("OverPayment");
+            transaction.setDebit(BigDecimal.valueOf(addOverPayment));
+            transactionDAOService.save(transaction);
+            overpayment += addOverPayment;
         }
         ApprovedLoan approvedLoan = null;
         if (centerId != null) {
@@ -572,6 +653,7 @@ public class JasperReportController {
         map.put("pc", pcCharges + "");
         map.put("exces", excess + "");
         map.put("exp", expenses + "");
+        map.put("overPay", overpayment + "");
         map.put("due", paymentDue + "");
         map.put("ln", loanDeductionPayment + "");
         map.put("lon", loan + "");
@@ -587,6 +669,7 @@ public class JasperReportController {
         tpyInvestment += loanDeductValue;
         tpyInvestment += lcsValue;
         tpyInvestment += pcCharges;
+        tpyInvestment += overpayment;
         tpyPayment += excess;
         tpyPayment += expenses;
         tpyPayment += loan;
@@ -1221,8 +1304,7 @@ public class JasperReportController {
                                           @RequestParam("datetime") String date,
                                           @RequestParam("onExpenses") double onExpenses,
                                           @RequestParam("onExcess") double onExcess,
-                                          @RequestParam("loanDeduct") boolean loanDeduct
-    ) {
+                                          @RequestParam("loanDeduct") boolean loanDeduct) {
 
         double addExpenses = onExpenses;
         double addExcess = onExcess;
@@ -1345,6 +1427,7 @@ public class JasperReportController {
 
         // get center account by centerId
         Account accountByCenterId = accountDAOService.getAccountByCenterOIndividualId(centerId);
+
         //get center transaction by center account no & string date(sTime)
         List<Transaction> trList = transactionDAOService.getTodayTransactionDetailByDateNAccountNo(date, accountByCenterId.getAccountNo());
         Transaction transaction = null;
@@ -1580,6 +1663,7 @@ public class JasperReportController {
             transaction.setsTime(date);
             transactionDAOService.save(transaction);
             accountByCenterId.setAmount(BigDecimal.valueOf(dueAmount));
+
             accountDAOService.update(accountByCenterId);
 
             map.put("dueTot", dueAmount == null ? "--" : dueAmount + "");

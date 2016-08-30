@@ -43,7 +43,7 @@ case "`uname`" in
 esac
 
 # For Cygwin, ensure paths are in UNIX format before anything is touched.
-JAVA_HOME=/home/pramoda-nf/software/jdk1.8.0
+JAVA_HOME=/home/pramoda/software/jdk1.8.0
 if $cygwin ; then
     [ -n "$JAVA_HOME" ] && JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
 fi

@@ -18,7 +18,7 @@ dependencies {
 
 }
 
-jettyRun {
-    httpPort = 9090
-}
+//jettyRun {
+//    httpPort = 9090
+//}
 
