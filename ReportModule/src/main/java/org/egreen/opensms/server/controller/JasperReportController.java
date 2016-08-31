@@ -72,7 +72,8 @@ public class JasperReportController {
      */
     @RequestMapping(value = "getGeneralSummaryReportModel", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public GeneralSummaryReportModel getGeneralSummaryReportModel(@RequestParam("centerId") String centerIdFrom, @RequestParam("sTime") String sTime) {
+    public GeneralSummaryReportModel getGeneralSummaryReportModel(@RequestParam("centerId") String centerIdFrom,
+                                                                  @RequestParam("sTime") String sTime) {
         String stringTime = sTime;
         String centerId = centerIdFrom;
 
@@ -172,6 +173,9 @@ public class JasperReportController {
                     }
                     if (tran.getCredit() != null && tran.getTypeId().equals("COM")) {
                         commision += tran.getCredit().doubleValue();
+                    }
+                    if (tran.getCredit() != null && tran.getTypeId().equals("CSH")) {
+                        cash += tran.getCredit().doubleValue();
                     }
                     if (tran.getDebit() != null && tran.getTypeId().equals("LN")) {
                         isExistLoanDeductionPayment = true;
@@ -324,6 +328,7 @@ public class JasperReportController {
                                   @RequestParam("overPayment") double onOverPayment,
                                   @RequestParam("loanDeduct") boolean loanDeduct
     ) {
+
 
         double addCash = onCash;
         double addExpenses = onExpenses;
