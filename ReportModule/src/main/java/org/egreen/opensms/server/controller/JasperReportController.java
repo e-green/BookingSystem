@@ -292,7 +292,7 @@ public class JasperReportController {
         reportModel.setNc(ncValue);
         reportModel.setLcs(lcsValue);
         reportModel.setPc(pcCharges);
-        reportModel.setPd(paymentDue);
+        reportModel.setPd(accountByCenterId.getAmount().doubleValue());
         reportModel.setLn(loanDeductionPayment);
         reportModel.setLd(loanDeductValue);
         reportModel.setCommision(commision);
