@@ -20,8 +20,21 @@
             <option value="$PROJECT_DIR$/web" />
           </set>
         </option>
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/CashModule" />
+            <option value="$PROJECT_DIR$/CollectionModule" />
+            <option value="$PROJECT_DIR$/LogModule" />
+            <option value="$PROJECT_DIR$/ReportModule" />
+            <option value="$PROJECT_DIR$/UserModule" />
+            <option value="$PROJECT_DIR$/basicweb" />
+            <option value="$PROJECT_DIR$/dbcontroller" />
+            <option value="$PROJECT_DIR$/main" />
+            <option value="$PROJECT_DIR$/web" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>
 </project>
-
